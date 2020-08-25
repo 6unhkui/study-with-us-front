@@ -1,25 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import {Header, Footer} from "../src/components/common";
+import Auth from './hoc/auth';
+import MainPage from './pages/MainPage/MainPage';
+import LoginPage from './pages/LoginPage/LoginPage';
+import OAuth2RedirectHandler from "components/oauth2/OAuth2RedirectHandler";
+import RegisterPage from './pages/RegisterPage/RegisterPage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Router>
+          <Header/>
+          <Route path='/' exact component={Auth(MainPage, null)} />
+          <Route path="/login" component={Auth(LoginPage, false)} />
+          <Route path="/login/oauth2/redirect" component={Auth(OAuth2RedirectHandler, false)} />
+          <Route path="/register" component={Auth(RegisterPage, false)} />
+          <Footer/>
+      </Router>
   );
 }
 
