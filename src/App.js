@@ -1,22 +1,36 @@
-import React from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import {Header, Footer} from "../src/components/common";
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {Header, Footer} from "./components/layout";
 import Auth from './hoc/auth';
-import MainPage from './pages/MainPage/MainPage';
-import LoginPage from './pages/LoginPage/LoginPage';
+
+import NotFoundPage from './pages/NotFoundPage';
+
+import MainPage from './pages/MainPage';
+import LoginPage from './pages/LoginPage';
 import OAuth2RedirectHandler from "components/oauth2/OAuth2RedirectHandler";
-import RegisterPage from './pages/RegisterPage/RegisterPage';
+import RegisterPage from './pages/RegisterPage';
+
+import MypagePage from './pages/MypagePage';
+
 
 function App() {
   return (
+    <Suspense fallback={<div>loading...</div>}>
       <Router>
           <Header/>
-          <Route path='/' exact component={Auth(MainPage, null)} />
-          <Route path="/login" component={Auth(LoginPage, false)} />
-          <Route path="/login/oauth2/redirect" component={Auth(OAuth2RedirectHandler, false)} />
-          <Route path="/register" component={Auth(RegisterPage, false)} />
+          <Switch>
+            <Route path='/' exact component={Auth(MainPage, null)} />
+            <Route path="/login" component={Auth(LoginPage, false)} />
+            <Route path="/login/oauth2/redirect" component={Auth(OAuth2RedirectHandler, false)} />
+            <Route path="/register" component={Auth(RegisterPage, false)} />
+
+            <Route path="/mypage" component={Auth(MypagePage, true)} />
+
+            <Route component={Auth(NotFoundPage)} />
+          </Switch>
           <Footer/>
       </Router>
+    </Suspense>
   );
 }
 

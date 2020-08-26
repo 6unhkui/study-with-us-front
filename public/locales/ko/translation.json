@@ -1,0 +1,23 @@
+{   "common" : {
+        "goToMain" : "메인으로"
+    },
+    "auth" : {
+        "login" : "로그인",
+        "signUp": "회원가입",
+        "name" : "이름",
+        "email" : "이메일",
+        "password" : "비밀번호",
+        "confirmPassword" : "비밀번호 확인",
+        "duplicateAccountCheck": "이메일 중복 검사"
+    },
+    "validate": {
+        "email": "올바른 이메일 형식이 아닙니다.",
+        "password": "비밀번호는 4글자 이상이어야 합니다.",
+        "confirmPassowrd": "비밀번호가 일치하지 않습니다.",
+        "required": "반드시 입력해야 합니다."
+    },
+    "404" : {
+        "title" : "해당 페이지를 찾지 못했습니다.",
+        "subTitle" : "주소가 잘못되었거나 더 이상 제공되지 않는 페이지입니다."
+    }
+}

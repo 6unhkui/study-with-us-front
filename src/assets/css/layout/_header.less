@@ -1,0 +1,42 @@
+.header-wrap {
+    flex : 1;
+    height: 4rem;
+    line-height: 4rem;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.06);
+    display: flex;
+    padding : 0 6%;
+
+    @media @tablet-screen, @mobile-screen {
+        padding : 0 1rem;
+    }
+
+    .logo-wrap {
+        flex-basis: 160px;
+    }
+
+    .gnb-wrap {
+        flex : 1;
+        margin-left: 2rem;
+    }
+
+    .user-wrap {
+        margin-left: auto;
+        * {
+            cursor: pointer;
+        }
+
+        .user-info {
+            margin-right: 1rem;
+            display: inline-block;
+        }
+
+        .session-btn {
+            border : 1px solid @border-gray;
+            padding : .6rem 1rem;
+        }
+    }
+    
+    a {
+        color : @color-black;
+    }
+}

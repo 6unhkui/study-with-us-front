@@ -1,0 +1,23 @@
+{   "common" : {
+        "goToMain" : "go to main"
+    },
+    "auth" : {
+        "login" : "Log In",
+        "signUp": "Sign Up",
+        "name" : "Name",
+        "email" : "Email",
+        "password" : "Password",
+        "confirmPassword" : "Confirm Password",
+        "duplicateAccountCheck": "Email duplicate check"
+    },
+    "validate": {
+        "email": "Must be a valid email",
+        "password": "Minimum 4 characters",
+        "confirmPassowrd": "The two passwords that you entered do not match",
+        "required": "This field is required"
+    },
+    "404" : {
+        "title" : "No such page was found.",
+        "subTitle" : "The address is wrong or the page is no longer available."
+    }
+}
