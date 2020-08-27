@@ -20,8 +20,9 @@ function App() {
           <Header/>
           <Switch>
             <Route path='/' exact component={Auth(MainPage, null)} />
-            <Route path="/login" component={Auth(LoginPage, false)} />
+            <Route path="/login" exact component={Auth(LoginPage, false)} />
             <Route path="/login/oauth2/redirect" component={Auth(OAuth2RedirectHandler, false)} />
+            
             <Route path="/register" component={Auth(RegisterPage, false)} />
 
             <Route path="/mypage" component={Auth(MypagePage, true)} />
