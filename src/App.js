@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {Header, Footer} from "./components/layout";
 import Auth from './hoc/auth';
 
+import Loading from "components/loading";
+
 import NotFoundPage from './pages/NotFoundPage';
 
 import MainPage from './pages/MainPage';
@@ -15,7 +17,7 @@ import MypagePage from './pages/MypagePage';
 
 function App() {
   return (
-    <Suspense fallback={<div>loading...</div>}>
+    <Suspense fallback={<Loading/>}>
       <Router>
           <Header/>
           <Switch>

@@ -1,20 +1,37 @@
 {   "common" : {
-        "goToMain" : "go to main"
+        "goToMain" : "go to main",
+        "save" : "Save"
     },
     "auth" : {
         "login" : "Log In",
+        "logout" : "Log Out",
         "signUp": "Sign Up",
         "name" : "Name",
         "email" : "Email",
         "password" : "Password",
         "confirmPassword" : "Confirm Password",
+        "oldPassword" : "Old Password",
+        "newPassword" : "New Password",
+        "newConfirmPassword" : "New Confirm Password",
         "duplicateAccountCheck": "Email duplicate check"
+    },
+    "mypage" : {
+        "title" : "Hello,\n{{name}} mate!",
+        "editAccountSettings" : {
+            "title" :  "Edit Account Settings",
+            "isSocialAccount" : "This is a social login account.",
+            "changeProfileInfo" : "Change Profile Infomation",
+            "changePassword" : "Change Password",
+            "deleteAccount" : "Delete Account",
+            "deleteAccountWarning" : "Once you delete your account, there is no going back. Are you sure you want to delete the account?",
+            "deleteAccountConfirm" : "Yes, I'll delete it."
+        }
     },
     "validate": {
         "email": "Must be a valid email",
-        "password": "Minimum 4 characters",
+        "password": "Password must have at least 8 characters with at least one Capital letter or lower case letter and at least one number and special character(#?!@$%^&*-).",
         "confirmPassowrd": "The two passwords that you entered do not match",
-        "required": "This field is required"
+        "required": "{{name}} is required"
     },
     "404" : {
         "title" : "No such page was found.",

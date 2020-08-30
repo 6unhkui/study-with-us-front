@@ -1,20 +1,37 @@
 {   "common" : {
-        "goToMain" : "메인으로"
+        "goToMain" : "메인으로",
+        "save" : "저장하기"
     },
     "auth" : {
         "login" : "로그인",
+        "logout" : "로그아웃",
         "signUp": "회원가입",
         "name" : "이름",
         "email" : "이메일",
         "password" : "비밀번호",
         "confirmPassword" : "비밀번호 확인",
+        "oldPassword" : "기존 비밀번호",
+        "newPassword" : "새로운 비밀번호",
+        "newConfirmPassword" : "새로운 비밀번호 확인",
         "duplicateAccountCheck": "이메일 중복 검사"
+    },
+    "mypage" : {
+        "title" : "반가워요,\n{{name}} 메이트!",
+        "editAccountSettings" : {
+            "title" : "계정 설정 관리",
+            "isSocialAccount" : "소셜 로그인 계정입니다.",
+            "changeProfileInfo" : "프로필 정보 변경",
+            "changePassword" : "비밀번호 변경",
+            "deleteAccount" : "계정 삭제",
+            "deleteAccountWarning" : "계정을 삭제하면 되돌릴 수 없습니다. 정말 삭제하시겠습니까?",
+            "deleteAccountConfirm" : "네, 삭제하겠습니다."
+        }
     },
     "validate": {
         "email": "올바른 이메일 형식이 아닙니다.",
-        "password": "비밀번호는 4글자 이상이어야 합니다.",
+        "password": "비밀번호는 영소대문자와 숫자, 특수문자(#?!@$%^&*-)를 각 1개 이상 포함한 8자리 이상이어야 합니다.",
         "confirmPassowrd": "비밀번호가 일치하지 않습니다.",
-        "required": "반드시 입력해야 합니다."
+        "required": "{{name}}은(는) 반드시 입력해야 합니다."
     },
     "404" : {
         "title" : "해당 페이지를 찾지 못했습니다.",

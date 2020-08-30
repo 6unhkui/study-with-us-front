@@ -19,6 +19,17 @@ export const header = () => {
     }
 }
 
+export const headerFormData = () => {
+    const accessToken = localStorage.getItem(ACCESS_TOKEN) ? localStorage.getItem(ACCESS_TOKEN) : undefined;
+
+    return {
+        headers: { 
+            'Authorization': `${BEARER_TOKEN_PREFIX} ${accessToken}`,
+            'Content-Type': 'multipart/form-data',
+        }
+    }
+}
+
 
 export const getParameter = (location, key) => {
     key = key.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");

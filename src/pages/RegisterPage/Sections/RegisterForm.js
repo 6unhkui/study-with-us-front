@@ -5,12 +5,21 @@ import { useTranslation } from 'react-i18next';
 import styled from "styled-components";
 import { Form, Input, Tooltip, Cascader, Select, Row, Col, Checkbox, Button, message} from 'antd';
 
+import {PasswordRegex} from "utils/Form/FormValidation";
+
 
 export default function RegisterForm(props) {
     const { t } = useTranslation();
     const [form] = Form.useForm();
 
     const [duplicateChkCmp, setDuplicateChkCmp] = useState(false);
+
+    const validateMessages = {
+      required: t('validate.required', { name: '${label}'}),
+      pattern: {
+        mismatch: t('validate.password'),
+      }
+    };
   
     const onSubmit = values => {
       const data = {
@@ -59,29 +68,16 @@ export default function RegisterForm(props) {
                 scrollToFirstError
                 layout = "vertical"
                 requiredMark={false}
+                validateMessages={validateMessages}
             >
-
-              <Form.Item
-                name="name"
-                label={t('auth.name')}
-                rules={[
-                  {
-                    required: true,
-                    message: t('validate.required'),
-                    whitespace: true,
-                  },
-                ]}
-              >
-                <Input placeholder={t('auth.name')}/>
-              </Form.Item>
-
 
               <Form.Item
                 label={t('auth.email')}
              >
                 <Form.Item
                   name="email"
-                  noStyle  
+                  noStyle
+                  label={t('auth.email')}
                   rules={[
                     {
                       type: 'email',
@@ -89,21 +85,35 @@ export default function RegisterForm(props) {
                     },
                     {
                       required: true,
-                      message: t('validate.required'),
                     },]}
                 >
                   <Input disabled={duplicateChkCmp} placeholder={t('auth.email')} style={{width : 'calc(100% - 90px)'}} />
                 </Form.Item>
                 <Button onClick={checkDuplicateEmail} style={{wdith : '90px', float : 'right'}}>중복 확인</Button>
             </Form.Item>
-  
+
+              <Form.Item
+                name="name"
+                label={t('auth.name')}
+                rules={[
+                  {
+                    required: true,
+                    whitespace: true,
+                  },
+                ]}
+              >
+                <Input placeholder={t('auth.name')}/>
+              </Form.Item>
+
             <Form.Item
               name="password"
               label={t('auth.password')}
               rules={[
                 {
                   required: true,
-                  message: t('validate.required'),
+                },
+                {
+                  pattern: PasswordRegex
                 },
               ]}
               hasFeedback
@@ -119,7 +129,6 @@ export default function RegisterForm(props) {
               rules={[
                 {
                   required: true,
-                  message: t('validate.required'),
                 },
                 ({ getFieldValue }) => ({
                   validator(rule, value) {
@@ -133,44 +142,6 @@ export default function RegisterForm(props) {
               ]}>
                 <Input.Password placeholder={t('auth.confirmPassword')}/>
             </Form.Item>
-  
-            {/* <Form.Item
-              name="phone"
-              label="Phone Number"
-              rules={[
-              {
-                  required: true,
-                  message: 'Please input your phone number!',
-              },]}
-            >
-                <Input style={{ display: 'inline-block', width: 'calc(33% - 12px)' }}/>
-            <span
-            style={{ display: 'inline-block', width: '18px', lineHeight: '32px', textAlign: 'center' }}
-          >
-            -
-          </span>
-          <Input style={{ display: 'inline-block', width: 'calc(33% - 12px)' }}/>
-            <span
-            style={{ display: 'inline-block', width: '18px', lineHeight: '32px', textAlign: 'center' }}
-          >
-            -
-          </span>
-          <Input style={{ display: 'inline-block', width: 'calc(33% - 12px)' }}/>
-        </Form.Item> */}
-  
-        {/* <Form.Item
-        name="upload"
-        label="Upload"
-        valuePropName="fileList"
-        getValueFromEvent={normFile}
-        extra="longgggggggggggggggggggggggggggggggggg"
-      >
-        <Upload name="logo" action="/upload.do" listType="picture">
-          <Button>
-            <UploadOutlined /> Click to upload
-          </Button>
-        </Upload>
-      </Form.Item> */}
 
         <Form.Item
           name="agreement"

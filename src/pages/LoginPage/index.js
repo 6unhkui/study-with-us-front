@@ -1,7 +1,7 @@
 import React, {useState}  from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
-import {ACCESS_TOKEN, SERVER_URI} from 'utils/HttpHandler';
+import {ACCESS_TOKEN, REMEMBER_ME, SERVER_URI} from 'utils/HttpHandler';
 import { Link } from "react-router-dom";
 import { useRecoilState } from 'recoil';
 import {userState} from "atom/UserState";
@@ -31,22 +31,20 @@ const LoginPage = (props)  => {
       .then(response => { 
           window.localStorage.setItem(ACCESS_TOKEN, response.data.accessToken);
 
-          if (rememberMe === true) {
-            window.localStorage.setItem('rememberMe', response.data.email);
-          } else {
-            localStorage.removeItem('rememberMe');
-          }
-
+          rememberMe ? window.localStorage.setItem(REMEMBER_ME, response.data.email) : localStorage.removeItem(REMEMBER_ME);
+      
           setUser({
-            'name' : response.data.name
+            'name' : response.data.name,
+            'profileImg' : response.data.profileImg
           });
 
           props.history.push("/");
       })
-      .catch(err => { if(err.response.data.restRequestError) {
+      .catch(err => { 
+        if(err.response) {
           setIsError(true); 
-          setErrorMessage(err.response.data.restRequestError.message)
-      }});
+          setErrorMessage(err.response.data.restRequestError.message)}
+      });
     };
   
     return (
