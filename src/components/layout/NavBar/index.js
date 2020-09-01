@@ -2,15 +2,16 @@ import React from 'react';
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-import Logo from "assets/image/logo.svg";
+import Logo from "assets/image/logo.png";
 import GNB from "./Sections/Gnb";
 import SideMenu from "./Sections/SideMenu";
 
-const Header = (props) => {
+
+const NavBar = (props) => {
     return (
         <nav className="header-wrap">
             <span className="logo-wrap">
-                <Link to="/"><img src={Logo} className="logo" alt="logo" style={{width : '10rem'}}/></Link>
+                <Link to="/"><img src={Logo} className="logo" alt="logo"/></Link>
             </span>
 
             <GNB/>
@@ -20,6 +21,6 @@ const Header = (props) => {
     )
 }
 
-export default withRouter(Header);
+export default withRouter(NavBar);
 
 
