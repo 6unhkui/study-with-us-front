@@ -5,15 +5,23 @@
     "auth" : {
         "login" : "로그인",
         "logout" : "로그아웃",
-        "signUp": "회원가입",
+        "rememberAccount" : "계정 기억하기",
+        "createAccount": "계정 생성",
         "name" : "이름",
         "email" : "이메일",
         "password" : "비밀번호",
         "confirmPassword" : "비밀번호 확인",
         "oldPassword" : "기존 비밀번호",
         "newPassword" : "새로운 비밀번호",
-        "newConfirmPassword" : "새로운 비밀번호 확인",
-        "duplicateAccountCheck": "이메일 중복 검사"
+        "confirmNewPassword" : "새로운 비밀번호 확인",
+        "duplicateAccountCheck": "중복 체크",
+        "pleaseDuplicateAccountCheck" : "중복 체크를 진행해주세요.",
+        "isAvailableAccount" : "사용 가능한 계정입니다.",
+        "isDuplicateAccount": "중복된 계정입니다.",
+        "AgreementOnTermsAndConditions" : "회원가입 약관 및 개인정보 수집 동의 (필수)",
+        "forgotPassword" : "비밀번호를 잊으셨나요?",
+        "resetPassword" : "비밀번호 재설정",
+        "enterEmailToResetPassword" : "비밀번호 재설정을 위한 이메일 계정을 입력하세요."
     },
     "mypage" : {
         "title" : "반가워요,\n{{name}} 메이트!",

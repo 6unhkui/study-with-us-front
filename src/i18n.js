@@ -4,7 +4,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
 const fallbackLng = ['ko']; 
-export const availableLanguages = ['en', 'ko'];
+export const availableLanguages = ['ko', 'en'];
 
 i18n
   .use(Backend) // load translation using xhr -> see /public/locales. We will add locales in the next step

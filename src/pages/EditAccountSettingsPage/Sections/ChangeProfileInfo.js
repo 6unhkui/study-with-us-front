@@ -1,6 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-import {SERVER_URI, header} from 'utils/HttpHandler';
+import {request} from 'utils/HttpHandler';
 import { useRecoilState } from 'recoil';
 import {userState} from "atom/UserState";
 import { useTranslation } from 'react-i18next';
@@ -20,7 +19,7 @@ const ChangeProfileInfo = (props) => {
           name : values.name.trim(),
         }
 
-        axios.put(`${SERVER_URI}/api/v1/user`, data, header())
+        request().put('/api/v1/user', data)
         .then(response => {
             setUser({
               ...user,
@@ -59,11 +58,11 @@ const ChangeProfileInfo = (props) => {
                 },
               ]}
             >
-              <Input placeholder={t('auth.name')} />
+              <Input placeholder={t('auth.name')}/>
             </Form.Item>
 
             <Form.Item style={{marginTop : '2.4rem'}}>
-              <Button type="primary" htmlType="submit" size="large">
+              <Button type="primary" htmlType="submit" size="large" className="shadow">
                 {t('common.save')}
               </Button>
             </Form.Item>

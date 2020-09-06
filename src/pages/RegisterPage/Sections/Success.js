@@ -8,18 +8,20 @@ const Success = (props) => {
         <Result
         icon={<SmileOutlined />}
         title={`환영합니다, ${props.user.name} 메이트!`}
-        subTitle={<>성장에 동참할 스터디 메이트들이 기다리고 있습니다.<br/>어서 스터디룸에 가입해보세요!</>}
+        subTitle={<>성장에 동참할 스터디 메이트들이 기다리고 있습니다.<br/>어서 스터디방에 가입해보세요!</>}
         extra={[
-            <Link to="/login">
-                <Button type="primary">
+            <div style={{marginTop : '3rem'}}>
+              <Link to="/login">
+                <Button type="primary" size="large" style={{marginRight : '.6rem'}} className='shadow'>
                     로그인 하기
                 </Button>
-            </Link>,
-            <Link to="/">
-                <Button>
+              </Link>
+              <Link to="/">
+                <Button size="large" className='shadow'>
                     메인으로 가기
                 </Button>
-            </Link>,
+              </Link>
+            </div>,
         ]}
       />
     )

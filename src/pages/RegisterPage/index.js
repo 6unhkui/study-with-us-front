@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import { useTranslation } from 'react-i18next';
-import styled from "styled-components";
 import RegisterForm from './Sections/RegisterForm';
 import Success from './Sections/Success';
 
@@ -14,16 +13,11 @@ export default function RegisterPage() {
     const [user, setUser] = useState({name : ''});
 
     return (
-      <ContainerWrap>
-        <Title style={{textAlign : 'center'}}>{t('auth.signUp')}</Title>
-        {success ? <Success user={user}/> : <RegisterForm success={{setSuccess}} user={{setUser}}/>}
-      </ContainerWrap>
+      <div class="container content-wrap">
+        <div className="form-wrap">
+          <Title style={{textAlign : 'center'}}>{t('auth.createAccount')}</Title>
+          {success ? <Success user={user}/> : <RegisterForm success={{setSuccess}} user={{setUser}}/>}
+        </div>
+      </div>
     )
 }
-
-
-const ContainerWrap = styled.div`
-  max-width : 400px;
-  padding-top : 6rem;
-  margin : 0 auto;
-`

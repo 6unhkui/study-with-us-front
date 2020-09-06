@@ -1,7 +1,6 @@
 import React from 'react';
-import axios from 'axios';
 import { withRouter, Redirect } from "react-router-dom";
-import {getParameter, ACCESS_TOKEN, SERVER_URI, header} from 'utils/HttpHandler';
+import {getParameter, ACCESS_TOKEN, SERVER_URI, request} from 'utils/HttpHandler';
 import { useRecoilState } from 'recoil';
 import {userState} from "atom/UserState";
 
@@ -16,11 +15,12 @@ const OAuth2RedirectHandler = (props) => {
         window.localStorage.setItem(ACCESS_TOKEN, token);
 
         // 2. 사용자 정보를 담아와 rocoil의 atom으로 관리하는 userState에 넣어준다.
-        axios.get(`${SERVER_URI}/api/v1/user`, header())
+        request().get('/api/v1/user')
         .then(response => {
+            const data = response.data.data;
             setUser({
-              'name' : response.data.name,
-              'profileImg' : response.data.profileImg
+              'name' : data.name,
+              'profileImg' : data.profileImg
             });
         })
         .catch(err => {console.log(err)});

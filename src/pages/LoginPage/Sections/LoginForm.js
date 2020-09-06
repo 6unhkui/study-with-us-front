@@ -1,5 +1,6 @@
 import React, {useState}  from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Form, Input, Button, Alert, Checkbox} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -9,6 +10,10 @@ const LoginForm = (props)  => {
     const { t } = useTranslation();
 
     const initialAccount = localStorage.getItem("rememberMe") ? localStorage.getItem("rememberMe") : '';
+
+    const validateMessages = {
+      required: t('validate.required', { name: '${name}'})
+    };
 
     return (
        <>
@@ -21,6 +26,7 @@ const LoginForm = (props)  => {
               onFinish={props.onSubmit}
               size="large"
               layout = "vertical"
+              validateMessages={validateMessages}
           >
               <Form.Item
                 name="email"
@@ -29,28 +35,37 @@ const LoginForm = (props)  => {
                     message: t('validate.email'),
                 },{
                     required: true, 
-                    message: t('validate.required')}]}
+                }]}
               >
-                <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder={t('auth.email')} type="email"/>
+                <Input prefix={<UserOutlined className="site-form-item-icon" />} 
+                       placeholder="youremail@example.com" type="email"
+                       allowClear/>
               </Form.Item>
 
               <Form.Item
                 name="password"
-                rules={[{ required: true, message: t('validate.required')}]}
+                rules={[{ required: true}]}
               >
                 <Input
                   prefix={<LockOutlined className="site-form-item-icon" />}
                   type="password"
                   placeholder={t('auth.password')}
+                  allowClear
                 />
               </Form.Item>
 
               <RememberMe>
-                <Checkbox onClick={(v) => props.rememberMe.setRememberMe(v.target.checked)} checked={props.rememberMe.rememberMe}>Remember me</Checkbox>
+                <Checkbox onClick={(v) => props.rememberMe.setRememberMe(v.target.checked)} checked={props.rememberMe.rememberMe}>
+                  {t('auth.rememberAccount')}
+                </Checkbox>
               </RememberMe>
 
+              <ForgotPassword>
+                <Link to="/forgot-password">{t('auth.forgotPassword')}</Link>
+              </ForgotPassword>
+
               <Form.Item>
-                <Button type="primary" htmlType="submit" className="login-form-button" block>
+                <Button type="primary" htmlType="submit" className="shadow" block>
                   {t('auth.login')}
                 </Button>
               </Form.Item>
@@ -63,4 +78,9 @@ export default LoginForm;
 
 const RememberMe = styled.div`
   margin-bottom : 1rem;
+  display : inline-block;
+`
+
+const ForgotPassword = styled.div`
+  float : right;
 `

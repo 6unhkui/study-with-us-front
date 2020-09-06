@@ -25,9 +25,9 @@ export default function SideMenu(props) {
                 <Link to="/mypage">
                     <div className="user-info">
                         <Avatar style={{marginRight : '.6rem'}} 
-                        src={user.profileImg}
-                        icon={<UserOutlined />} 
-                        alt="referrerPolicy='no-referrer'"/>
+                            src={user.profileImg}
+                            icon={<UserOutlined />} 
+                            alt="referrerPolicy='no-referrer'"/>
                         <span>{user.name}</span>
                     </div>
                 </Link>

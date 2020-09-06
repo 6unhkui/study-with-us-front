@@ -1,18 +1,22 @@
 import React, {useState} from 'react';
+import {ACCESS_TOKEN, request} from 'utils/HttpHandler';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Button, Typography, Checkbox} from 'antd';
+import { Button, Checkbox} from 'antd';
 
-const { Text } = Typography;
 
-const DeleteAccount = () => {
+const DeleteAccount = (props) => {
     const { t } = useTranslation();
 
     const [confirm, setConfirm] = useState(false);
 
     const handleDeleteAccount = () => {
         if(confirm) {
-            alert("계정을 삭제합니다.")
+            request().delete('/api/v1/user')
+            .then(response => {
+                localStorage.removeItem(ACCESS_TOKEN);
+                props.history.push("/");
+            })
         }
     }
 
@@ -24,7 +28,7 @@ const DeleteAccount = () => {
                     {t('mypage.editAccountSettings.deleteAccountConfirm')}
                 </Checkbox>
             </CheckBoxWrap>
-            <Button type="primary" danger style={{marginTop : '2rem'}} onClick={handleDeleteAccount}>
+            <Button type="primary" danger style={{marginTop : '2rem'}} onClick={handleDeleteAccount} className="shadow">
                 {t('mypage.editAccountSettings.deleteAccount')}
             </Button>
         </>

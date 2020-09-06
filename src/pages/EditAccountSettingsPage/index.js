@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import axios from 'axios';
-import {SERVER_URI, header} from 'utils/HttpHandler';
+import styled from 'styled-components';
+import {request} from 'utils/HttpHandler';
 import { useTranslation } from 'react-i18next';
 import {provider} from "utils/OAuth2Provider";
 import { Typography, Badge, Divider, Tabs} from 'antd';
@@ -25,15 +25,16 @@ const EditAccountSettings = (props) => {
     },[]);
 
     function _callApi() {
-      axios.get(`${SERVER_URI}/api/v1/user`, header())
+      request().get('/api/v1/user')
       .then(response => {
-          setFormData(response.data);
+          const data = response.data.data;
+          setFormData(data);
           setLoading(false);
-          setIsSocialAccount(response.data.provider !== "LOCAL");
+          setIsSocialAccount(data.provider !== "LOCAL");
 
           if(isSocialAccount) {
             setSocialBadgeColor(
-              provider[`${response.data.provider}`].color
+              provider[`${data.provider}`].color
             );
           }
       })
@@ -52,24 +53,26 @@ const EditAccountSettings = (props) => {
                     </div>
               }
 
-              <Tabs defaultActiveKey="1" style={{marginTop : '2.4rem'}} onChange={(key) => {if(key==="1") _callApi()}}>
-                  <TabPane tab={t('mypage.editAccountSettings.changeProfileInfo')} key="1">
+              <ContentWrap>
+              <Tabs defaultActiveKey="1" style={{marginTop : '2.4rem'}}>
+                  <TabPane tab={t('mypage.editAccountSettings.changeProfileInfo')} key="1" className="content">
                     <Title level={4}>{t('mypage.editAccountSettings.changeProfileInfo')}</Title>
                     <ChangeProfileInfo formData={formData}/>
                   </TabPane>
 
                   {!isSocialAccount && 
-                    <TabPane tab={t('mypage.editAccountSettings.changePassword')} key="2">
+                    <TabPane tab={t('mypage.editAccountSettings.changePassword')} key="2" className="content">
                       <Title level={4}>{t('mypage.editAccountSettings.changePassword')}</Title>
                       <ChangePassword/>
                     </TabPane>
                   }
 
-                  <TabPane tab={t('mypage.editAccountSettings.deleteAccount')} key="3">
+                  <TabPane tab={t('mypage.editAccountSettings.deleteAccount')} key="3" className="content">
                     <Title level={4}>{t('mypage.editAccountSettings.deleteAccount')}</Title> 
-                    <DeleteAccount/>
+                    <DeleteAccount {...props}/>
                   </TabPane>
               </Tabs>
+              </ContentWrap>
             </>
           }
       </>
@@ -77,3 +80,9 @@ const EditAccountSettings = (props) => {
 }
 
 export default EditAccountSettings;
+
+const ContentWrap = styled.div`
+  .content {
+    margin-top : 1rem;
+  }
+`

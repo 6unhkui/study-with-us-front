@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import axios from 'axios';
-import {SERVER_URI, header} from 'utils/HttpHandler';
+import {request} from 'utils/HttpHandler';
 import { useTranslation } from 'react-i18next';
 import { Form, Input, Button, Alert, message} from 'antd';
 
@@ -26,7 +25,7 @@ const ChangePassword = () => {
         newPassword : values.password,
       }
 
-      axios.put(`${SERVER_URI}/api/v1/user/password`, data, header())
+      request().put('/api/v1/user/password', data)
       .then(res => {
         message.success('저장이 완료되었습니다.');
       })
@@ -80,7 +79,7 @@ const ChangePassword = () => {
   
             <Form.Item
               name="confirm"
-              label={t('auth.newConfirmPassword')}
+              label={t('auth.confirmNewPassword')}
               dependencies={['password']}
               hasFeedback
               rules={[
@@ -97,11 +96,11 @@ const ChangePassword = () => {
                   },
                 }),
               ]}>
-                <Input.Password placeholder={t('auth.newConfirmPassword')}/>
+                <Input.Password placeholder={t('auth.confirmNewPassword')}/>
         </Form.Item>
   
         <Form.Item style={{marginTop : '2.4rem'}}>
-          <Button type="primary" htmlType="submit" size="large">
+          <Button type="primary" htmlType="submit" size="large" className="shadow">
             {t('common.save')}
           </Button>
         </Form.Item>

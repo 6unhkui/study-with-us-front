@@ -7,28 +7,68 @@
     padding : 0 6%;
     margin-bottom: 4px;
 
-    @media @tablet-screen, @mobile-screen {
-        padding : 0 1rem;
-    }
+    position: fixed;
+    width: 100%;
+    background-color: #fff;
+    z-index: 99;
 
     .logo-wrap {
         flex-basis: 160px;
+
+        .logo {
+            width: 9rem;
+        }
     }
 
     .gnb-wrap {
         flex : 1;
         margin-left: 2rem;
+        max-width : 400px;
+        ul {
+            display : flex;
+
+            li {
+                display: inline-block;
+                flex : 1;
+                text-align: center;
+                font-weight : 400;
+
+                a {
+                    display: inline-block;
+                    height: 64px;
+                    text-align: center;
+                    position: relative;
+                    text-decoration: none;
+                    background: none;
+
+                    &:hover:after, &.active:after {
+                        width: 100%;
+                        left: 0;
+                    }
+
+                    &:after {
+                        -webkit-transition: width .1s ease-out, left .1s ease-out, border-color .1s ease-out;
+                        transition: width .1s ease-out, left .1s ease-out, border-color .1s ease-out;
+                        position: absolute;
+                        display: block;
+                        bottom : 16px;
+                        left: 50%;
+                        width: 0;
+                        border-top: 2px solid @primary-color;
+                        content: '';
+                    }
+                }
+            }
+        }
     }
 
     .user-wrap {
         margin-left: auto;
-        * {
-            cursor: pointer;
-        }
 
         .user-info {
-            margin-right: 1rem;
+            margin-right: .5rem;
             display: inline-block;
+            cursor: pointer;
         }
 
         .session-btn {
@@ -36,9 +76,32 @@
             padding : .6rem 1rem;
         }
     }
+
+    .language-selector-wrap {
+        padding-left : .5rem;
+        margin-right : 1rem;
+        cursor: pointer;
+
+        .text {
+            margin : 0 .4rem;
+        }
+    }
     
     a {
         color : @color-black;
+    }
+
+    @media @tablet-screen, @mobile-screen {
+        padding : 0 1rem;
+
+        .logo-wrap {
+            text-align: center;
+            flex : 1;
+        }
+
+        .user-wrap, .gnb-wrap {
+            display: none;
+        }
     }
 }
 

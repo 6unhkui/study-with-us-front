@@ -9,6 +9,7 @@ export default function Loading() {
 }
 
 const LoadingWrap = styled.div`
+    margin : 0 auto;
     text-align : center;
     line-height : 50vh;
 `

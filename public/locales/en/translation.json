@@ -5,15 +5,23 @@
     "auth" : {
         "login" : "Log In",
         "logout" : "Log Out",
-        "signUp": "Sign Up",
+        "rememberAccount" : "Remember Account",
+        "createAccount": "Create Account",
         "name" : "Name",
         "email" : "Email",
         "password" : "Password",
         "confirmPassword" : "Confirm Password",
         "oldPassword" : "Old Password",
         "newPassword" : "New Password",
-        "newConfirmPassword" : "New Confirm Password",
-        "duplicateAccountCheck": "Email duplicate check"
+        "confirmNewPassword" : "Confirm New Password",
+        "duplicateAccountCheck": "Duplicate Check",
+        "pleaseDuplicateAccountCheck" : "Please proceed with the duplicate account check.",
+        "isAvailableAccount" : "This account is available.",
+        "isDuplicateAccount": "This account is duplicated",
+        "AgreementOnTermsAndConditions" : "Agreement on Terms & Conditions and Personal Information Collection (required)",
+        "forgotPassword" : "Forgot Password?",
+        "resetPassword" : "Reset Password",
+        "enterEmailToResetPassword" : "Enter your email to reset password"
     },
     "mypage" : {
         "title" : "Hello,\n{{name}} mate!",

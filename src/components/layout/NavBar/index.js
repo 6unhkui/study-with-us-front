@@ -1,6 +1,5 @@
 import React from 'react';
-import { withRouter } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 import Logo from "assets/image/logo.png";
 import GNB from "./Sections/Gnb";
