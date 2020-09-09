@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {ACCESS_TOKEN, request} from 'utils/HttpHandler';
+import {ACCESS_TOKEN} from 'constants/index';
+import {http} from 'utils/HttpHandler';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Button, Checkbox} from 'antd';
@@ -12,7 +13,7 @@ const DeleteAccount = (props) => {
 
     const handleDeleteAccount = () => {
         if(confirm) {
-            request().delete('/api/v1/user')
+            http.delete('/api/v1/user')
             .then(response => {
                 localStorage.removeItem(ACCESS_TOKEN);
                 props.history.push("/");

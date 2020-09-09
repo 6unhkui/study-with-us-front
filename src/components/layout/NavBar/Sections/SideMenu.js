@@ -1,5 +1,5 @@
 import React from 'react';
-import { ACCESS_TOKEN } from 'utils/HttpHandler';
+import { ACCESS_TOKEN } from 'constants/index';
 import { Link } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { useRecoilValue } from 'recoil';

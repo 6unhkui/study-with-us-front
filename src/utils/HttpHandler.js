@@ -1,45 +1,48 @@
 import axios from 'axios';
-// Constants  - s ////////////////
-// AP Server
-export const SERVER_URI = process.env.REACT_APP_API_SERVER_URI; 
-export const GOOGLE_AUTH_URL = process.env.REACT_APP_GOOGLE_AUTH_URL; 
-export const NAVER_AUTH_URL = process.env.REACT_APP_NAVER_AUTH_URL; 
+import { SERVER_URI, ACCESS_TOKEN, BEARER_TOKEN_PREFIX, MULTI_LANG } from 'constants/index';
 
-// JWT
-const BEARER_TOKEN_PREFIX = 'Bearer ';
-export const ACCESS_TOKEN = 'accessToken';
 
-export const REMEMBER_ME = 'rememberMe';
-const MultiLang = 'i18nextLng';
-// Constants  - e ////////////////
+/**
+ * Axios Interceptor - s /////////////////////////////////////
+ */
+const instance = axios.create({
+    baseURL:  SERVER_URI,
+    timeout: 1000
+});
 
-// export const header = (contentType = 'application/json') => {
-//     const accessToken = localStorage.getItem(ACCESS_TOKEN) ? localStorage.getItem(ACCESS_TOKEN) : undefined;
-
-//     return {
-//             'Authorization': `${BEARER_TOKEN_PREFIX} ${accessToken}`,
-//             'Content-Type': contentType,
-//     }
-// }
-
-export const request = () => {
-    const accessToken = localStorage.getItem(ACCESS_TOKEN) ? localStorage.getItem(ACCESS_TOKEN) : undefined;
-    const multiLang = localStorage.getItem(MultiLang) ? window.localStorage.i18nextLng : 'ko';
-
-    const headers = { 
-        'Authorization': `${BEARER_TOKEN_PREFIX} ${accessToken}`,
-        'Content-Type': 'application/json',
+instance.interceptors.request.use(
+    function (config) {
+        config.headers = {
+            'Authorization': `${BEARER_TOKEN_PREFIX} ${localStorage.getItem(ACCESS_TOKEN) ? localStorage.getItem(ACCESS_TOKEN) : undefined}`
+        };
+        config.params = {...config.params, lang: localStorage.getItem(MULTI_LANG) ? window.localStorage.i18nextLng : 'ko'}
+        return config;
+    }, 
+    function (error) {
+        return Promise.reject(error);
     }
+);
 
-    const getUrl = (uri) => SERVER_URI + uri + (uri.indexOf("?") === -1 ? "?lang=" : "&lang=") + multiLang;
+// Response Interceptor
+instance.interceptors.response.use(
+    // Http Statu가 200인 경우
+    function (response) {
+        return response;
+    },
 
-    return {
-        get: (url, options = {}) => axios.get(getUrl(url), {headers, ...options}),
-        post: (url, data, options = {}) => axios.post(getUrl(url), data, {headers, ...options}),
-        put: (url, data, options = {}) => axios.put(getUrl(url), data, {headers, ...options}),
-        delete: (url, options = {}) => axios.delete(getUrl(url), {headers, ...options}),
-    };
-};
+    // Http Statu가 200이 경우 : 에러 처리
+    function (error) {
+        if(error.response && error.response.status === 401) {
+            localStorage.removeItem(ACCESS_TOKEN);
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
+
+export const http = instance;
+// Axios Interceptor - e /////////////////////////////////////
+
 
 
 export const getParameter = (location, key) => {
@@ -50,10 +53,3 @@ export const getParameter = (location, key) => {
     var results = regex.exec(location.search);
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 };
-
-
-
-export const setParameterForMultilingual = () => {
-    return window.localStorage.i18nextLng && window.localStorage.i18nextLng !== 'ko' ? 
-           "?lang=" + window.localStorage.i18nextLng : '';
-}

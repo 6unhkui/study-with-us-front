@@ -1,5 +1,5 @@
 import React from 'react';
-import {request} from 'utils/HttpHandler';
+import {http} from 'utils/HttpHandler';
 import { useRecoilState } from 'recoil';
 import {userState} from "atom/UserState";
 import { useTranslation } from 'react-i18next';
@@ -19,7 +19,7 @@ const ChangeProfileInfo = (props) => {
           name : values.name.trim(),
         }
 
-        request().put('/api/v1/user', data)
+        http.put('/api/v1/user', data)
         .then(response => {
             setUser({
               ...user,

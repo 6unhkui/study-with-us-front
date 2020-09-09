@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Spin, Alert } from 'antd';
+import { Spin } from 'antd';
 
 export default function Loading() {
     return (

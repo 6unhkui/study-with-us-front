@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { request} from 'utils/HttpHandler';
+import { http } from 'utils/HttpHandler';
 import { useTranslation } from 'react-i18next';
 import styled from "styled-components";
 import { Form, Input, Row, Col, Checkbox, Button, message} from 'antd';
@@ -30,7 +30,7 @@ export default function RegisterForm(props) {
       }
 
       if(duplicateCheckCompleted) {
-        request().post('/api/v1/auth/register', data)
+        http.post('/api/v1/auth/register', data)
         .then(response => { 
             props.success.setSuccess(true);
             props.user.setUser({name : data.name});
@@ -47,7 +47,7 @@ export default function RegisterForm(props) {
 
       // 이메일 필드에 데이터가 존재하고, 에러가 발생하지 않았다면
       if(!duplicateCheckCompleted && email.length > 0 && form.getFieldError('email').length === 0) {
-        request().get(`/api/v1/auth/check-email?email=${email}`)
+        http.get(`/api/v1/auth/check-email?email=${email}`)
         .then(response => { 
             if(response.data.data){
                 message.success(t('auth.isAvailableAccount'));

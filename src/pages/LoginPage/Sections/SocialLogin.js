@@ -1,7 +1,7 @@
 import React from 'react';
-import {GOOGLE_AUTH_URL, NAVER_AUTH_URL} from 'utils/HttpHandler';
+import {GOOGLE_AUTH_URL, NAVER_AUTH_URL} from 'constants/index';
 import styled from "styled-components";
-import {provider} from "utils/OAuth2Provider";
+import {OAUTH_PROVIDER} from 'constants/index';
 import { Button, Divider} from 'antd';
 import Naver from "assets/image/naver-ico.svg";
 import Google from "assets/image/google-ico.svg";
@@ -34,15 +34,15 @@ const SocialLoginWrap = styled.div`
 
     &.google {
       &:hover {
-         color : ${provider["GOOGLE"].color};
-         border : 1px solid ${provider["GOOGLE"].color};
+         color : ${OAUTH_PROVIDER["GOOGLE"].color};
+         border : 1px solid ${OAUTH_PROVIDER["GOOGLE"].color};
       }
     }
 
     &.naver {
       &:hover {
-         color : ${provider["NAVER"].color};
-         border : 1px solid ${provider["NAVER"].color};
+         color : ${OAUTH_PROVIDER["NAVER"].color};
+         border : 1px solid ${OAUTH_PROVIDER["NAVER"].color};
       }
     }
 

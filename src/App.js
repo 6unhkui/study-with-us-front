@@ -1,17 +1,17 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import {NavBar, Footer} from "./components/layout";
+import {NavBar, Footer} from "./components/Layout";
 import { BackTop } from 'antd';
 
 import Auth from './hoc/auth';
 
-import Loading from "components/loading";
+import Loading from "components/Loading";
 
 import NotFoundPage from './pages/NotFoundPage';
 
 import MainPage from './pages/MainPage';
 import LoginPage from './pages/LoginPage';
-import OAuth2RedirectHandler from "components/oauth2/OAuth2RedirectHandler";
+import OAuth2RedirectHandler from "components/OAuth2/OAuth2RedirectHandler";
 import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
@@ -19,6 +19,7 @@ import MypagePage from './pages/MypagePage';
 
 import MyStudyRoomPage from './pages/MyStudyRoomPage';
 import CreateStudyRoomPage from './pages/CreateStudyRoomPage';
+import StudyRoomPage from './pages/RoomDetailPage';
 
 import NewFeedPage from './pages/NewFeedPage';
 import SearchPage from './pages/SearchPage';
@@ -40,6 +41,7 @@ function App() {
             <Route path="/user/room" component={Auth(MyStudyRoomPage, true)} />
 
             <Route path="/room/create" component={Auth(CreateStudyRoomPage, true)} />
+            <Route path="/room/:idx" component={Auth(StudyRoomPage, true)} />
 
             <Route path="/feed" component={Auth(NewFeedPage, true)} />
             

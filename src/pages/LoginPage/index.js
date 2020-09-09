@@ -1,6 +1,7 @@
 import React, {useState}  from 'react';
 import { useTranslation } from 'react-i18next';
-import {ACCESS_TOKEN, REMEMBER_ME, request} from 'utils/HttpHandler';
+import {ACCESS_TOKEN, REMEMBER_ME} from 'constants/index';
+import {http} from 'utils/HttpHandler';
 import { Link } from "react-router-dom";
 import { useRecoilState } from 'recoil';
 import {userState} from "atom/UserState";
@@ -24,7 +25,7 @@ const LoginPage = (props)  => {
 
     // 로그인 버튼 클릭
     const onSubmit = values => {
-      request().post('/api/v1/auth/login', values)
+      http.post('/api/v1/auth/login', values)
       .then(response => { 
           const data = response.data.data;
           window.localStorage.setItem(ACCESS_TOKEN, data.accessToken);
@@ -48,7 +49,7 @@ const LoginPage = (props)  => {
     return (
       <div className="container content-wrap">
        <div className="form-wrap">
-          <Title style={{textAlign : 'center'}}>{t('auth.login')}</Title>
+          <Title>{t('auth.login')}</Title>
 
           <LoginForm onSubmit={onSubmit} error={{isError, errorMessage}} rememberMe={{rememberMe, setRememberMe}}/>
 

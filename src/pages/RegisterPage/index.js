@@ -15,7 +15,7 @@ export default function RegisterPage() {
     return (
       <div class="container content-wrap">
         <div className="form-wrap">
-          <Title style={{textAlign : 'center'}}>{t('auth.createAccount')}</Title>
+          <Title>{t('auth.createAccount')}</Title>
           {success ? <Success user={user}/> : <RegisterForm success={{setSuccess}} user={{setUser}}/>}
         </div>
       </div>

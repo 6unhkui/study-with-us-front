@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {request} from 'utils/HttpHandler';
+import {http} from 'utils/HttpHandler';
 import { useTranslation } from 'react-i18next';
 import { Form, Input, Button, Alert, message} from 'antd';
 
@@ -25,7 +25,7 @@ const ChangePassword = () => {
         newPassword : values.password,
       }
 
-      request().put('/api/v1/user/password', data)
+      http.put('/api/v1/user/password', data)
       .then(res => {
         message.success('저장이 완료되었습니다.');
       })

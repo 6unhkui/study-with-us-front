@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import LayerPopup from 'components/layerPopup';
+import LayerPopup from 'components/LayerPopup';
 
 export default function AgreeLayer(props) {
     return (

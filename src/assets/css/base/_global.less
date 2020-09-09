@@ -32,6 +32,31 @@ ul {
 
 }
 
+.form-wrap {
+    max-width : 450px;
+    // padding-top : 2rem;
+    margin : 0 auto;
+
+    h1{
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+}
+
+.sub-text{
+    text-align : center;
+    margin-bottom : 2rem;
+    color : @font-color-gray;
+}
+
+.light-primary-border {
+    border : 1px solid lighten(@primary-color, 28);
+}
+
+
+/*
+    Ant Design Custom
+*/
 div[role="alert"] {
     margin-bottom: .6rem;
 }
@@ -48,23 +73,10 @@ button.shadow {
     }
 }
 
-button:not(.ant-btn-circle):not(.ant-switch), input, span.ant-input-affix-wrapper {
-    border-radius: 10px !important;
-}
-
 button.ant-btn {
     font-weight: 500;
 }
 
-span.ant-checkbox-inner{
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-}
-
-span.ant-checkbox-checked::after {
-    border-radius: 50%;
-}
 
 span.ant-avatar {
     border: 1px solid @border-gray !important;
@@ -74,14 +86,35 @@ span.ant-avatar {
     text-align: center;
 }
 
-.form-wrap {
-    max-width : 400px;
-    padding-top : 2rem;
-    margin : 0 auto;
+
+// input box and button - border radius - s
+button:not(.ant-btn-circle):not(.ant-switch), input, span.ant-input-affix-wrapper, textarea.ant-input, 
+div.ant-input-number, div.ant-select-selector {
+    border-radius: @border-radius !important;
 }
 
-.sub-text{
-    text-align : center;
-    margin-bottom : 2rem;
-    color : @font-color-gray;
+div.ant-radio-group {
+    // label:first-child {
+    //     border-radius: @border-radius 0 0 @border-radius !important;
+    // }
+
+    // label:last-child {
+    //     border-radius: 0 @border-radius @border-radius 0 !important;
+    // }
 }
+
+.ant-input-number-handler-wrap {
+    border-radius: 0 @border-radius @border-radius 0 !important;
+}
+
+span.ant-checkbox-inner {
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+} 
+
+span.ant-checkbox-checked::after {
+    border-radius: 50%;
+}
+
+// input box and button - border radius - e

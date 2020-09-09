@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {request} from 'utils/HttpHandler';
+import {http} from 'utils/HttpHandler';
 import { useTranslation } from 'react-i18next';
-import {provider} from "utils/OAuth2Provider";
+
+import {OAUTH_PROVIDER} from 'constants/index';
 import { Typography, Badge, Divider, Tabs} from 'antd';
 
-import Loading from 'components/loading';
+import Loading from 'components/Loading';
 import ChangeProfileInfo from './Sections/ChangeProfileInfo';
 import ChangePassword from './Sections/ChangePassword';
 import DeleteAccount from './Sections/DeleteAccount';
@@ -17,7 +18,7 @@ const EditAccountSettings = (props) => {
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const [isSocialAccount, setIsSocialAccount] = useState(false);
-    const [socialBadgeColor, setSocialBadgeColor] = useState(provider["GOOGLE"].color);
+    const [socialBadgeColor, setSocialBadgeColor] = useState(OAUTH_PROVIDER["GOOGLE"].color);
     const [formData, setFormData] = useState({});
     
     useEffect(()=>{
@@ -25,7 +26,7 @@ const EditAccountSettings = (props) => {
     },[]);
 
     function _callApi() {
-      request().get('/api/v1/user')
+      http.get('/api/v1/user')
       .then(response => {
           const data = response.data.data;
           setFormData(data);
@@ -34,7 +35,7 @@ const EditAccountSettings = (props) => {
 
           if(isSocialAccount) {
             setSocialBadgeColor(
-              provider[`${data.provider}`].color
+              OAUTH_PROVIDER[`${data.provider}`].color
             );
           }
       })

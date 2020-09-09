@@ -1,6 +1,7 @@
 import React, {useState, useRef} from 'react';
 import { useTranslation } from 'react-i18next';
-import { ACCESS_TOKEN, request} from 'utils/HttpHandler';
+import { ACCESS_TOKEN } from 'constants/index';
+import { http } from 'utils/HttpHandler';
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilState } from 'recoil';
@@ -26,7 +27,7 @@ const SubMenuWrap = (props) => {
         const data = new FormData();
         data.append('file', file);
 
-        request().post(`/api/v1/user/profile`, data, {'Content-Type' : 'multipart/form-data'})
+        http.post(`/api/v1/user/profile`, data, {'Content-Type' : 'multipart/form-data'})
         .then(response => { 
             const data = response.data.data;
             setPreview(data);
@@ -57,16 +58,9 @@ const SubMenuWrap = (props) => {
                                ref={inputRef}/>
                     </div>
 
-                    <Avatar size={100} icon={<UserOutlined />} src={preview.length > 0 ? preview : user.profileImg} className="avatar" alt="referrerPolicy='no-referrer'"/>
-
-                    {/* <Button shape="circle" 
-                            icon={<CameraOutlined />} className="file-attachment-btn"
-                            onClick={() => {inputRef.current.click()}}/>
-                    <input type='file' 
-                           accept="image/*"
-                           onChange={handleProfileImgOnChange}
-                           style = {{display : 'none'}}
-                           ref={inputRef}/> */}
+                    <Avatar size={100} icon={<UserOutlined />}
+                             src={preview.length > 0 ? preview : user.profileImg} 
+                             className="avatar" alt="referrerPolicy='no-referrer'"/>
                 </div>
 
                 <h1>{t('mypage.title', { name: user.name})}</h1>
@@ -75,10 +69,10 @@ const SubMenuWrap = (props) => {
             <Divider/>
             
             <Menu.Item key="1" >
-                <Link to="/mypage/studyroom">내가 가입한 스터디방</Link>
+                <Link to="/mypage/studyroom">나의 스터디방 관리</Link>
             </Menu.Item>
             <Menu.Item key="2">
-                <Link to="/mypage/studyroom">나의 스터디 기록</Link>
+                <Link to="/mypage/studyroom">스터디 기록</Link>
             </Menu.Item>
             <Menu.Item key="3">
                 <Link to="/mypage/account">{t('mypage.editAccountSettings.title')}</Link>
