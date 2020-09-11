@@ -33,15 +33,28 @@ ul {
 }
 
 .form-wrap {
-    max-width : 450px;
-    // padding-top : 2rem;
+    max-width : 520px;
     margin : 0 auto;
+    background : #fff;
+    border: 1px solid @border-gray;
+    border-radius: @border-radius;
 
-    h1{
+    padding : 4rem;
+
+    @media @desktop-screen {
+        padding : 2.4rem;
+    }
+
+    h1 {
         text-align: center;
         margin-bottom: 3rem;
     }
 }
+
+.bg-gray {
+    background : @bg-gray;
+}
+
 
 .sub-text{
     text-align : center;
@@ -54,8 +67,9 @@ ul {
 }
 
 
+
 /*
-    Ant Design Custom
+    Ant Design Customizing
 */
 div[role="alert"] {
     margin-bottom: .6rem;
@@ -117,4 +131,7 @@ span.ant-checkbox-checked::after {
     border-radius: 50%;
 }
 
+.ant-card {
+    border-radius: 6px;
+}
 // input box and button - border radius - e
