@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { SERVER_URI, ACCESS_TOKEN, BEARER_TOKEN_PREFIX, MULTI_LANG } from 'constants/index';
 
-
 /**
  * Axios Interceptor - s /////////////////////////////////////
  */

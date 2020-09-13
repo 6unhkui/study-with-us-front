@@ -1,31 +1,28 @@
-import React, {useState, useEffect} from 'react';
-import { Route } from "react-router-dom"
-
+import React from 'react';
 import styled from 'styled-components';
-import { Layout } from 'antd';
+import { Row, Col, Card } from 'antd';
 
 import SubMenu from './Sections/SubMenu';
-// import MyStudyRoom from './Sections/MyStudyRoom';
-import EditAccountSettingsPage from 'pages/EditAccountSettingsPage';
 
-const { Sider, Content } = Layout;
+import {MyPageRouter} from 'routes';
 
 const MypagePage = ({match}) => {
     return (
-        <div className="container">
-            <ContainerWrap>
-                <Layout>
-                    <Sider className='sider' width="250">
-                        <SubMenu/>
-                    </Sider>
-
-                    <Content className='content'>
-                        {/* <Route exact path={match.path} component={MyStudyRoom}/> */}
-                        {/* <Route path={`${match.path}/studyroom`} component={MyStudyRoom} /> */}
-                        <Route path={`${match.path}/account`} component={EditAccountSettingsPage} />
-                    </Content>
-                </Layout>
-            </ContainerWrap>
+        <div className='bg-gray'>
+            <div className="container content-wrap">
+                <Card>
+                    <Row gutter={[16, 26]}>
+                        <Col flex="250px">
+                            <SubMenu/>
+                        </Col>
+                        <Col flex="auto">
+                            <ContainerWrap>
+                                {MyPageRouter(match.path)}
+                            </ContainerWrap>
+                        </Col>
+                    </Row>
+                </Card>
+            </div>
         </div>
     )
 }
@@ -33,13 +30,6 @@ const MypagePage = ({match}) => {
 export default MypagePage;
 
 const ContainerWrap = styled.div`
-    aside.sider {
-        background-color : #fff;
-        padding-right : 2rem;
-    }
-
-    main.content {
-        background-color : #fff;
-        padding : 4rem 2rem;
-    }
+    background-color : #fff;
+    padding: 3rem 1.4rem;
 `
