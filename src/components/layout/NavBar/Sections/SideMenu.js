@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { useRecoilValue } from 'recoil';
 import {userState} from "atom/UserState";
-import { Avatar, Button, Divider } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Button, Divider } from 'antd';
 
+import {stringToColor} from 'utils/ColorGenerator';
 import LanguageSeleoctor from "./LanguageSelector";
+import Avatar from 'components/Avatar';
 
 export default function SideMenu(props) {
     const { t } = useTranslation();
@@ -22,13 +23,9 @@ export default function SideMenu(props) {
     if(localStorage.getItem("accessToken")){
         return (
             <div className="user-wrap">
-                <Link to="/mypage">
+                <Link to="/account">
                     <div className="user-info">
-                        <Avatar style={{marginRight : '.6rem'}} 
-                            src={user.profileImg}
-                            icon={<UserOutlined />} 
-                            alt="referrerPolicy='no-referrer'"/>
-                        <span>{user.name}</span>
+                        <Avatar user={user} showName={true}/>
                     </div>
                 </Link>
                 <Divider type="vertical" />
