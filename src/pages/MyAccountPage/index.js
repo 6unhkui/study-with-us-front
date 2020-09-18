@@ -6,7 +6,7 @@ import SubMenu from './Sections/SubMenu';
 
 import {MyPageRouter} from 'routes';
 
-const MypagePage = ({match}) => {
+const MyAccountPage = ({match}) => {
     return (
         <div className='bg-gray'>
             <div className="container content-wrap">
@@ -27,7 +27,7 @@ const MypagePage = ({match}) => {
     )
 }
 
-export default MypagePage;
+export default MyAccountPage;
 
 const ContainerWrap = styled.div`
     background-color : #fff;
