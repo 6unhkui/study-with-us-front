@@ -2,20 +2,18 @@ import React from 'react';
 import { ACCESS_TOKEN } from 'constants/index';
 import { Link } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import { useRecoilValue } from 'recoil';
-import {userState} from "atom/UserState";
-import { Button, Divider } from 'antd';
-
-import {stringToColor} from 'utils/ColorGenerator';
 import LanguageSeleoctor from "./LanguageSelector";
+import { useSelector } from "react-redux";
 import Avatar from 'components/Avatar';
+
+
+import { Button, Divider } from 'antd';
 
 export default function SideMenu(props) {
     const { t } = useTranslation();
-    
-    const user = useRecoilValue(userState);
+    const { name, profileImg } = useSelector(state => state.account, []);
 
-    const logoutHandler = () => {
+    const handleLogout = () => {
         localStorage.removeItem(ACCESS_TOKEN);
         props.history.push("/");
     };
@@ -25,13 +23,13 @@ export default function SideMenu(props) {
             <div className="user-wrap">
                 <Link to="/account">
                     <div className="user-info">
-                        <Avatar user={user} showName={true}/>
+                        <Avatar user={{name, profileImg}} showName={true}/>
                     </div>
                 </Link>
-                <Divider type="vertical" />
+                <Divider type="vertical"/>
                 <LanguageSeleoctor/>
 
-                <Button type="primary" ghost onClick={logoutHandler}>{t('auth.logout')}</Button>
+                <Button type="primary" ghost onClick={handleLogout}>{t('auth.logout')}</Button>
             </div>
         )
     }else {
@@ -44,3 +42,4 @@ export default function SideMenu(props) {
         )
     }
 }
+

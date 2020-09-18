@@ -3,15 +3,22 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import './assets/css/index.less';
-import { RecoilRoot } from 'recoil';
-
 import './i18n';
+
+import store from 'store/modules';
+import { Provider } from 'react-redux';
+
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+const persistor = persistStore(store);
 
 ReactDOM.render(
   <React.StrictMode>
-    <RecoilRoot>
-      <App />
-    </RecoilRoot>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,30 +1,32 @@
 import React from 'react';
 import {http} from 'utils/HttpHandler';
-import { useRecoilState } from 'recoil';
-import {userState} from "atom/UserState";
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from "react-redux";
+import { CHANGE_NAME } from 'store/modules/account';
+
 import { Form, Input, Button, message} from 'antd';
 
-const ChangeProfileInfo = (props) => {
-    const [user, setUser] = useRecoilState(userState);  
+
+const EditAccountInfo = (props) => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
+    const dispatch = useDispatch();
 
     const validateMessages = {
       required: t('validate.required', { name: '${label}'})
     };
 
-    const onSubmit = values => {
+    const handleSubmit = values => {
         const data = {
           name : values.name.trim(),
         }
 
         http.put('/api/v1/account', data)
         .then(response => {
-            setUser({
-              ...user,
-              "name" : data.name
-            })
+            dispatch({ 
+              type: CHANGE_NAME, 
+              payload: {name : data.name}
+            });
 
             message.success('저장이 완료되었습니다.');
         })
@@ -34,8 +36,8 @@ const ChangeProfileInfo = (props) => {
         <Form
           form={form}
           name="profileInfo"
-          onFinish={onSubmit}
-          initialValues={props.formData}
+          onFinish={handleSubmit}
+          initialValues={props.account}
           scrollToFirstError
           layout = "vertical"
           requiredMark={false}
@@ -70,4 +72,4 @@ const ChangeProfileInfo = (props) => {
     )
 }
 
-export default ChangeProfileInfo;
+export default EditAccountInfo;

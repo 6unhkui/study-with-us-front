@@ -4,9 +4,9 @@ import { ACCESS_TOKEN } from 'constants/index';
 import { http } from 'utils/HttpHandler';
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useRecoilState } from 'recoil';
-import {userState} from "atom/UserState";
 import { withRouter } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { CHANGE_PROFILE_IMG } from 'store/modules/account';
 
 import breakpoint from 'styled-components-breakpoint';
 import Avatar from 'components/Avatar';
@@ -17,10 +17,9 @@ import { CameraOutlined} from '@ant-design/icons';
 
 const SubMenuWrap = (props) => {
     const { t } = useTranslation();
+    const { name, profileImg } = useSelector(state => state.account, []);
+    const dispatch = useDispatch();
     const inputRef = useRef(null);
-
-    const [preview, setPreview] = useState('');
-    const [user, setUser] = useRecoilState(userState);
 
     const handleProfileImgOnChange = (e) => {
         e.preventDefault();
@@ -31,26 +30,25 @@ const SubMenuWrap = (props) => {
         http.post(`/api/v1/account/profile`, data, {'Content-Type' : 'multipart/form-data'})
         .then(response => { 
             const data = response.data.data;
-            setPreview(data);
-             setUser({
-                ...user,
-                'profileImg' : data
-            })
+            dispatch({ 
+                type: CHANGE_PROFILE_IMG, 
+                payload: {profileImg : data}
+            });
         })
         .catch(err => { console.log(err)});
     };
 
-    const logoutHandler = () => {
+    const handleLogout = () => {
         localStorage.removeItem(ACCESS_TOKEN);
         props.history.push("/");
     };
 
     
-    const menuItem = [
+    const items = [
         <Link to={`${props.match.path}/studyroom`}>나의 스터디방 관리</Link>,
         <Link to={`${props.match.path}/studyroom`}>스터디 기록</Link>,
         <Link to={`${props.match.path}/setting`}>{t('mypage.editAccountSettings.title')}</Link>,
-        <div onClick={logoutHandler}>로그아웃</div>
+        <div onClick={handleLogout}>로그아웃</div>
     ]
 
     return (
@@ -65,15 +63,15 @@ const SubMenuWrap = (props) => {
                                style = {{display : 'none'}}
                                ref={inputRef}/>
                     </div>
-                    <Avatar user={user} size={100} style={{fontSize : '2.4rem'}}/>
+                    <Avatar user={{name, profileImg}} size={100} style={{fontSize : '2.4rem'}}/>
                 </div>
 
-                <h1>{t('mypage.title', { name: user.name})}</h1>
+                <h1>{t('mypage.title', { name: name})}</h1>
             </UserWrap>
             
             <Divider/>
             
-            {menuItem.map((v, i) => (
+            {items.map((v, i) => (
                 <Menu.Item key={i}>{v}</Menu.Item>
             ))}
         </Menu>

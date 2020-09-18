@@ -2,11 +2,12 @@ import React from 'react';
 import { withRouter, Redirect } from "react-router-dom";
 import {ACCESS_TOKEN} from 'constants/index';
 import {getParameter, http} from 'utils/HttpHandler';
-import { useRecoilState } from 'recoil';
-import {userState} from "atom/UserState";
+
+import { useDispatch } from "react-redux";
+import { CHANGE_ACCOUNT } from 'store/modules/account';
 
 const OAuth2RedirectHandler = (props) => {
-    const [user, setUser] = useRecoilState(userState);
+    const dispatch = useDispatch();
     const token = getParameter(props.location, 'token');
     const error = getParameter(props.location, 'error');
 
@@ -19,10 +20,10 @@ const OAuth2RedirectHandler = (props) => {
         http.get('/api/v1/account')
         .then(response => {
             const data = response.data.data;
-            setUser({
-              'name' : data.name,
-              'profileImg' : data.profileImg
-            });
+            dispatch({
+                type: CHANGE_ACCOUNT,
+                payload: {name : data.name, profileImg : data.profileImg}
+            })
         })
         .catch(err => {console.log(err)});
 

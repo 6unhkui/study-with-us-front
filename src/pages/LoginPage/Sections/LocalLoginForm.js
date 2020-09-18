@@ -1,4 +1,4 @@
-import React, {useState}  from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -6,9 +6,8 @@ import { Form, Input, Button, Alert, Checkbox} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 
-const LoginForm = (props)  => {
+const LocalLoginForm = (props)  => {
     const { t } = useTranslation();
-
     const initialAccount = localStorage.getItem("rememberMe") ? localStorage.getItem("rememberMe") : '';
 
     const validateMessages = {
@@ -17,13 +16,15 @@ const LoginForm = (props)  => {
 
     return (
        <>
-         {props.error.isError && <Alert message={props.error.errorMessage} type="error" showIcon style={{marginBottom : '1rem'}}/>}
+         {props.error.isError && 
+            <Alert message={props.error.errorMessage} type="error" showIcon style={{marginBottom : '1rem'}}
+          />}
         
           <Form
               name="normal_login"
               className="login-form"
               initialValues={{'email' : initialAccount}}
-              onFinish={props.onSubmit}
+              onFinish={props.handleLocalLogin}
               size="large"
               layout = "vertical"
               validateMessages={validateMessages}
@@ -74,7 +75,7 @@ const LoginForm = (props)  => {
     );
   };
   
-export default LoginForm;
+export default LocalLoginForm;
 
 const RememberMe = styled.div`
   margin-bottom : 1rem;
