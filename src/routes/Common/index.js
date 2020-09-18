@@ -11,7 +11,7 @@ import OAuth2RedirectHandler from "components/OAuth2/OAuth2RedirectHandler";
 import RegisterPage from 'pages/RegisterPage';
 import ForgotPasswordPage from 'pages/ForgotPasswordPage';
 
-import MypagePage from 'pages/MypagePage';
+import MyAccountPage from 'pages/MyAccountPage';
 
 import MyStudyRoomPage from 'pages/MyStudyRoomPage';
 import CreateStudyRoomPage from 'pages/CreateStudyRoomPage';
@@ -21,7 +21,7 @@ import CreatePostPage from 'pages/CreatePostPage';
 import EditRoomPage from 'pages/EditRoomPage';
 
 
-import NewFeedPage from 'pages/NewFeedPage';
+import NewsFeedPage from 'pages/NewsFeedPage';
 
 import SearchPage from 'pages/SearchPage';
 import SearchByCategoryPage from 'pages/SearchByCategoryPage';
@@ -34,20 +34,20 @@ export default [
     <Route path="/register" component={Auth(RegisterPage, false)} />,
     <Route path="/forgot-password" component={Auth(ForgotPasswordPage, false)} />,
 
-    <Route path="/mypage" component={Auth(MypagePage, true)} />,
+    <Route path="/account" component={Auth(MyAccountPage, true)} />,
 
     <Route path="/user/room" component={Auth(MyStudyRoomPage, true)} />,
 
     <Route path="/room/create" component={Auth(CreateStudyRoomPage, true)} />,
 
-    <Route path="/room/:idx/post/create" component={Auth(CreatePostPage, true)} />,
-    <Route path="/room/:idx/edit" component={Auth(EditRoomPage, true)} />,
-    <Route path="/room/:idx" component={Auth(StudyRoomPage, true)} />,
+    <Route path="/room/:id/post/create" component={Auth(CreatePostPage, true)} />,
+    <Route path="/room/:id/edit" component={Auth(EditRoomPage, true)} />,
+    <Route path="/room/:id" component={Auth(StudyRoomPage, true)} />,
 
-    <Route path="/feed" component={Auth(NewFeedPage, true)} />,
+    <Route path="/feed" component={Auth(NewsFeedPage, true)} />,
     
     <Route path="/search" exact component={Auth(SearchPage, null)} />,
-    <Route path="/search/category/:idx" component={Auth(SearchByCategoryPage, null)} />,
+    <Route path="/search/category/:id" component={Auth(SearchByCategoryPage, null)} />,
 
     <Route component={Auth(NotFoundPage)} />
 ];
