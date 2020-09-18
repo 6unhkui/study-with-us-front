@@ -7,21 +7,27 @@ import { List, Skeleton } from 'antd';
 export default function MembersList(props) {
   const cardActionItems = () => {
     const {role} = props.currentAccount;
+
     if(role === "MANAGER") {
       return [<a key="list-loadmore-edit">관리</a>]
-    }else return null;
-}
+    }
+    return null;
+  }
+
 
   return (
     <List.Item actions={cardActionItems()}>
         <Skeleton avatar title={false} loading={props.loading} active>
         <List.Item.Meta
             avatar={<Avatar user={props.account}/>}
-            title={<><span>{props.account.name}</span><RoleBadge role={props.account.role}>{props.account.role}</RoleBadge></>}
+            title={<>
+                     <span>{props.account.name}</span>
+                     <RoleBadge role={props.account.role}>{props.account.role}</RoleBadge>
+                   </>}
             description={<span>{props.account.email}</span>}
         />
         </Skeleton>
-  </List.Item>
+    </List.Item>
   )
 }
 

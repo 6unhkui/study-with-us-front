@@ -11,10 +11,9 @@ export default function NotFount() {
         <div className="container content-wrap">
             <Result
                 icon={<FrownOutlined />}
-                // status="404"
                 title={t('404.title')}
                 subTitle={t('404.subTitle')}
-                extra={<Link to="/"><Button type="primary">{t('common.goToMain')}</Button></Link>}
+                extra={<Link to="/"><Button type="primary" size="large" className='shadow'>{t('common.goToMain')}</Button></Link>}
             />
         </div>
     )

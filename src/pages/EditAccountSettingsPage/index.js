@@ -3,11 +3,10 @@ import styled from 'styled-components';
 import {http} from 'utils/HttpHandler';
 import { useTranslation } from 'react-i18next';
 
-import {OAUTH_PROVIDER} from 'constants/index';
 import { Typography, Badge, Divider, Tabs} from 'antd';
 
 import Loading from 'components/Loading';
-import ChangeProfileInfo from './Sections/ChangeProfileInfo';
+import EditAccountInfo from './Sections/EditAccountInfo';
 import ChangePassword from './Sections/ChangePassword';
 import DeleteAccount from './Sections/DeleteAccount';
 
@@ -19,17 +18,18 @@ const EditAccountSettings = (props) => {
     const [loading, setLoading] = useState(true);
     const [isSocialAccount, setIsSocialAccount] = useState(false);
     const [provider, setProvider] = useState('');
-    const [formData, setFormData] = useState({});
+    const [account, setAccount] = useState({});
     
     useEffect(()=>{
-        _callApi();
+      _getAccountInfo();
     },[]);
 
-    function _callApi() {
+
+    function _getAccountInfo() {
       http.get('/api/v1/account')
       .then(response => {
           const data = response.data.data;
-          setFormData(data);
+          setAccount(data);
           setIsSocialAccount(data.provider !== "LOCAL");
           setProvider(data.provider);
           setLoading(false);
@@ -44,17 +44,17 @@ const EditAccountSettings = (props) => {
             <>
               {isSocialAccount 
                   && <div>
-                        <Badge count={formData.provider} 
+                        <Badge count={account.provider} 
                                style={{marginRight : '.4rem', background :(provider === 'GOOGLE' ? 'var(--social-google)' : 'var(--social-naver)')}}/>
                         {t('mypage.editAccountSettings.isSocialAccount')}
                     </div>
               }
 
               <ContentWrap>
-              <Tabs defaultActiveKey="1" style={{marginTop : '2.4rem'}}>
+                <Tabs defaultActiveKey="1" style={{marginTop : '2.4rem'}}>
                   <TabPane tab={t('mypage.editAccountSettings.changeProfileInfo')} key="1" className="content">
                     <Title level={4}>{t('mypage.editAccountSettings.changeProfileInfo')}</Title>
-                    <ChangeProfileInfo formData={formData}/>
+                    <EditAccountInfo account={account}/>
                   </TabPane>
 
                   {!isSocialAccount && 
@@ -68,7 +68,7 @@ const EditAccountSettings = (props) => {
                     <Title level={4}>{t('mypage.editAccountSettings.deleteAccount')}</Title> 
                     <DeleteAccount {...props}/>
                   </TabPane>
-              </Tabs>
+                </Tabs>
               </ContentWrap>
             </>
           }

@@ -38,7 +38,6 @@ const RoomDetailPage = (props) => {
         })
     }
 
-
     if(loading) {
         return (<Loading/>)
     }else {

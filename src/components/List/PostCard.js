@@ -8,6 +8,9 @@ import { EllipsisOutlined, CommentOutlined, DeleteOutlined, EditOutlined} from '
 const { Title, Text, Paragraph} = Typography;
 
 export default function PostCard(props) {
+
+    const {title, content, author, createdDate, thumbnail} = props;
+
     const menu = (
         <Menu>
           <Menu.Item key="0">
@@ -17,16 +20,20 @@ export default function PostCard(props) {
             <DeleteOutlined /> 삭제
           </Menu.Item>
         </Menu>
-      );
+    );
 
     return (
         <Card>
             <AuthorWrap>
               <Author>
-                <Avatar user={props.author} style={{position : 'relative', bottom : '8px'}}/>
+                <Avatar user={author} style={{position : 'relative', bottom : '8px'}}/>
                 <span style={{display : 'inline-block', marginLeft : '10px'}}>
-                  <span className='author-name'>{props.author.name}</span>
-                  <span className='created-date'>{props.createdDate}</span>
+                  <span className='author-name'>
+                    {author.name}
+                  </span>
+                  <span className='created-date'>
+                    {createdDate}
+                  </span>
                 </span>
               </Author>
       
@@ -35,16 +42,21 @@ export default function PostCard(props) {
               </div>
             </AuthorWrap>
 
-            {props.thumbnail &&
+            {thumbnail &&
               <ThumbnailWrap>
-                <img className='cover' alt="thumbnail" src={props.thumbnail}/> 
+                <img className='cover' alt="thumbnail" src={thumbnail}/> 
               </ThumbnailWrap>}
            
             <Paragraph ellipsis style={{margin: '16px 0 4px 0'}}>
-                <Title level={4} style={{margin: 0}}>{props.title}</Title>
+                <Title level={4} style={{margin: 0}}>
+                  {title}
+                </Title>
             </Paragraph>
+
             <Paragraph ellipsis={{ rows: 2 }} style={{margin: 0}}>
-                <Text type="secondary">{props.content.replace(/(<([^>]+)>)/ig,"")}</Text>
+                <Text type="secondary">
+                  {content.replace(/(<([^>]+)>)/ig,"")}
+                </Text>
             </Paragraph>
 
             <Divider style={{margin : '18px 0'}}/>
@@ -62,7 +74,6 @@ const AuthorWrap = styled.div`
   }
 `
 
-  
 const Author = styled.div`
   line-height: 16px;
 

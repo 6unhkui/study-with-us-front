@@ -23,7 +23,7 @@ export default function CategorySlide(props) {
         superLargeDesktop: {
           // the naming can be any, depends on you.
           breakpoint: { max: 4000, min: 3000 },
-          items: 5
+          items: 6
         },
         desktop: {
           breakpoint: { max: (3000), min: 1024 },
@@ -31,23 +31,25 @@ export default function CategorySlide(props) {
         },
         tablet: {
           breakpoint: { max: 1024, min: 464 },
-          items: 2
+          items: 3
         },
         mobile: {
           breakpoint: { max: 464, min: 0 },
           items: 1
         }
-      };
+    };
 
     return (
         <SlideWrap>
             <Carousel 
                 infinite={true}
+                autoPlay
+                autoPlaySpeed={4000}
                 responsive={responsive}>
                 {categories.map(v => (
-                    <ItemWrap onClick={() => {props.onItemClick(v.idx)}} key={v.idx}>
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS1qlNBET-n3EUXXY6s_w9tUoF3o-yjM50Ejg&usqp=CAU" style={{width : '20px', marginRight : '6px'}} />
-                        {v.name}</ItemWrap>
+                    <ItemWrap onClick={() => {props.onItemClick(v)}} key={v.id}>
+                        {v.icon && <img src={v.icon} className='icon' alt='icon'/>}{v.name}
+                    </ItemWrap>
                 ))}
             </Carousel>
         </SlideWrap>
@@ -57,6 +59,7 @@ export default function CategorySlide(props) {
 const SlideWrap = styled.div`
     .react-multi-carousel-list {
         height : 100px;
+        /* border : 1px solid var(--primary-light-color); */
     }
 
     .react-multiple-carousel__arrow--left {
@@ -94,17 +97,25 @@ const SlideWrap = styled.div`
 
 const ItemWrap = styled.div`
     cursor : pointer;
-    width: calc(100% - 20px);
-    /* background-color: red; */
+    width: calc(100% - 16px);
+    color : var(--primary-color);
+    border : 1px solid var(--primary-light-color);
     margin: 0 auto;
     border-radius: 40px;
     height: 60px;
     text-align: center;
     line-height: 60px;
-    box-shadow: rgba(41, 42, 43, 0.1) 0px 4px 10px, rgba(41, 42, 43, 0.04) 0px 1px 0px;
+    box-shadow: rgba(93, 0, 215, 0.1) 0px 4px 10px, rgba(93, 0, 215, 0.04) 0px 1px 0px;
     transition: all .5s;
 
     &:hover {
-        box-shadow: rgba(41, 42, 43, 0.1) 0px 1px 1px;
+        box-shadow: rgba(93, 0, 215, 0.1) 0px 1px 1px;
+    }
+
+    .icon {
+        margin-right: 6px;
+        width: 28px;
+        position: relative;
+        bottom: 2px; 
     }
 `

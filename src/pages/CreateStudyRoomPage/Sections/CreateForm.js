@@ -2,10 +2,9 @@ import React, {useState, useEffect, useRef} from 'react';
 import {http} from 'utils/HttpHandler';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Form, Input, InputNumber, Button, Switch, Upload, Select, Radio} from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Form, Input, InputNumber, Button, Switch, Radio} from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
-const { Option } = Select;
 
 const CreateForm = (props) => {
     const { t } = useTranslation();
@@ -13,7 +12,6 @@ const CreateForm = (props) => {
     const inputRef = useRef(null);
 
     const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(0);
 
     const [maxCountDisabled, setMaxCountDisabled] = useState(true);
     const [maxCount, setMaxCount] = useState(0);
@@ -21,12 +19,9 @@ const CreateForm = (props) => {
     const [file, setFile] = useState(null);
 
     const [previewImage, setPreviewImage] = useState('');
-    const [previewVisible, setPreviewVisible] = useState(false);
-    const [previewTitle, setPreviewTitle] = useState(false);
-
 
     const validateMessages = {
-        required: t('validate.required', { name: '${label}'}),
+        required: t('validate.required', { name: '${name}'}),
     };
 
 
@@ -39,6 +34,11 @@ const CreateForm = (props) => {
         .then(response => {
             const data = response.data.data;
             setCategories(data);
+            form.setFieldsValue({
+                category : response.data.data[0].id
+            });
+
+            console.log(data);
         })
     }
 
@@ -49,7 +49,7 @@ const CreateForm = (props) => {
         data.append("description", values.description === undefined ? '' : values.description);
         data.append('unlimited', maxCountDisabled);
         data.append("maxCount", maxCount);
-        data.append("categoryIdx", selectedCategory);
+        data.append("categoryId", values.category);
 
         http.post('/api/v1/room', data, {'Content-type': 'multipart/form-data;charset=utf-8'})
         .then(response => { 
@@ -70,7 +70,7 @@ const CreateForm = (props) => {
         });
     }
 
-      const handleProfileImgOnChange = async (e) => {
+    const handleProfileImgOnChange = async (e) => {
         e.preventDefault();
         const file = e.target.files[0];
         setFile(file);
@@ -92,28 +92,21 @@ const CreateForm = (props) => {
             <Form.Item
                 name="category"
                 label="Category"
-                rules={[
-                {
-                    required: true,
-                },
-            ]}
-            >
-                <Radio.Group defaultValue={categories[0]} buttonStyle="solid" onChange={(e) => {setSelectedCategory(e.target.value)}}>
-                    {categories.map(v => (
-                         <Radio.Button value={v.idx}>{v.name}</Radio.Button>
-                    ))}
-                </Radio.Group>
+                rules={[{required: true},
+            ]}>
+                {categories.length > 0 &&
+                    <Radio.Group defaultValue={categories[0].id} buttonStyle="solid">
+                        {categories.map(v => (
+                            <Radio.Button value={v.id}>{v.name}</Radio.Button>
+                        ))}
+                    </Radio.Group>
+                }
             </Form.Item>
         
             <Form.Item 
                 name="name" 
                 label="Name"
-                rules={[
-                    {
-                      required: true,
-                      whitespace: true,
-                    },
-                ]}>
+                rules={[{required: true, whitespace: true}]}>
                 <Input allowClear/>
             </Form.Item>
 
@@ -141,11 +134,11 @@ const CreateForm = (props) => {
                 name="thumbnail"
                 label="Thumbnail"
                 // getValueFromEvent={normFile}
-                extra="* 썸네일은 이미지만 등록 가능합니다."
+                extra="* 썸네일은 이미지 형식의 파일만 등록 가능합니다."
             >
                 <ThumbnailWrap>
                     <div className="file-attachment" onClick={() => {inputRef.current.click()}}>
-                        {previewImage ? <img src={previewImage} alt="avatar" style={{ width: '100%' }} /> : <PlusOutlined />}
+                        {previewImage ? <img src={previewImage} style={{ width: '100%' }} alt="preview"/> : <PlusOutlined />}
                         <input type='file' 
                                accept="image/*"
                                onChange={handleProfileImgOnChange}

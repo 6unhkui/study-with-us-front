@@ -1,23 +1,25 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import i18next from 'i18next';
-import {availableLanguages} from 'i18n';
+import {showLanguages} from 'i18n';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined, GlobalOutlined } from '@ant-design/icons';
 
 export default function LanguageSelector() {
-    const [currentLanague, setCurrentLanague] = useState(i18next.language || window.localStorage.i18nextLng || '');
+    const [currentLanguage, setCurrentLanguage] = useState(i18next.language || window.localStorage.i18nextLng || '');
+    const [showLanague, setShowLanague] = useState(showLanguages[currentLanguage]);
 
-    const changeLanguage = (e) => {
+    const handleChangeLanguage = (e) => {
         i18next.changeLanguage(e.key);
-        setCurrentLanague(e.key);
+        setCurrentLanguage(e.key);
+        setShowLanague(showLanguages[e.key]);
     };
 
     const lanagueDropDownMenu = (
         <Menu>
-            {availableLanguages.map(v => (
-                 <Menu.Item key={v} onClick={changeLanguage}>
-                     {v}
-                 </Menu.Item>
+            {Object.keys(showLanguages).map(v => (
+                <Menu.Item key={v} onClick={handleChangeLanguage}>
+                    {showLanguages[v]}
+                </Menu.Item>
             ))}
         </Menu>
     );
@@ -25,7 +27,7 @@ export default function LanguageSelector() {
     return (
         <Dropdown overlay={lanagueDropDownMenu} trigger={['click']}>
             <span className='language-selector-wrap'>
-                <GlobalOutlined /><span className='text'>{currentLanague}</span><DownOutlined />
+                <GlobalOutlined /><span className='text'>{showLanague}</span><DownOutlined />
             </span>
         </Dropdown>
     )

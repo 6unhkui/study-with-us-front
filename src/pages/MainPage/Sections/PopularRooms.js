@@ -38,21 +38,19 @@ const PopularRooms = (props) => {
         })
     }
 
-
     return (
         <ContentWrap style={{...props.style}}>
             <Title level={3} style={{marginBottom : '1rem'}}>지금, 인기 스터디방</Title>
-            {!loading &&
-                <List
-                    grid={{ gutter: 20, xs: 1, sm: 2, column :3}}
-                    // loadMore={!loading && hasMore ? (<MoreBtnWrap> <Button onClick={handleLoadMore}>load more</Button></MoreBtnWrap>) : null}
-                    dataSource={rooms}
-                    renderItem={item => (
-                        <List.Item>
-                            <Card {...item}/>
-                        </List.Item>
-                    )}
-                />}
+            <List
+                grid={{ gutter: 20, xs: 1, sm: 2, column :3}}
+                loading={loading}
+                dataSource={rooms}
+                renderItem={item => (
+                    <List.Item>
+                        <Card {...item}/>
+                    </List.Item>
+                )}
+            />
         </ContentWrap>
     )
 }

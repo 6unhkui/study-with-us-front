@@ -28,7 +28,7 @@ function Layer(props) {
 const RoomOrderSelect = (props) => {
     const orderTypes = [
         {key : "NAME", value : "이름 순"},
-        {key : "CREATE_DATE", value : "생성일 순"},
+        {key : "CREATED_DATE", value : "생성일 순"},
         {key : "JOIN_COUNT", value : "멤버수 순"}
     ];
     const [selected, setSelected] = useState({key : "NAME", value : "이름 순"});
@@ -37,7 +37,7 @@ const RoomOrderSelect = (props) => {
     
     const onChangeOrderType = useCallback(val => {
         setSelected(val);
-        props.onChange(val.key);
+        props.onSubmit(val.key);
         setLayerOpen(false);
     }, [selected]);
 

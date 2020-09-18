@@ -11,6 +11,8 @@ import EmptyThumbnail from 'assets/image/empty-thumbnail.png';
 const { Paragraph } = Typography;
 
 export default function RoomCard(props) {
+
+
   return (
     <Link to={`/room/${props.id}`}>
       <CardWrap>
@@ -37,14 +39,15 @@ export default function RoomCard(props) {
             <div className='sub'> 
               <Divider/>     
               <span className='manager-wrap'>
-              {props.manager &&  <Avatar user={props.manager} size={22} style={{fontSize : '11px'}} showName={true}/>}
+              {props.manager &&  
+                <Avatar user={props.manager} size={22} style={{fontSize : '11px'}} showName={true}/>}
               </span>
 
-              <span className='count-wrap'>
+              <span className='join-count-wrap'>
                  <UserOutlined /> 
-                    <span className="count">
-                      {props.joinCount + (props.maxCount === 0 ? '' : `${'/' +  props.maxCount}`)}
-                    </span>
+                 <span className="join-count">
+                  {props.joinCount + (props.maxCount === 0 ? '' : `${'/' +  props.maxCount}`)}
+                 </span>
               </span>
             </div>
           </CardMetaWrap>
@@ -75,7 +78,6 @@ const CardWrap = styled.div`
   .cover {
     height : 180px;
     object-fit : cover;
-    /* border-radius: 6px 6px 0 0 !important; */
     width : calc(100% - 2px);
     margin : 0 auto;
 
@@ -121,10 +123,10 @@ const CardMetaWrap = styled.div`
        margin : 10px 0;
      }
 
-     .count-wrap {
+     .join-count-wrap {
       float: right;
 
-      .count {
+      .join-count {
         margin-left : .2rem;
       }
     }

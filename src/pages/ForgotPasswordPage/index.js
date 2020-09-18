@@ -18,8 +18,9 @@ export default function ForgotPasswordPage() {
     };
 
     return (
-      <div class="container content-wrap">
-        <div className="form-wrap">
+      <div className="bg-gray">
+        <div className="container content-wrap">
+          <div className="form-wrap">
           <Title style={{textAlign : 'center'}}>{t('auth.resetPassword')}</Title>
           <div className="sub-text">{t('auth.enterEmailToResetPassword')}</div>
           <Form
@@ -48,6 +49,7 @@ export default function ForgotPasswordPage() {
                 </Button>
               </Form.Item>
           </Form>
+          </div>
         </div>
       </div>
     )

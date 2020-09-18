@@ -19,7 +19,7 @@ const ChangePassword = () => {
       }
     };
 
-    const onSubmit = (values) => {
+    const handleSubmit = values => {
       const data = {
         oldPassword : values.oldPassword,
         newPassword : values.password,
@@ -42,7 +42,7 @@ const ChangePassword = () => {
       <Form
         form={form}
         name="register"
-        onFinish={onSubmit}
+        onFinish={handleSubmit}
         scrollToFirstError
         layout = "vertical"
         requiredMark={false}

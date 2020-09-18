@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import {http} from 'utils/HttpHandler';
 import { Link } from "react-router-dom";
@@ -14,27 +14,34 @@ const { Title } = Typography;
 const { Search } = Input;
 
 const MyStudyRoomPage = () => {
+    const initialState = {
+        rooms : [],
+        pagination : {
+            page : 1,
+            size : 6,
+            direction : 'ASC',
+            totalElements : 0
+        }
+    }
+
     const [loading, setLoading] = useState(true);
     const [hasMore, setHasMore] = useState(false);
-    const [rooms, setRooms] = useState([]);
+    const [rooms, setRooms] = useState(initialState.rooms);
 
     const [orderType, setOrderType] = useState('NAME');
     const [categoriesId, setCategoriesId] = useState([]);
     const [keyword, setKeyword] = useState('');
-    
-    const [pagination, setPagination] = useState({
-        page : 1,
-        size : 6,
-        direction : 'ASC',
-        totalElements : 0
-    });
+    const [pagination, setPagination] = useState(initialState.pagination);
 
     const [initialize, setInitialize] = useState(false);
-    
 
     useEffect(() => {
         _getRooms();
     },[initialize]);
+
+    useEffect(() => {
+        listRerendering();
+    },[orderType, categoriesId])
 
 
     const _getRooms = () => {
@@ -48,6 +55,7 @@ const MyStudyRoomPage = () => {
         .then(response => {
             const data = response.data.data;
             setRooms(rooms.concat(data.content));
+          
             setPagination({
                 ...pagination,
                 totalElements : data.totalElements
@@ -59,41 +67,27 @@ const MyStudyRoomPage = () => {
         })
     }
 
+
     const handleLoadMore = () => {
         setPagination({
             ...pagination,
             page : ++pagination.page
         })
         _getRooms();
-    }
+    };
 
 
     // Filter Change - s ////////////////////////////////////
-    const onChangeOrderType = val => {
-        setOrderType(val);
-        handleChangeFilter();
-    }
+    const handleChangeOrderType = val => setOrderType(val);
 
-    const onChangeCategoriseId = val => {
-        setCategoriesId(val);
-        handleChangeFilter();
-    }
-
-    const handleChangeFilter = () => {
-        initList();
-    }
-
-    function initList() {
+    const handleChangeCategoriseId = val => setCategoriesId(val);
+ 
+    const listRerendering = () => {
         // setState로 state를 변경했을 때, 비동기로 값이 변경됨
         // initialize 값을 따로 두고, 그 값에 따라 리스트 데이터를 불러오는 _getRooms() 함수를 실행하도록 함
-        setRooms([]);
-        setPagination({
-            page : 1,
-            size : 6,
-            direction : 'ASC',
-            totalElements : 0
-        });
-        setInitialize(!initialize)
+        setRooms(initialState.rooms);
+        setPagination(initialState.pagination);
+        setInitialize(!initialize);
     }
     // Filter Change - e ////////////////////////////////////
 
@@ -111,13 +105,13 @@ const MyStudyRoomPage = () => {
 
             <FilterWrap>
                 
-                <RoomOrderSelect onChange={onChangeOrderType}/>
-                <CategorySelect onChange={onChangeCategoriseId} style={{marginLeft : '10px'}}/>
+                <RoomOrderSelect onSubmit={handleChangeOrderType}/>
+                <CategorySelect onSubmit={handleChangeCategoriseId} style={{marginLeft : '10px'}}/>
 
                 <Search
                     className='search'
                     placeholder="검색어를 입력하세요."
-                    onSearch={handleChangeFilter}
+                    onSearch={(e) => {listRerendering()}}
                     onChange={(e) => {setKeyword(e.target.value)}}
                     value={keyword}
                 />

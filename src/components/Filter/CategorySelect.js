@@ -53,7 +53,7 @@ const CategorySelect = (props) => {
 
     const onSubmit = val => {
         setSelected(val);
-        props.onChange(val);
+        props.onSubmit(val);
         setLayerOpen(false);
     }
 

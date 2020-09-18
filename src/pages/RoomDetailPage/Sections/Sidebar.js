@@ -51,33 +51,33 @@ const Sidebar = (props) => {
 
     return (
         <SideBarWrap>
-              <Card actions={cardActionItems()}>
-                    <BadgeWrap>{room.category}</BadgeWrap>
-                    <Title level={2}>{room.name}</Title>
-                    <Text type="secondary">{room.description}</Text>
+            <Card actions={cardActionItems()}>
+                <BadgeWrap>{room.category}</BadgeWrap>
+                <Title level={2}>{room.name}</Title>
+                <Text type="secondary">{room.description}</Text>
 
-                    <div>
-                        <Divider style={{margin : '24px 0 0 0'}}/>
+                <div>
+                    <Divider style={{margin : '24px 0 0 0'}}/>
                     
-                        <SectionWrap>
-                            <SectionTitle>Manager</SectionTitle>
-                            <Avatar user={room.manager} showName={true}/>
-                        </SectionWrap>
+                    <SectionWrap>
+                        <SectionTitle>Manager</SectionTitle>
+                        <Avatar user={room.manager} showName={true}/>
+                    </SectionWrap>
 
-                        <SectionWrap>
-                            <SectionTitle>Member</SectionTitle>
-                            <span>
-                                <UserOutlined style={{marginRight : '8px'}}/>
-                                {room.joinCount + (room.unlimited ? '' : ' / ' + room.maxCount) + ' members'}
-                            </span>
-                        </SectionWrap>
+                    <SectionWrap>
+                        <SectionTitle>Member</SectionTitle>
+                        <span>
+                            <UserOutlined style={{marginRight : '8px'}}/>
+                            {room.joinCount + (room.unlimited ? '' : ' / ' + room.maxCount) + ' members'}
+                        </span>
+                    </SectionWrap>
 
-                        <SectionWrap>
-                            <SectionTitle>Created Date</SectionTitle>
-                            <span>{room.createDate}</span>
-                        </SectionWrap>
-                    </div>
-                </Card>
+                    <SectionWrap>
+                        <SectionTitle>Created Date</SectionTitle>
+                        <span>{room.createDate}</span>
+                    </SectionWrap>
+                </div>
+            </Card>
         </SideBarWrap>
     )
 }

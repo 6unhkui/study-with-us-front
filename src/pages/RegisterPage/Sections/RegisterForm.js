@@ -22,7 +22,7 @@ export default function RegisterForm(props) {
       }
     };
   
-    const onSubmit = values => {
+    const handleSubmit = values => {
       const data = {
         name : values.name.trim(),
         password : values.password.trim(),
@@ -42,14 +42,14 @@ export default function RegisterForm(props) {
     };
 
 
-    const checkDuplicateEmail = () => {
+    const handleCheckDuplicateEmail = () => {
       const email = form.getFieldValue('email') ? form.getFieldValue('email').trim() : '';
 
       // 이메일 필드에 데이터가 존재하고, 에러가 발생하지 않았다면
       if(!duplicateCheckCompleted && email.length > 0 && form.getFieldError('email').length === 0) {
         http.get(`/api/v1/auth/check-email?email=${email}`)
         .then(response => { 
-            if(response.data.data){
+            if(!response.data.data){
                 message.success(t('auth.isAvailableAccount'));
                 setDuplicateCheckCompleted(true);
             }else {
@@ -62,11 +62,11 @@ export default function RegisterForm(props) {
 
     return (
       <>
-      {agreeLayerOpen && <AgreeLayer setAgreeLayerOpen={setAgreeLayerOpen}/>}
+      {agreeLayerOpen && <AgreeLayer setLayerOpen={setAgreeLayerOpen}/>}
       <Form
         form={form}
         name="register"
-        onFinish={onSubmit}
+        onFinish={handleSubmit}
         scrollToFirstError
         layout = "vertical"
         requiredMark={false}
@@ -94,7 +94,7 @@ export default function RegisterForm(props) {
                   </Form.Item>
                 </Col>
                 <Col Col span={8}>
-                  <Button onClick={checkDuplicateEmail} type="primary" ghost>
+                  <Button onClick={handleCheckDuplicateEmail} type="primary" ghost>
                     {t('auth.duplicateAccountCheck')}
                   </Button>
                 </Col>

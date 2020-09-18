@@ -1,15 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Divider} from 'antd';
-import Logo from "assets/image/footer-logo.png";
 import { TwitterOutlined, InstagramOutlined, FacebookOutlined } from '@ant-design/icons';
 
 const Footer = () => {
     return (
         <div className="footer-wrap">
-            <Divider/>
+            <Divider style={{margin : '0'}}/>
             <div className='container'>
-                {/* <img src={Logo} alt="logo" className='logo'/> */}
                 <TitleWrap>study with us</TitleWrap>
                 <SocialWrap><TwitterOutlined /><InstagramOutlined /><FacebookOutlined /></SocialWrap>
                 <CorpWrap>
