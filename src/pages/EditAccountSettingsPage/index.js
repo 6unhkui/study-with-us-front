@@ -18,7 +18,7 @@ const EditAccountSettings = (props) => {
     const { t } = useTranslation();
     const [loading, setLoading] = useState(true);
     const [isSocialAccount, setIsSocialAccount] = useState(false);
-    const [socialBadgeColor, setSocialBadgeColor] = useState(OAUTH_PROVIDER["GOOGLE"].color);
+    const [provider, setProvider] = useState('');
     const [formData, setFormData] = useState({});
     
     useEffect(()=>{
@@ -26,18 +26,13 @@ const EditAccountSettings = (props) => {
     },[]);
 
     function _callApi() {
-      http.get('/api/v1/user')
+      http.get('/api/v1/account')
       .then(response => {
           const data = response.data.data;
           setFormData(data);
-          setLoading(false);
           setIsSocialAccount(data.provider !== "LOCAL");
-
-          if(isSocialAccount) {
-            setSocialBadgeColor(
-              OAUTH_PROVIDER[`${data.provider}`].color
-            );
-          }
+          setProvider(data.provider);
+          setLoading(false);
       })
     }
 
@@ -49,7 +44,8 @@ const EditAccountSettings = (props) => {
             <>
               {isSocialAccount 
                   && <div>
-                        <Badge count={formData.provider} style={{backgroundColor : `${socialBadgeColor}`, marginRight : '.4rem'}}/>
+                        <Badge count={formData.provider} 
+                               style={{marginRight : '.4rem', background :(provider === 'GOOGLE' ? 'var(--social-google)' : 'var(--social-naver)')}}/>
                         {t('mypage.editAccountSettings.isSocialAccount')}
                     </div>
               }
@@ -81,6 +77,7 @@ const EditAccountSettings = (props) => {
 }
 
 export default EditAccountSettings;
+
 
 const ContentWrap = styled.div`
   .content {

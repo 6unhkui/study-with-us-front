@@ -8,12 +8,6 @@ export const ACCESS_TOKEN = 'accessToken';
 export const REMEMBER_ME = 'rememberMe';
 export const MULTI_LANG = 'i18nextLng';
 
-
-export const OAUTH_PROVIDER = {
-    "GOOGLE" : {
-        "color" : "#c92413"
-    },
-    "NAVER" : {
-        "color" : "#58c239"
-    }
-}
+export const OAUTH_PROVIDER = [
+    'GOOGLE', 'NAVER'
+]

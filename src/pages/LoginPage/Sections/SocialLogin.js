@@ -8,19 +8,27 @@ import Google from "assets/image/google-ico.svg";
 
 export default function SocialLogin() {
     const socialLoginHandler = provider => {
-        if(provider === 'google') window.location.assign(GOOGLE_AUTH_URL);
-        else if(provider === 'naver') window.location.assign(NAVER_AUTH_URL);
+        if(provider === 'GOOGLE') window.location.assign(GOOGLE_AUTH_URL);
+        else if(provider === 'NAVER') window.location.assign(NAVER_AUTH_URL);
     }
 
+    const socialLogo = provider => {
+      if(provider === 'GOOGLE') return Google
+      else if(provider === 'NAVER') return Naver
+    }
+   
     return (
         <SocialLoginWrap>
           <Divider plain>Log In With</Divider>
-          <Button onClick={() => socialLoginHandler('google')} className="google">
-            <img src={Google} alt="naver"/> GOOGLE
-          </Button>
-          <Button onClick={() => socialLoginHandler('naver')} className="naver">
-            <img src={Naver} alt="naver"/> NAVER
-          </Button>
+          {
+            OAUTH_PROVIDER.map(v => (
+              <ButtonWrap>
+                 <Button onClick={() => socialLoginHandler(v)} className={`social ${v.toLowerCase()}`}>
+                  <img src={socialLogo(v)} alt={v.toLowerCase()}/> {v}
+                </Button>
+              </ButtonWrap>
+            ))
+          }
         </SocialLoginWrap>
     )
 }
@@ -28,21 +36,25 @@ export default function SocialLogin() {
 const SocialLoginWrap = styled.div`
   margin-top : 5rem;
   text-align: center;
+`
 
-  button {
+const ButtonWrap = styled.span`
+  &:not(:first-child) {
     margin-right : .4rem;
+  }
 
+  Button.social {
     &.google {
       &:hover {
-         color : ${OAUTH_PROVIDER["GOOGLE"].color};
-         border : 1px solid ${OAUTH_PROVIDER["GOOGLE"].color};
+         color : var(--social-google);
+         border : 1px solid var(--social-google);
       }
     }
 
     &.naver {
       &:hover {
-         color : ${OAUTH_PROVIDER["NAVER"].color};
-         border : 1px solid ${OAUTH_PROVIDER["NAVER"].color};
+         color : var(--social-naver);
+         border : 1px solid var(--social-naver);
       }
     }
 
