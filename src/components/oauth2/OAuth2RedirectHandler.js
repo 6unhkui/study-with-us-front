@@ -16,7 +16,7 @@ const OAuth2RedirectHandler = (props) => {
         window.localStorage.setItem(ACCESS_TOKEN, token);
 
         // 2. 사용자 정보를 담아와 rocoil의 atom으로 관리하는 userState에 넣어준다.
-        http.get('/api/v1/user')
+        http.get('/api/v1/account')
         .then(response => {
             const data = response.data.data;
             setUser({

@@ -13,7 +13,7 @@ const DeleteAccount = (props) => {
 
     const handleDeleteAccount = () => {
         if(confirm) {
-            http.delete('/api/v1/user')
+            http.delete('/api/v1/account')
             .then(response => {
                 localStorage.removeItem(ACCESS_TOKEN);
                 props.history.push("/");

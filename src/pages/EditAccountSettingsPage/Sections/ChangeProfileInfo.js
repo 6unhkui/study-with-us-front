@@ -19,7 +19,7 @@ const ChangeProfileInfo = (props) => {
           name : values.name.trim(),
         }
 
-        http.put('/api/v1/user', data)
+        http.put('/api/v1/account', data)
         .then(response => {
             setUser({
               ...user,

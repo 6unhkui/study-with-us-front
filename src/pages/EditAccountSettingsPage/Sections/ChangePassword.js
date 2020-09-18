@@ -25,7 +25,7 @@ const ChangePassword = () => {
         newPassword : values.password,
       }
 
-      http.put('/api/v1/user/password', data)
+      http.put('/api/v1/account/password', data)
       .then(res => {
         message.success('저장이 완료되었습니다.');
       })
