@@ -9,9 +9,9 @@ const { Title } = Typography;
 export default function LayerPopup(props) {
     return (
         <LayerWrap>
-            <Layer>
+            <Layer size={props.size}>
                 <Title level={3} className='title'>{props.title}</Title>
-                <Button type="text" className='close' onClick={() => {props.setLayerOpen(false);}}><CloseOutlined size={40} /></Button>
+                <span className='close' onClick={() => {props.setLayerOpen(false);}}><CloseOutlined size={40} /></span>
                 <Divider style={{margin : '0'}}/>
                 <Content>{props.children}</Content>
             </Layer>
@@ -21,11 +21,10 @@ export default function LayerPopup(props) {
 }
 
 const LayerWrap = styled.div`
-    z-index: 100;
-    /* background-color: #00000040; */
+    z-index: 9999;
     height: 100%;
     width: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
 ` 
@@ -43,6 +42,14 @@ const Layer = styled.div`
 
     .close {
         float : right;
+        width: 20px;
+        height: 20px;
+        text-align: right;
+        cursor: pointer;
+
+        &:hover {
+            opacity : .6;
+        }
     }
 
     ${breakpoint('mobile')`
@@ -50,9 +57,9 @@ const Layer = styled.div`
         margin: 0 20px;
     `}
 
-    ${breakpoint('desktop')`
-       max-width: 60vw;
-       margin: 0 auto;
+    ${breakpoint('tablet')`
+        max-width: ${(props) => props.size || "60vw"};
+        margin: 0 auto;
     `}
 ` 
 
@@ -61,6 +68,13 @@ const Content = styled.div`
     overflow-y : scroll;
     min-height: 20vh;
     max-height: 40vh;
+
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera*/
+    }
 ` 
 
 const LayerDim = styled.div`
