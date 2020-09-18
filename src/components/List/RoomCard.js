@@ -2,20 +2,23 @@ import React from 'react';
 import {SERVER_URI} from 'constants/index';
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Card, Typography, Divider, Avatar } from 'antd';
-import {UserOutlined, PictureOutlined} from '@ant-design/icons';
+import { Card, Typography, Divider } from 'antd';
+import {UserOutlined} from '@ant-design/icons';
+
+import Avatar from 'components/Avatar';
+import EmptyThumbnail from 'assets/image/empty-thumbnail.png';
 
 const { Paragraph } = Typography;
 
 export default function RoomCard(props) {
-    return (
-      <Link to={`/room/${props.idx}`}>
+  return (
+    <Link to={`/room/${props.id}`}>
       <CardWrap>
         <Badge>{props.category}</Badge>
-        <Card 
-          className={'light-primary-border'}
-          cover= {props.coverImage ? <div className='cover'><img alt="cover" src={SERVER_URI + '/resource/room/cover-image/' + props.coverImage}/></div>
-                                    : <div className='cover empty'><PictureOutlined /></div>}
+        <Card className='light-primary-border'
+              cover={<div className='cover'>
+                        <img alt="cover" src={(props.coverImage ? SERVER_URI + '/resource/room/cover-image/' + props.coverImage : EmptyThumbnail)}/>
+                     </div>}
         >
           <CardMetaWrap>
             <div className='main'>
@@ -33,19 +36,22 @@ export default function RoomCard(props) {
 
             <div className='sub'> 
               <Divider/>     
-              <Avatar size={22} style={{fontSize : '12px'}}>I</Avatar> inkyung
+              <span className='manager-wrap'>
+              {props.manager &&  <Avatar user={props.manager} size={22} style={{fontSize : '11px'}} showName={true}/>}
+              </span>
+
               <span className='count-wrap'>
                  <UserOutlined /> 
                     <span className="count">
-                      {props.maxCount === 0 ? '무제한' : `${1  + '/' +  props.maxCount}`}
+                      {props.joinCount + (props.maxCount === 0 ? '' : `${'/' +  props.maxCount}`)}
                     </span>
               </span>
             </div>
           </CardMetaWrap>
         </Card>
       </CardWrap>
-      </Link>
-    )
+    </Link>
+  )
 }
 
 const Badge = styled.span`
@@ -63,14 +69,13 @@ const Badge = styled.span`
 
 const CardWrap = styled.div`
   .ant-card {
-    border-radius : 6px;
     cursor: pointer;
   }
 
   .cover {
     height : 180px;
     object-fit : cover;
-    border-radius: 6px 6px 0 0 !important;
+    /* border-radius: 6px 6px 0 0 !important; */
     width : calc(100% - 2px);
     margin : 0 auto;
 
@@ -78,21 +83,8 @@ const CardWrap = styled.div`
       width : 100%;
       height : 100%;
       object-fit : cover;
+      border-radius: 6px 6px 0 0;
       border-bottom : 1px solid var(--border-gray);
-    }
-
-    &.empty {
-      color : var(--font-color-gray);
-      background-color: var(--bg-gray);
-      text-align: center;
-      font-size: 6rem;
-      line-height: 180px;
-      width: calc(100% - 2px);
-      margin: 0 auto;
-
-      span {
-        opacity : .24;
-      }
     }
   }
 
@@ -111,11 +103,6 @@ const CardMetaWrap = styled.div`
     font-size : 1rem;
   }
 
-  /* .sub {
-    display : flex;
-    color : var(--font-color-gray);
-  } */
-
   .description {
     /* flex: 1; */
     div.ant-typography {
@@ -129,20 +116,13 @@ const CardMetaWrap = styled.div`
 
   .sub {
       font-size: .8rem;
+
      .ant-divider {
        margin : 10px 0;
      }
 
-     /* .category {
-       color : var(--primary-color);
-       &::before {
-         content : "# "
-       }
-     } */
-
      .count-wrap {
       float: right;
-      /* color : var(--font-color-gray); */
 
       .count {
         margin-left : .2rem;
