@@ -1,22 +1,27 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {http} from 'utils/HttpHandler';
 import { Link } from "react-router-dom";
-import { Typography, Button, Select, Divider, List, Input, Switch} from 'antd';
+import { Typography, Button, Select, Divider, List, Input} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import Card from 'components/List/RoomCard';
+import RoomOrderSelect from 'components/Filter/RoomOrderSelect';
+
+import CategorySelect from 'components/Filter/CategorySelect';
 
 const { Title } = Typography;
-const { Option } = Select;
 const { Search } = Input;
 
 const MyStudyRoomPage = () => {
     const [loading, setLoading] = useState(true);
     const [hasMore, setHasMore] = useState(false);
-    const [orderType, setOrderType] = useState('NAME');
-    const [keyword, setKeyword] = useState('');
     const [rooms, setRooms] = useState([]);
+
+    const [orderType, setOrderType] = useState('NAME');
+    const [categoriesId, setCategoriesId] = useState([]);
+    const [keyword, setKeyword] = useState('');
+    
     const [pagination, setPagination] = useState({
         page : 1,
         size : 6,
@@ -36,7 +41,8 @@ const MyStudyRoomPage = () => {
         setHasMore(false);
         setLoading(true);
 
-        const params = Object.entries(pagination).map(e => e.join('=')).join('&') + `&keyword=${keyword}&orderType=${orderType}`;
+        const params = Object.entries(pagination).map(e => e.join('=')).join('&') 
+                       + `&keyword=${keyword}&orderType=${orderType}&categoriesId=${categoriesId.join(",")}`;
 
         http.get(`/api/v1/user/rooms?${params}`)
         .then(response => {
@@ -61,12 +67,19 @@ const MyStudyRoomPage = () => {
         _getRooms();
     }
 
-    const handleOrderType = val => {
+
+    // Filter Change - s ////////////////////////////////////
+    const onChangeOrderType = val => {
         setOrderType(val);
-        onFilterChange();
+        handleChangeFilter();
     }
 
-    const onFilterChange = () => {
+    const onChangeCategoriseId = val => {
+        setCategoriesId(val);
+        handleChangeFilter();
+    }
+
+    const handleChangeFilter = () => {
         initList();
     }
 
@@ -82,7 +95,9 @@ const MyStudyRoomPage = () => {
         });
         setInitialize(!initialize)
     }
-    
+    // Filter Change - e ////////////////////////////////////
+
+
     return (
         <div className="container content-wrap">
             <TitleWrap>
@@ -95,19 +110,17 @@ const MyStudyRoomPage = () => {
             <Divider/>
 
             <FilterWrap>
-            <Select defaultValue="NAME" style={{ width: 100, marginBottom : '1rem'}} bordered={false} onChange={handleOrderType}>
-                <Option value="NAME">이름 순</Option>
-                <Option value="INS_DATA">생성일 순</Option>
-            </Select>
+                
+                <RoomOrderSelect onChange={onChangeOrderType}/>
+                <CategorySelect onChange={onChangeCategoriseId} style={{marginLeft : '10px'}}/>
 
-
-            <Search
-                placeholder="검색어를 입력하세요."
-                onSearch={onFilterChange}
-                onChange={(e) => {setKeyword(e.target.value)}}
-                value={keyword}
-                style={{ width: 300, float : 'right'}}
-            />
+                <Search
+                    className='search'
+                    placeholder="검색어를 입력하세요."
+                    onSearch={handleChangeFilter}
+                    onChange={(e) => {setKeyword(e.target.value)}}
+                    value={keyword}
+                />
              </FilterWrap>
 
             <List
@@ -137,13 +150,12 @@ const TitleWrap = styled.div`
 
 const FilterWrap = styled.div`
     margin-bottom : 1rem;
-    /* display : flex; */
-    /* * {
-        flex : 1;
-    } */
+    display: flex;
 
-
-
+    .search {
+        max-width: 300px;
+        margin-left: auto;
+    }
 `
 
 const MoreBtnWrap = styled.div`
