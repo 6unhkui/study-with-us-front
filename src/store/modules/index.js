@@ -1,23 +1,28 @@
-import { createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import { combineReducers } from 'redux';
-import account from './account';
-
-// 새로고침시 저장된 상태를 유지하도록 Redux Persist 라이브러리를 사용해 상태를 캐시에 저장한다.
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import { createWhitelistFilter } from 'redux-persist-transform-filter';
 
+import account from './account';
+import category from "./category"
+import room from "./room";
+
+
+// persist config
 const persistConfig = {
-  key: 'root',
-  storage
+  key: 'myApp',
+  storage, // 로컬 스토리지에 저장
+  whitelist: ["account"], // 대상이 되는 리듀서
+  transforms: [
+    createWhitelistFilter('account', ['me']), // account 리듀서에서 유저 정보가 있는 me 객체만 저장한다.
+  ],
 };
 
 // 리듀서를 모두 결합하고
 const rootReducer = combineReducers({
   account,
+  category,
+  room
 });
 
-// persistReducer에 리듀서를 넣는다.
-const enhancedRootReducer = persistReducer(persistConfig, rootReducer);
-
-export default createStore(enhancedRootReducer, composeWithDevTools());
+export default persistReducer(persistConfig, rootReducer);
