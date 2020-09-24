@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route } from "react-router-dom"
 
-import EditAccountSettingsPage from 'pages/EditAccountSettingsPage';
+import EditAccountSettings from 'pages/EditAccountSettings';
 
 export default (path) => [
-    <Route path={`${path}/setting`} component={EditAccountSettingsPage} />
+    <Route path={`${path}/setting`} component={EditAccountSettings} />
 ]

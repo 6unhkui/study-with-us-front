@@ -1,53 +1,56 @@
 import React from 'react';
-import { Route} from "react-router-dom";
+import { Route } from "react-router-dom";
 
 import Auth from 'hoc/auth';
 
-import NotFoundPage from 'pages/NotFoundPage';
+import NotFound from 'pages/NotFound';
 
-import MainPage from 'pages/MainPage';
-import LoginPage from 'pages/LoginPage';
-import OAuth2RedirectHandler from "components/OAuth2/OAuth2RedirectHandler";
-import RegisterPage from 'pages/RegisterPage';
-import ForgotPasswordPage from 'pages/ForgotPasswordPage';
+import Main from 'pages/Main';
+import LoginPage from 'pages/Login';
+import OAuth2RedirectHandler from "containers/OAuth2RedirectHandler";
+import Register from 'pages/Register';
+import ForgotPassword from 'pages/ForgotPassword';
 
-import MyAccountPage from 'pages/MyAccountPage';
+import MyAccount from 'pages/MyAccount';
 
-import MyStudyRoomPage from 'pages/MyStudyRoomPage';
-import CreateStudyRoomPage from 'pages/CreateStudyRoomPage';
+import MyStudyRoom from 'pages/MyStudyRoom';
+import CreateStudyRoom from 'pages/CreateStudyRoom';
 
-import StudyRoomPage from 'pages/RoomDetailPage';
-import CreatePostPage from 'pages/CreatePostPage';
-import EditRoomPage from 'pages/EditRoomPage';
+import StudyRoom from 'pages/RoomDetail';
+import CreatePost from 'pages/CreatePost';
+import SettingRoom from 'pages/SettingRoom';
 
+import PostView from 'pages/PostView';
 
-import NewsFeedPage from 'pages/NewsFeedPage';
+import NewsFeed from 'pages/NewsFeed';
 
-import SearchPage from 'pages/SearchPage';
-import SearchByCategoryPage from 'pages/SearchByCategoryPage';
+import Search from 'pages/Search';
+import RoomsByCategory from 'pages/RoomsByCategory';
 
 
 export default [
-    <Route path='/' exact component={Auth(MainPage, null)} />,
+    <Route path='/' exact component={Auth(Main, null)} />,
     <Route path="/login" exact component={Auth(LoginPage, false)} />,
     <Route path="/login/oauth2/redirect" component={Auth(OAuth2RedirectHandler, false)} />,
-    <Route path="/register" component={Auth(RegisterPage, false)} />,
-    <Route path="/forgot-password" component={Auth(ForgotPasswordPage, false)} />,
+    <Route path="/register" component={Auth(Register, false)} />,
+    <Route path="/forgot-password" component={Auth(ForgotPassword, false)} />,
 
-    <Route path="/account" component={Auth(MyAccountPage, true)} />,
+    <Route path="/account" component={Auth(MyAccount, true)} />,
 
-    <Route path="/user/room" component={Auth(MyStudyRoomPage, true)} />,
+    <Route path="/user/room" component={Auth(MyStudyRoom, true)} />,
 
-    <Route path="/room/create" component={Auth(CreateStudyRoomPage, true)} />,
+    <Route path="/room/create" component={Auth(CreateStudyRoom, true)} />,
 
-    <Route path="/room/:id/post/create" component={Auth(CreatePostPage, true)} />,
-    <Route path="/room/:id/edit" component={Auth(EditRoomPage, true)} />,
-    <Route path="/room/:id" component={Auth(StudyRoomPage, true)} />,
+    <Route path="/room/:id/post/create" component={Auth(CreatePost, true)} />,
+    <Route path="/room/:id/setting" component={Auth(SettingRoom, true)} />,
+    <Route path="/room/:id" component={Auth(StudyRoom, true)} />,
 
-    <Route path="/feed" component={Auth(NewsFeedPage, true)} />,
+    <Route path="/post/:id" component={Auth(PostView, true)} />,
+
+    <Route path="/feed" component={Auth(NewsFeed, true)} />,
     
-    <Route path="/search" exact component={Auth(SearchPage, null)} />,
-    <Route path="/search/category/:id" component={Auth(SearchByCategoryPage, null)} />,
+    <Route path="/search" exact component={Auth(Search, null)} />,
+    <Route path="/search/category/:id" component={Auth(RoomsByCategory, null)} />,
 
-    <Route component={Auth(NotFoundPage)} />
+    <Route component={Auth(NotFound)} />
 ];

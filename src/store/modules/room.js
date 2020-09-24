@@ -1,4 +1,5 @@
 import produce from 'immer';
+import {LOAD_CATEGORIES_REQUEST} from "./category";
 
 const initialState = {
     myRooms : [], // 유저가 가입한 스터디방 리스트
@@ -8,12 +9,27 @@ const initialState = {
     popularRooms : [], // 인기 스터디방 리스트
     recentlyCreatedRooms : [], // 신규 스터디방 리스트
 
-
     isCreatingRoom : false, // 스터디방 생성 중
     createRoomErrorReason: '', // 스터디방 생성 실패 사유
     roomCreated : false,
 
-    roomDetail : null,
+    loadingRoomDetail : true,
+    roomDetail : {
+        roomId: 0,
+        category: "",
+        createDate: "",
+        currentAccount: {},
+        description: "",
+        joinCount: 0,
+        manager: {},
+        maxCount: 0,
+        name: "",
+        unlimited: false,
+    },
+
+    isJoiningRoom: false,
+    joinedRoom: false,
+    joinRoomErrorReason: '',
 };
 
 
@@ -37,6 +53,14 @@ export const LOAD_POPULAR_ROOMS_FAILURE = 'LOAD_POPULAR_ROOMS_FAILURE';
 export const LOAD_RECENTLY_CREATED_ROOMS_REQUEST = 'LOAD_RECENTLY_CREATED_ROOMS_REQUEST';
 export const LOAD_RECENTLY_CREATED_ROOMS_SUCCESS = 'LOAD_RECENTLY_CREATED_ROOMS_SUCCESS';
 export const LOAD_RECENTLY_CREATED_ROOMS_FAILURE = 'LOAD_RECENTLY_CREATED_ROOMS_FAILURE';
+
+export const LOAD_ROOM_DETAIL_REQUEST = 'LOAD_ROOM_DETAIL_REQUEST';
+export const LOAD_ROOM_DETAIL_SUCCESS = 'LOAD_ROOM_DETAIL_SUCCESS';
+export const LOAD_ROOM_DETAIL_FAILURE = 'LOAD_ROOM_DETAIL_FAILURE';
+
+export const JOIN_ROOM_REQUEST = 'JOIN_ROOM_REQUEST';
+export const JOIN_ROOM_SUCCESS = 'JOIN_ROOM_SUCCESS';
+export const JOIN_ROOM_FAILURE = 'JOIN_ROOM_FAILURE';
 
 
 
@@ -127,6 +151,42 @@ const room = (state = initialState, action) => {
             case LOAD_RECENTLY_CREATED_ROOMS_FAILURE: {
                 break;
             }
+
+            // 스터디방 뷰
+            case LOAD_ROOM_DETAIL_REQUEST :{
+                draft.loadingRoomDetail = true;
+                draft.roomDetail = {};
+                break;
+            }
+            case LOAD_ROOM_DETAIL_SUCCESS :{
+                draft.roomDetail = action.data;
+                draft.loadingRoomDetail = false;
+                break;
+            }
+            case LOAD_ROOM_DETAIL_FAILURE :{
+                draft.loadingRoomDetail = false;
+                break;
+            }
+
+            // 스터디방 가입
+            case JOIN_ROOM_REQUEST :{
+                draft.isJoiningRoom = true;
+                draft.joinedRoom = false;
+                draft.joinRoomErrorReason = '';
+                break;
+            }
+            case JOIN_ROOM_SUCCESS :{
+                draft.isJoiningRoom = false;
+                draft.joinedRoom = true;
+                break;
+            }
+            case JOIN_ROOM_FAILURE :{
+                draft.isJoiningRoom = false;
+                draft.joinedRoom = true;
+                draft.joinRoomErrorReason = action.error;
+                break;
+            }
+
             default: {
                 break;
             }

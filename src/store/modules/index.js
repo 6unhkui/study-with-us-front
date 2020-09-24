@@ -6,7 +6,8 @@ import { createWhitelistFilter } from 'redux-persist-transform-filter';
 import account from './account';
 import category from "./category"
 import room from "./room";
-
+import post from "./post";
+import member from "./member";
 
 // persist config
 const persistConfig = {
@@ -22,7 +23,9 @@ const persistConfig = {
 const rootReducer = combineReducers({
   account,
   category,
-  room
+  room,
+  post,
+  member
 });
 
 export default persistReducer(persistConfig, rootReducer);

@@ -23,6 +23,7 @@ const Footer = () => {
 
 export default Footer;
 
+// Style - s /////////////////////////////
 const TitleWrap = styled.div`
     display: inline-block;
     font-size: 1.5rem;
@@ -51,4 +52,4 @@ const CorpWrap = styled.div`
         opacity: 0.4;
     }
 `
-
+// Style - e /////////////////////////////

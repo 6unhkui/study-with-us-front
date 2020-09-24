@@ -1,7 +1,8 @@
 import produce from 'immer';
 
 const initialState = {
-    categories : []
+    categories : [],
+    loadingCategories : false
 };
 
 
@@ -16,13 +17,16 @@ const category = (state = initialState, action) => {
         switch (action.type) {
             case LOAD_CATEGORIES_REQUEST : {
                 draft.categories = [];
+                draft.loadingCategories = true;
                 break;
             }
             case LOAD_CATEGORIES_SUCCESS : {
                 draft.categories = action.data;
+                draft.loadingCategories = false;
                 break;
             }
             case LOAD_CATEGORIES_FAILURE : {
+                draft.loadingCategories = false;
                 break;
             }
             default: {
