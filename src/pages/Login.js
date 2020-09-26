@@ -15,7 +15,7 @@ const Login = (props)  => {
     return (
       <div className="bg-gray">
         <div className="container content-wrap">
-          <div className="form-wrap">
+          <div className="card-wrap card-width-small">
               <Title>{t('auth.login')}</Title>
               <LoginForm {...props}/>
 

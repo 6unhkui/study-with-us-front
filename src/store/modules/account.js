@@ -25,14 +25,14 @@ const initialState = {
     isUploadingProfile : false, // 프로필 이미지 업로드중
     uploadProfileErrorReason: '', // 프로필 이미지 업로드 실패 사유
 
-    isEditingAccount : false,
-    editAccountErrorReason: '',
+    isEditingAccount : false, // 계정 정보 수정중
+    editAccountErrorReason: '', // 수정 실패 사유
 
-    isChangingPassword : false,
-    changePasswordErrorReason: '',
+    isChangingPassword : false, // 비밀번호 변경중
+    changePasswordErrorReason: '', // 비밀번호 변경 실패 사유
 
-    isDeletingAccount : false,
-    deleteAccountErrorReason: '',
+    isDeletingAccount : false, // 계정 삭제
+    deleteAccountErrorReason: '', // 계정 삭제 실패 사유
 };
 
 

@@ -117,6 +117,11 @@ const CardWrap = styled.div`
   .ant-card-body {
       padding : 1rem 1.2rem;
   }
+  
+  .main .name {
+    font-size : 1rem;
+    font-weight : 600;
+  }
 `
 
 const CardMetaWrap = styled.div`

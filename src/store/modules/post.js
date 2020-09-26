@@ -12,9 +12,14 @@ const initialState = {
     comments : [],
     hasMoreComments : false,
 
-    isCreatingPost : false,
-    createPostErrorReason: '',
-    postCreated : false,
+    isWritingPost : false,
+    writePostErrorReason: '',
+    postWritten : false,
+
+    isWritingComment : false,
+    writeCommentErrorReason: '',
+    commentWritten : false,
+
 };
 
 
@@ -31,9 +36,13 @@ export const LOAD_COMMENTS_REQUEST = 'LOAD_COMMENTS_REQUEST';
 export const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS';
 export const LOAD_COMMENTS_FAILURE = 'LOAD_COMMENTS_FAILURE';
 
-export const CREATE_POST_REQUEST = 'CREATE_POST_REQUEST';
-export const CREATE_POST_SUCCESS = 'CREATE_POST_SUCCESS';
-export const CREATE_POST_FAILURE = 'CREATE_POST_FAILURE';
+export const WRITE_POST_REQUEST = 'WRITE_POST_REQUEST';
+export const WRITE_POST_SUCCESS = 'WRITE_POST_SUCCESS';
+export const WRITE_POST_FAILURE = 'WRITE_POST_FAILURE';
+
+export const WRITE_COMMENT_REQUEST = 'WRITE_COMMENT_REQUEST';
+export const WRITE_COMMENT_SUCCESS = 'WRITE_COMMENT_SUCCESS';
+export const WRITE_COMMENT_FAILURE = 'WRITE_COMMENT_FAILURE';
 
 
 
@@ -81,18 +90,12 @@ const post = (state = initialState, action) => {
 
             // 포스트 댓글 리스트 ////////////////////////////
             case LOAD_COMMENTS_REQUEST : {
-                draft.comments = draft.hasMoreComments ? draft.comments : [];
+                draft.comments = [];
                 draft.loadingComments = true;
                 break;
             }
             case LOAD_COMMENTS_SUCCESS : {
-                if(action.first) {
-                    draft.comments = action.data;
-                }else {
-                    action.data.forEach((d) => {
-                        draft.comments.push(d);
-                    });
-                }
+                draft.comments = action.data;
                 draft.hasMoreComments = !action.last;
                 draft.loadingComments = false;
                 break;
@@ -103,23 +106,44 @@ const post = (state = initialState, action) => {
             }
 
             // 포스트 등록 ////////////////////////////
-            case CREATE_POST_REQUEST : {
-                draft.isCreatingPost = true;
-                draft.postCreated = false;
-                draft.createPostErrorReason = '';
+            case WRITE_POST_REQUEST : {
+                draft.isWritingPost = true;
+                draft.postWritten = false;
+                draft.writePostErrorReason = '';
                 break;
             }
-            case CREATE_POST_SUCCESS : {
-                draft.isCreatingPost = false;
-                draft.roomCreated = true;
+            case WRITE_POST_SUCCESS : {
+                draft.isWritingPost = false;
+                draft.postWritten = true;
                 break;
             }
-            case CREATE_POST_FAILURE : {
-                draft.isCreatingPost = false;
-                draft.roomCreated = false;
-                draft.createPostErrorReason = action.error;
+            case WRITE_POST_FAILURE : {
+                draft.isWritingPost = false;
+                draft.postWritten = false;
+                draft.writePostErrorReason = action.error;
                 break;
             }
+
+            // 댓글 등록 ////////////////////////////
+            case WRITE_COMMENT_REQUEST : {
+                draft.isWritingComment = true;
+                draft.commentWritten = false;
+                draft.writeCommentErrorReason = '';
+                break;
+            }
+            case WRITE_COMMENT_SUCCESS : {
+                draft.isWritingComment = false;
+                draft.commentWritten = true;
+                draft.comments.push(action.data)
+                break;
+            }
+            case WRITE_COMMENT_FAILURE : {
+                draft.isWritingComment = false;
+                draft.commentWritten = false;
+                draft.writeCommentErrorReason = action.error;
+                break;
+            }
+
             default: {
                 break;
             }

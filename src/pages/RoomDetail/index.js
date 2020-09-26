@@ -79,7 +79,7 @@ const RoomDetailPage = (props) => {
                                 </Affix>
                             </Col>
                             <Col xs={24} md={16} lg={17}>
-                                <Card tabList={[{key : 0, tab : 'Posts'},{ key : 1, tab : 'Members'}]}
+                                <Card tabList={[{key : 0, tab : 'Posts'},{ key : 1, tab : 'Members'},{key : 2, tab : 'Chatting'}]}
                                       defaultActiveTabKey={tabKey} onTabChange={(key) => setTabKey(key)}>
                                     {currentAccount.member ? tabItems[tabKey] : <AccessMemberOnly/>}
                                 </Card>

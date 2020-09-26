@@ -4,7 +4,7 @@ import { http } from 'utils/HttpHandler';
 
 import { Button, PageHeader, Card, Divider} from 'antd';
 
-export default function EditRoomPage(props) {
+const SettingRoom = (props) => {
     const history = useHistory();
     
     const {name, currentAccount} = props.location.state;
@@ -37,3 +37,5 @@ export default function EditRoomPage(props) {
       </div>
     )
 }
+
+export default SettingRoom;

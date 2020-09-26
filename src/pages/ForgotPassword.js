@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
     return (
       <div className="bg-gray">
         <div className="container content-wrap">
-          <div className="form-wrap">
+          <div className="card-wrap card-width-small">
           <Title style={{textAlign : 'center'}}>{t('auth.resetPassword')}</Title>
           <div className="sub-text">{t('auth.enterEmailToResetPassword')}</div>
           <Form

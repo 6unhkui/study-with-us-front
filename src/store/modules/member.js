@@ -13,7 +13,6 @@ export const LOAD_MEMBERS_SUCCESS = 'LOAD_MEMBERS_SUCCESS';
 export const LOAD_MEMBERS_FAILURE = 'LOAD_MEMBERS_FAILURE';
 
 
-
 const member = (state = initialState, action) => {
     return produce(state, (draft) => {
         switch (action.type) {

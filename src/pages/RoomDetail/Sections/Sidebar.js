@@ -1,10 +1,9 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
-import { http } from 'utils/HttpHandler';
 import Avatar from 'components/Avatar';
 
-import { Button, Typography, Card, Divider, Popconfirm, message} from 'antd';
+import { Modal, Button, Typography, Card, Divider, Popconfirm} from 'antd';
 import { EditOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons'
@@ -13,25 +12,43 @@ const { Title, Text } = Typography;
 
 const Sidebar = (props) => {
     const {room} = props;
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const writeBtn = () => (
+        <Link to={{pathname : `/room/${props.id}/post/write`,
+            state : {from: props.location, name : room.name, currentAccount : room.currentAccount}}}>
+            <EditOutlined/>
+        </Link>
+    )
+
+    const settingBtn = () => (
+        <Link to={{pathname : `/room/${props.id}/setting`,
+            state : {from: props.location, name : room.name, currentAccount : room.currentAccount}}}>
+            <SettingOutlined/>
+        </Link>
+    )
+
+    const joinBtn = () => (
+        <>
+            <Button type="link" onClick={() => {setModalVisible(true)}}>
+                <FontAwesomeIcon icon={faSignInAlt} style={{marginRight : '6px'}}/>스터디방 가입하기
+            </Button>
+            <Modal
+                title={room.name}
+                visible={modalVisible}
+                onOk={props.join}
+                onCancel={() => {setModalVisible(false)}}
+            >
+                {<p>{room.name} 스터디방에 가입 하시겠습니까?</p>}
+            </Modal>
+        </>
+    )
 
     const cardActionItems = () => {
         if(room.currentAccount.member) {
-            return [
-                <Link to={{pathname : `/room/${props.id}/post/create`, 
-                           state : {from: props.location, name : room.name, currentAccount : room.currentAccount}}}>
-                    <EditOutlined/>
-                </Link>,
-                <Link to={{pathname : `/room/${props.id}/setting`,
-                          state : {from: props.location, name : room.name, currentAccount : room.currentAccount}}}>
-                    <SettingOutlined/>
-                </Link>
-            ]
+            return [writeBtn(), settingBtn()]
         }else {
-            return [ 
-                <Popconfirm placement="top" title={`${room.name} 스터디방에 가입 하시겠습니까?`} onConfirm={props.join} okText="Yes" cancelText="No">
-                    <Button type="link"><FontAwesomeIcon icon={faSignInAlt} style={{marginRight : '6px'}}/> 스터디방 가입하기</Button>
-                </Popconfirm>
-            ];
+            return [joinBtn()];
         }
     }
 
@@ -74,8 +91,6 @@ const SideBarWrap = styled.div`
     h2.ant-typography {
         margin: 8px 0;
     }
-    /* flex : 1; */
-    /* max-width : 300px; */
 `
 
 const BadgeWrap = styled.span`

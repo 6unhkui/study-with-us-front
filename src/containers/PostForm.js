@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {CREATE_POST_REQUEST} from "store/modules/post";
+import {WRITE_POST_REQUEST} from "store/modules/post";
 import {useDispatch, useSelector} from "react-redux";
 
 import { Form, Input, Button,  Upload} from 'antd';
@@ -7,11 +7,11 @@ import { UploadOutlined } from '@ant-design/icons';
 
 import Editor from 'components/Editor';
 
-const CreateForm = (props) => {
+const PostForm = (props) => {
     const roomId = props.match.params.id;
     const [form] = Form.useForm();
     const dispatch = useDispatch();
-    const {isCreatingPost} = useSelector(state => state.post);
+    const {isWritingPost} = useSelector(state => state.post);
 
     const [content, setContent] = useState('');
     const [fileList, setFileList] = useState([]);
@@ -34,7 +34,7 @@ const CreateForm = (props) => {
       }
 
       dispatch({
-          type : CREATE_POST_REQUEST,
+          type : WRITE_POST_REQUEST,
           data,
           meta: {
               callbackAction : () => {
@@ -91,7 +91,7 @@ const CreateForm = (props) => {
           <Form.Item style={{textAlign : 'center'}}>
               <Button type="primary" htmlType="submit" size="large"
                       className='shadow' style={{marginTop : '1rem'}}
-                      loading={isCreatingPost}
+                      loading={isWritingPost}
               >
                   작성하기
               </Button>
@@ -100,4 +100,4 @@ const CreateForm = (props) => {
     )
 }
 
-export default CreateForm;
+export default PostForm;

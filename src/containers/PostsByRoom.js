@@ -81,13 +81,6 @@ const PostsByRoom = (props) => {
 export default PostsByRoom;
 
 const ContentWrap = styled.div`
-    /* flex : 1; */
-    /* padding : 2rem; */
-
-    img.cover {
-        object-fit : cover;
-        height : 200px;
-    }
 `
 
 const MoreBtnWrap = styled.div`

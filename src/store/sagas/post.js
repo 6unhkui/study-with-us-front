@@ -3,12 +3,13 @@ import {
     LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE,
     LOAD_POST_DETAIL_REQUEST, LOAD_POST_DETAIL_SUCCESS, LOAD_POST_DETAIL_FAILURE,
     LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_SUCCESS, LOAD_COMMENTS_FAILURE,
-    CREATE_POST_REQUEST, CREATE_POST_SUCCESS, CREATE_POST_FAILURE
+    WRITE_POST_REQUEST, WRITE_POST_SUCCESS, WRITE_POST_FAILURE,
+    WRITE_COMMENT_REQUEST, WRITE_COMMENT_SUCCESS, WRITE_COMMENT_FAILURE
 } from '../modules/post';
 import {http} from 'utils/HttpHandler';
 
 
-function createPostAPI(roomId, data) {
+function writePostAPI(roomId, data) {
     return http.post(`/api/v1/room/${roomId}/post`, data);
 }
 
@@ -25,17 +26,19 @@ function loadPostDetailAPI(postId) {
     return http.get(`/api/v1/post/${postId}`);
 }
 
-function loadCommentsAPI(postId, pagination) {
-    return http.get(`/api/v1/post/${postId}/comments?${makeParamForPosts(pagination)}`)
+function writeCommentAPI(postId, data) {
+    return http.post(`/api/v1/post/${postId}/comment`, data);
+}
+
+function loadCommentsAPI(postId) {
+    return http.get(`/api/v1/post/${postId}/comments`)
 }
 
 
-// 스터디방 생성 ///////////////////////////////////
-function* createPost(action){
+// 포스트 작성 ///////////////////////////////////
+function* writePost(action){
     try {
         const {files, post, roomId} = action.data;
-        console.log('cre...')
-        console.log(files, post);
 
         // 첨부 파일이 존재하면, 썸네일 이미지를 먼저 업로드 한 후 pk 값을 받아온다.
         if(files) {
@@ -43,9 +46,9 @@ function* createPost(action){
             post.fileGroupId = result.data.data.fileGroupId;
         }
 
-        let result = yield call(createPostAPI, roomId, post);
+        let result = yield call(writePostAPI, roomId, post);
         yield put({
-            type : CREATE_POST_SUCCESS,
+            type : WRITE_POST_SUCCESS,
             data : result.data.data
         })
 
@@ -53,20 +56,19 @@ function* createPost(action){
     }catch(e) {
         console.error(e);
         yield put({
-            type : CREATE_POST_FAILURE,
+            type : WRITE_POST_FAILURE,
             error : e
         })
     }
 }
 
-function* watchCreatePost() {
-    yield takeLatest(CREATE_POST_REQUEST, createPost)
+function* watchWritePost() {
+    yield takeLatest(WRITE_POST_REQUEST, writePost)
 }
 
 // 포스트 리스트 /////////////////////////////
 function* loadPosts(action){
     try {
-        console.log(action)
         let result = yield call(loadPostsAPI, action.roomId, action.pagination, action.keyword);
         yield put({
             type : LOAD_POSTS_SUCCESS,
@@ -109,15 +111,38 @@ function* watchLoadPostDetail() {
     yield takeEvery(LOAD_POST_DETAIL_REQUEST, loadPostDetail)
 }
 
+
+// 댓글 작성 ///////////////////////////////////
+function* writeComment(action){
+    try {
+        let result = yield call(writeCommentAPI, action.postId, action.data);
+        yield put({
+            type : WRITE_COMMENT_SUCCESS,
+            data : result.data.data
+        })
+    }catch(e) {
+        console.error(e);
+        yield put({
+            type : WRITE_COMMENT_FAILURE,
+            error : e
+        })
+    }
+}
+
+function* watchWriteComment() {
+    yield takeLatest(WRITE_COMMENT_REQUEST, writeComment)
+}
+
 // 댓글 리스트 /////////////////////////////
 function* loadComments(action){
     try {
-        let result = yield call(loadCommentsAPI, action.postId, action.pagination);
+        let result = yield call(loadCommentsAPI, action.postId);
+
         yield put({
             type : LOAD_COMMENTS_SUCCESS,
-            data : result.data.data.content,
-            first : result.data.data.first,
-            last : result.data.data.last,
+            data : result.data.data,
+            // first : result.data.data.first,
+            // last : result.data.data.last,
         })
     }catch(e) {
         console.error(e);
@@ -133,11 +158,13 @@ function* watchLoadComments() {
 }
 
 
+
 export default function* postSaga() {
     yield all([
         fork(watchLoadPosts),
-        fork(watchCreatePost),
+        fork(watchWritePost),
         fork(watchLoadPostDetail),
+        fork(watchWriteComment),
         fork(watchLoadComments)
     ]);
 }
