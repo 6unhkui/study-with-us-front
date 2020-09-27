@@ -1,5 +1,5 @@
 import {all, fork, takeEvery, put, call} from 'redux-saga/effects';
-import {LOAD_MEMBERS_REQUEST, LOAD_MEMBERS_SUCCESS, LOAD_MEMBERS_FAILURE} from '../modules/member';
+import {LOAD_MEMBERS_REQUEST, LOAD_MEMBERS_SUCCESS, LOAD_MEMBERS_FAILURE} from 'store/modules/member';
 import {http} from 'utils/HttpHandler';
 
 

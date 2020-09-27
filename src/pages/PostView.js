@@ -4,126 +4,113 @@ import ReactHtmlParser from 'react-html-parser';
 import Avatar from 'components/Avatar';
 import FileSaver from 'file-saver';
 import {useDispatch, useSelector} from "react-redux";
-import {LOAD_COMMENTS_REQUEST, LOAD_POST_DETAIL_REQUEST} from "store/modules/post";
+import {LOAD_POST_DETAIL_REQUEST, DELETE_POST_REQUEST} from "store/modules/post";
 import {useHistory} from "react-router-dom";
 import {SERVER_URI} from "constants/index";
 import {bytesToSize} from "utils/File";
-import CommentEditor from "../components/CommentEditor";
-import CommentSingle from "components/CommentSingle";
 
-import LTT from "list-to-tree";
+import Comments from "components/Comments";
 
-import {Divider, Dropdown, Menu, Typography, PageHeader, List} from 'antd';
-import { EllipsisOutlined, DeleteOutlined,  EditOutlined, LikeOutlined, PaperClipOutlined} from '@ant-design/icons';
+import {Divider, Dropdown, Menu, Typography, PageHeader, List, Modal} from 'antd';
+import { EllipsisOutlined, DeleteOutlined,  EditOutlined, PaperClipOutlined} from '@ant-design/icons';
 
 const { Title } = Typography;
 
-export default function PostViewPage(props) {
+const PostView = (props) => {
     const postId = props.match.params.id;
     const history = useHistory();
     const dispatch = useDispatch();
-    const [tree, setTree] = useState([]);
-
-    const { roomDetail } = useSelector(state => state.room);
-    const { postDetail,comments } = useSelector(state => state.post);
+    const { postDetail } = useSelector(state => state.post);
+    const { writer } = useSelector(state => state.post.postDetail);
     const { me } = useSelector(state => state.account);
+
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+    const [hasEditPermission, setHasEditPermission] = useState(false);
 
     useEffect(() => {
         dispatch({
             type : LOAD_POST_DETAIL_REQUEST,
             data : postId
         })
-
-        dispatch({
-            type : LOAD_COMMENTS_REQUEST,
-            postId
-        })
     }, [dispatch, postId]);
 
-
     useEffect(() => {
-        // 배열 형태로 전달받은 댓글 리스트를 트리 구조로 변경하여 렌더링한다.
-        const ltt = new LTT(comments, {
-            key_id: 'commentId',
-            key_parent: 'parentId'
-        });
-
-        const commentTree = ltt.GetTree();
-        setTree(commentTree);
-    }, [comments]);
+        if(me.accountId === (writer && writer.accountId)) {
+            setHasEditPermission(true);
+        }else {
+            setHasEditPermission(false);
+        }
+    }, [me && me.accountId, writer && writer.accountId]);
 
 
     const handleFileDownload = useCallback((identifier, fileName) => {
         FileSaver.saveAs(`${SERVER_URI}/api/v1/files/attachment/${identifier}`, fileName);
     },[])
 
-    // const handleLikeCount = useCallback(() => {
-    //     console.log(likeChecked);
-    // },[likeChecked])
+
+    const handleDeletePost = useCallback(() => {
+        dispatch({
+            type : DELETE_POST_REQUEST,
+            data : postId,
+            meta : {
+                callbackAction : () =>{
+                    history.push(`/room/${postDetail.roomId}`);
+                }
+            }
+        })
+    },[dispatch, history, postDetail.roomId, postId])
 
 
-    const menuItems = () => (
+    const menuItems = (
         <Menu>
             <Menu.Item key="0">
                 <EditOutlined /> 수정
             </Menu.Item>
             <Menu.Item key="1">
-                <DeleteOutlined /> 삭제
+                <span onClick={() => {setDeleteModalVisible(true)}}>
+                    <DeleteOutlined /> 삭제
+                </span>
+                <Modal
+                    title={postDetail.title}
+                    visible={deleteModalVisible}
+                    onOk={handleDeletePost}
+                    onCancel={() => {setDeleteModalVisible(false)}}
+                >
+                    {<p>{postDetail.title} 포스트를 정말 삭제 하시겠습니까?</p>}
+                </Modal>
             </Menu.Item>
         </Menu>
     )
-
-    const renderComments = (data) => {
-        // 대댓글이 존재하면 재귀호출
-        return data.map(item => (
-            <>
-                <CommentSingle key={item.commentId}
-                               postId={postId}
-                               commentId={item.commentId}
-                               writer={item.writer}
-                               content={item.content}
-                               createdDate={item.createdDate}
-                               seq={item.seq}
-                               isWriter={(item.writer && item.writer.accountId) === (postDetail.writer && postDetail.writer.accountId)}
-                >
-                    {item.child && item.child.length > 0 && renderComments(item.child)}
-                </CommentSingle>
-            </>
-        ));
-    }
 
     return (
         <div className="bg-gray">
             <div className="container content-wrap">
                 <div className="card-wrap card-width-full">
-                    {roomDetail.name &&
-                        <PageHeader
-                            onBack={() => history.push(`/room/${roomDetail.roomId}`)}
-                            title={roomDetail.name}
-                            style={{padding: '0', marginBottom: '1rem'}}
-                        />
-                    }
+                    <PageHeader
+                        onBack={() => history.push(`/room/${postDetail.roomId}`)}
+                        title={postDetail.roomName}
+                        style={{padding: '0', marginBottom: '1rem'}}
+                    />
 
                     <Title level={2}>{postDetail.title}</Title>
 
-                    {(me && me.accountId) === (postDetail.writer && postDetail.writer.accountId) &&
+                    {hasEditPermission &&
                         <MoreBtn>
-                            <Dropdown overlay={menuItems}><EllipsisOutlined/></Dropdown>
+                            <Dropdown overlay={menuItems} trigger={['click']}>
+                                <EllipsisOutlined/>
+                            </Dropdown>
                         </MoreBtn>
                     }
 
-                    {postDetail.writer &&
+                    {writer &&
                         <Avatar user={postDetail.writer} showName={true} subText={postDetail.createdDate}/>
                     }
+
                     <Divider/>
 
                     <ContentWrap>
                         {ReactHtmlParser(postDetail.content)}
                     </ContentWrap>
-
-                    {/*<LikeWrap onClick={handleLikeCount}>*/}
-                    {/*    <LikeOutlined /> {postDetail.likeCount}*/}
-                    {/*</LikeWrap>*/}
 
                     {postDetail.files &&
                         <List
@@ -147,16 +134,14 @@ export default function PostViewPage(props) {
                         />
                     }
 
-                    <Divider/>
-
-                    <CommentEditor postId={postId}/>
-
-                    {tree && tree.length > 0 && renderComments(tree)}
+                    <Comments postId={postId}/>
                 </div>
             </div>
         </div>
   )
 }
+
+export default PostView;
 
 
 const MoreBtn = styled.span`
@@ -178,22 +163,6 @@ const ContentWrap =  styled.div`
   p {
     margin : 0;
   }
-`
-
-const LikeWrap = styled.div`
-    font-size : 1.4rem;
-    cursor :pointer;
-    width: fit-content;
-    margin: 0 auto;
-    color : var(--font-color-gray);
-    border : 1px solid var(--border-gray);
-    border-radius : 30px;
-    padding : 4px 18px;
-    
-    &:hover {
-        color : var(--primary-color);
-        border : 1px solid var(--primary-color);
-    }
 `
 
 const FileItemWrap = styled.div`

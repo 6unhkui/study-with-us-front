@@ -38,6 +38,13 @@ Avatar.propTypes = {
     }),
 };
 
+Avatar.defaultProps = {
+    user : {
+        name : '',
+        profileImg : ''
+    }
+};
+
 
 // Style - s /////////////////////////////
 const AvatarWrap = styled.span`

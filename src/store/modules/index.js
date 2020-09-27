@@ -15,7 +15,10 @@ const persistConfig = {
   storage, // 로컬 스토리지에 저장
   whitelist: ["account"], // 대상이 되는 리듀서
   transforms: [
-    createWhitelistFilter('account', ['me']), // account 리듀서에서 유저 정보가 있는 me 객체만 저장한다.
+    createWhitelistFilter(
+        'account',
+        ['me.accountId', 'me.name', 'me.profileImg']
+    ), // account 리듀서에 저장된 유저 정보중 accountId, name, profileImg만 persist 대상으로 설정한다.
   ],
 };
 

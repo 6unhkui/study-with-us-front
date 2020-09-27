@@ -2,29 +2,120 @@ import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import Avatar from 'components/Avatar';
 
-import { Comment } from 'antd';
+import {Comment, message} from 'antd';
 import CommentEditor from 'components/CommentEditor';
+import {useDispatch, useSelector} from "react-redux";
+import {DELETE_COMMENT_REQUEST, ADD_COMMENT_REQUEST, UPDATE_COMMENT_REQUEST} from "store/modules/post";
 
 const CommentSingle = ({postId, commentId, writer, content, createdDate, seq, children, isWriter}) => {
+    const dispatch = useDispatch();
+    const { name, profileImg, accountId } = useSelector(state => state.account.me);
+
+    const [hasEditPermission, setHasEditPermission] = useState(false);
+    const [showEditInput, setShowEditInput] = useState(false);
+    const [editValue, setEditValue] = useState(content);
     const [showReplyInput, setShowReplyInput] = useState(false);
+    const [replyValue, setReplyValue] = useState('');
 
     useEffect(() => {
+        if(accountId === (writer && writer.accountId)) {
+            setHasEditPermission(true);
+        }
+    }, [accountId, writer]);
+
+
+    const handleDeleteComment = useCallback(() => {
+        if(children) {
+            message.error('답변 댓글이 존재할 경우 삭제할 수 없습니다.');
+            return false;
+        }
+
+        dispatch({
+            type : DELETE_COMMENT_REQUEST,
+            data : commentId
+        })
+    }, [children, commentId, dispatch]);
+
+
+    const handleReplySubmit = useCallback(() => {
+        const data = {
+            content : replyValue
+        }
+        if(commentId) data.parentId = commentId;
+
+        dispatch({
+            type : ADD_COMMENT_REQUEST,
+            postId,
+            data
+        })
+
+        setReplyValue('');
+    }, [dispatch, commentId, postId, replyValue]);
+
+
+    const handleEditSubmit = useCallback(() => {
+        const data = {
+            content : editValue
+        }
+
+        dispatch({
+            type : UPDATE_COMMENT_REQUEST,
+            commentId,
+            data
+        })
+
+        setShowEditInput(false);
+        setEditValue('');
+    }, [commentId, dispatch, editValue]);
+
+
+    const handleEditChange = useCallback(e => {
+        setEditValue(e.target.value);
     }, []);
 
-    const onReplyClick = useCallback(commentId => {
+
+    const handleReplyChange = useCallback(e => {
+        setReplyValue(e.target.value);
+    }, []);
+
+
+    const onEditClick = useCallback(() => {
+        setShowEditInput(!showEditInput);
+    }, [showEditInput])
+
+
+    const onReplyClick = useCallback(() => {
         setShowReplyInput(!showReplyInput);
-    }, [showReplyInput])
+    }, [showReplyInput]);
+
+
+    const editInput = (
+        <CommentEditor value={editValue}
+                       onChange={handleEditChange}
+                       onSubmit={handleEditSubmit}
+                       submitText={'수정'}
+        />
+    )
 
     return (
-        <Comment key={commentId}
-                 actions={[<span onClick={onReplyClick}>댓글 달기</span>, <span onClick={onReplyClick}>수정</span>, <span onClick={onReplyClick}>삭제</span>]}
-                 author={<>{writer.name}{isWriter && <IsWriterBadge>작성자</IsWriterBadge> }</>}
-                 avatar={<Avatar user={{name : writer.name, profileImg : writer.profileImg}}/>}
-                 content={content}
-                 datetime={createdDate}>
-            {showReplyInput && <CommentEditor postId={postId} parentId={commentId}/> }
-            {children}
-        </Comment>
+            <Comment key={commentId}
+                     actions={[
+                         <span onClick={onReplyClick}>댓글 달기</span>,
+                         hasEditPermission && <span onClick={onEditClick}>수정</span>,
+                         hasEditPermission && <span onClick={handleDeleteComment}>삭제</span>
+                     ]}
+                     author={<>{writer.name}{isWriter && <IsWriterBadge>작성자</IsWriterBadge>}</>}
+                     avatar={<Avatar user={{name : writer.name, profileImg : writer.profileImg}}/>}
+                     content={showEditInput ? editInput : content}
+                     datetime={createdDate}>
+
+                {showReplyInput && <CommentEditor value={replyValue}
+                                                  onChange={handleReplyChange}
+                                                  onSubmit={handleReplySubmit}
+                                                  avatar={<Avatar user={{name, profileImg}}/>}/>}
+
+                {children}
+            </Comment>
     )
 }
 

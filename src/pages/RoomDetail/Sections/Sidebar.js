@@ -12,7 +12,7 @@ const { Title, Text } = Typography;
 
 const Sidebar = (props) => {
     const {room} = props;
-    const [modalVisible, setModalVisible] = useState(false);
+    const [joinModalVisible, setJoinModalVisible] = useState(false);
 
     const writeBtn = () => (
         <Link to={{pathname : `/room/${props.id}/post/write`,
@@ -30,14 +30,14 @@ const Sidebar = (props) => {
 
     const joinBtn = () => (
         <>
-            <Button type="link" onClick={() => {setModalVisible(true)}}>
+            <Button type="link" onClick={() => {setJoinModalVisible(true)}}>
                 <FontAwesomeIcon icon={faSignInAlt} style={{marginRight : '6px'}}/>스터디방 가입하기
             </Button>
             <Modal
                 title={room.name}
-                visible={modalVisible}
+                visible={joinModalVisible}
                 onOk={props.join}
-                onCancel={() => {setModalVisible(false)}}
+                onCancel={() => {setJoinModalVisible(false)}}
             >
                 {<p>{room.name} 스터디방에 가입 하시겠습니까?</p>}
             </Modal>

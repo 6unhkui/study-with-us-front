@@ -25,8 +25,11 @@ const EditAccountSettings = (props) => {
         dispatch({
             type: LOAD_ACCOUNT_REQUEST,
         });
+    },[dispatch]);
+
+    useEffect(() => {
         setIsSocialAccount(me.provider !== "LOCAL");
-    },[]);
+    },[me.provider]);
 
 
     return (

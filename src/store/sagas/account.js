@@ -8,7 +8,7 @@ import {
     EDIT_ACCOUNT_REQUEST, EDIT_ACCOUNT_SUCCESS, EDIT_ACCOUNT_FAILURE,
     CHANGE_PASSWORD_REQUEST, CHANGE_PASSWORD_SUCCESS, CHANGE_PASSWORD_FAILURE,
     DELETE_ACCOUNT_REQUEST, DELETE_ACCOUNT_SUCCESS, DELETE_ACCOUNT_FAILURE,
-} from '../modules/account';
+} from 'store/modules/account';
 import {ACCESS_TOKEN} from 'constants/index';
 import {http} from 'utils/HttpHandler';
 
@@ -130,6 +130,7 @@ function* loadAccount(){
             type : LOAD_ACCOUNT_SUCCESS,
             data : {
                 accountId : result.accountId,
+                email : result.email,
                 name : result.name,
                 profileImg : result.profileImg,
                 provider : result.provider

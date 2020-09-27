@@ -7,7 +7,7 @@ import {
     LOAD_ROOMS_BY_CATEGORY_REQUEST, LOAD_ROOMS_BY_CATEGORY_SUCCESS, LOAD_ROOMS_BY_CATEGORY_FAILURE,
     LOAD_ROOM_DETAIL_REQUEST, LOAD_ROOM_DETAIL_SUCCESS, LOAD_ROOM_DETAIL_FAILURE,
     JOIN_ROOM_REQUEST, JOIN_ROOM_SUCCESS, JOIN_ROOM_FAILURE
-} from '../modules/room';
+} from 'store/modules/room';
 import {http} from 'utils/HttpHandler';
 import {DELETE_ACCOUNT_REQUEST} from "../modules/account";
 

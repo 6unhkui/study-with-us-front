@@ -1,5 +1,5 @@
 import {all, fork, takeEvery, put, call} from 'redux-saga/effects';
-import {LOAD_CATEGORIES_REQUEST, LOAD_CATEGORIES_SUCCESS, LOAD_CATEGORIES_FAILURE} from '../modules/category';
+import {LOAD_CATEGORIES_REQUEST, LOAD_CATEGORIES_SUCCESS, LOAD_CATEGORIES_FAILURE} from 'store/modules/category';
 import {http} from 'utils/HttpHandler';
 
 

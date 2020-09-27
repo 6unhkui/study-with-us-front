@@ -6,7 +6,7 @@ import { Form, Input, Button, message} from 'antd';
 import {EDIT_ACCOUNT_REQUEST} from "store/modules/account";
 
 
-const EditAccountInfo = (props) => {
+const EditAccountInfo = ({account}) => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
     const dispatch = useDispatch();
@@ -38,7 +38,7 @@ const EditAccountInfo = (props) => {
           form={form}
           name="profileInfo"
           onFinish={handleSubmit}
-          initialValues={props.account}
+          initialValues={account}
           scrollToFirstError
           layout = "vertical"
           requiredMark={false}

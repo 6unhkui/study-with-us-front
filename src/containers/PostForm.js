@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {WRITE_POST_REQUEST} from "store/modules/post";
+import {ADD_POST_REQUEST} from "store/modules/post";
 import {useDispatch, useSelector} from "react-redux";
 
 import { Form, Input, Button,  Upload} from 'antd';
@@ -11,7 +11,7 @@ const PostForm = (props) => {
     const roomId = props.match.params.id;
     const [form] = Form.useForm();
     const dispatch = useDispatch();
-    const {isWritingPost} = useSelector(state => state.post);
+    const {isAddingPost} = useSelector(state => state.post);
 
     const [content, setContent] = useState('');
     const [fileList, setFileList] = useState([]);
@@ -34,7 +34,7 @@ const PostForm = (props) => {
       }
 
       dispatch({
-          type : WRITE_POST_REQUEST,
+          type : ADD_POST_REQUEST,
           data,
           meta: {
               callbackAction : () => {
@@ -91,7 +91,7 @@ const PostForm = (props) => {
           <Form.Item style={{textAlign : 'center'}}>
               <Button type="primary" htmlType="submit" size="large"
                       className='shadow' style={{marginTop : '1rem'}}
-                      loading={isWritingPost}
+                      loading={isAddingPost}
               >
                   작성하기
               </Button>
