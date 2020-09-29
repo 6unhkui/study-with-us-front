@@ -1,49 +1,14 @@
-import React, {useState, useCallback} from 'react';
-import {ADD_POST_REQUEST} from "store/modules/post";
-import {useDispatch, useSelector} from "react-redux";
-
+import React, {useState, useEffect} from 'react';
+import PropTypes from "prop-types";
 import { Form, Input, Button,  Upload} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 import Editor from 'components/Editor';
 
-const PostForm = (props) => {
-    const roomId = props.match.params.id;
+const PostForm = ({initialValue, onSubmit, submitText, submitLoading}) => {
     const [form] = Form.useForm();
-    const dispatch = useDispatch();
-    const {isAddingPost} = useSelector(state => state.post);
-
-    const [content, setContent] = useState('');
-    const [fileList, setFileList] = useState([]);
-
-    const handleSubmit = useCallback( values => {
-      const data = {
-          roomId,
-          post : {
-              title : values.title,
-              content,
-          }
-      }
-
-      if(fileList.length > 0) {
-          const formData = new FormData();
-          fileList.forEach(v => {
-              formData.append('files', v);
-          })
-          data.files = formData;
-      }
-
-      dispatch({
-          type : ADD_POST_REQUEST,
-          data,
-          meta: {
-              callbackAction : () => {
-                  props.history.push(`${props.location.state.from.pathname}`)
-              }
-          }
-      });
-    }, [content, dispatch, fileList, roomId]);
-
+    const [content, setContent] = useState((initialValue && initialValue.content) || '');
+    const [fileList, setFileList] = useState((initialValue && initialValue.fileList) || []);
 
     const uploadConfig =  {
         fileList,
@@ -62,8 +27,8 @@ const PostForm = (props) => {
     return (
        <Form 
         form={form}
-        name="create"
-        onFinish={handleSubmit}
+        name="postForm"
+        onFinish={values => {onSubmit(values, content, fileList)}}
         scrollToFirstError
         layout = "vertical"
         requiredMark={false}
@@ -71,6 +36,7 @@ const PostForm = (props) => {
           <Form.Item 
               name="title" 
               label="Title"
+              initialValue={initialValue && initialValue.title}
               rules={[
                   {
                     required: true,
@@ -80,20 +46,19 @@ const PostForm = (props) => {
               <Input allowClear/>
           </Form.Item>
 
-          <Form.Item name="content">
-            <Editor onChange={setContent}/>
-          </Form.Item>
+           <Editor onChange={setContent} value={`${content}`}/>
 
            <Upload {...uploadConfig}>
-               <Button icon={<UploadOutlined />}>Click to Upload</Button>
+               <Button icon={<UploadOutlined />} style={{marginTop : '2rem'}}>
+                   File Upload
+               </Button>
            </Upload>
 
-          <Form.Item style={{textAlign : 'center'}}>
-              <Button type="primary" htmlType="submit" size="large"
-                      className='shadow' style={{marginTop : '1rem'}}
-                      loading={isAddingPost}
+          <Form.Item style={{textAlign : 'center', marginTop : '2rem'}}>
+              <Button type="primary" htmlType="submit" size="large" className='shadow' style={{marginTop : '1rem'}}
+                      loading={submitLoading}
               >
-                  작성하기
+                  {submitText}
               </Button>
           </Form.Item>
       </Form>
@@ -101,3 +66,25 @@ const PostForm = (props) => {
 }
 
 export default PostForm;
+
+PostForm.propTypes = {
+    formData : PropTypes.shape({
+        title : PropTypes.string,
+        content : PropTypes.string,
+        fileList : PropTypes.array
+    }),
+    submitText : PropTypes.string,
+    onSubmit : PropTypes.func,
+    submitLoading : PropTypes.bool
+};
+
+PostForm.defaultProps = {
+    formData : {
+        title : '',
+        content : '',
+        fileList : []
+    },
+    submitText : '작성하기',
+    onSubmit : () => {console.error("submit function is not defined");},
+    submitLoading : false
+};

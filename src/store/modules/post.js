@@ -101,7 +101,7 @@ const post = (state = initialState, action) => {
 
             // 포스트 상세보기 ////////////////////////////
             case LOAD_POST_DETAIL_REQUEST : {
-                draft.postDetail = {};
+                // draft.postDetail = {};
                 draft.loadingPostDetail = true;
                 break;
             }

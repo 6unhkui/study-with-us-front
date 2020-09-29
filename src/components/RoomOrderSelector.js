@@ -5,19 +5,19 @@ import { DownOutlined } from '@ant-design/icons';
 
 import LayerPopup from 'components/LayerPopup';
 
-function Layer(props) {
-    const radioStyle = {
-        display: 'block',
-        height: '30px',
-        lineHeight: '30px',
-    };
+const radioStyle = {
+    display: 'block',
+    height: '30px',
+    lineHeight: '30px',
+};
 
+function Layer({setLayerOpen, orderTypes, onChangeOrderType, selected}) {
     return (
-        <LayerPopup title="정렬" setLayerOpen={props.setLayerOpen} size="400px">
-             <Radio.Group value={props.selected.key}>
-                 {props.orderTypes.map(v => (
+        <LayerPopup title="정렬" setLayerOpen={setLayerOpen} size="400px">
+             <Radio.Group value={selected.key}>
+                 {orderTypes.map(v => (
                      <Radio style={radioStyle} value={v.key} 
-                        onClick={(e) => {props.onChangeOrderType(v)}}>
+                        onClick={(e) => {onChangeOrderType(v)}}>
                         {v.value}
                     </Radio>
                  ))}
@@ -26,12 +26,13 @@ function Layer(props) {
     )
 }
 
+const orderTypes = [
+    {key : "NAME", value : "이름 순"},
+    {key : "CREATED_DATE", value : "생성일 순"},
+    {key : "JOIN_COUNT", value : "멤버수 순"}
+];
+
 const RoomOrderSelect = ({onSubmit}) => {
-    const orderTypes = [
-        {key : "NAME", value : "이름 순"},
-        {key : "CREATED_DATE", value : "생성일 순"},
-        {key : "JOIN_COUNT", value : "멤버수 순"}
-    ];
     const [selected, setSelected] = useState(orderTypes[0]);
     const [layerOpen, setLayerOpen] = useState(false);
 

@@ -5,18 +5,13 @@ import styled from "styled-components";
 import LoginForm from 'containers/LoginForm';
 import SocialLogin from "containers/SocialLogin";
 
-import { Typography } from 'antd';
-
-const { Title } = Typography;
+import CardWrap from "../components/Layout/Main/Card";
 
 const Login = (props)  => {
     const { t } = useTranslation();
 
     return (
-      <div className="bg-gray">
-        <div className="container content-wrap">
-          <div className="card-wrap card-width-small">
-              <Title>{t('auth.login')}</Title>
+        <CardWrap title={t('auth.login')} size={'small'}>
               <LoginForm {...props}/>
 
               <RegisterWrap>
@@ -24,9 +19,7 @@ const Login = (props)  => {
               </RegisterWrap>
 
               <SocialLogin/>
-          </div>
-        </div>
-      </div>
+        </CardWrap>
     );
   };
   

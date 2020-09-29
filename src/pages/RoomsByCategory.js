@@ -11,14 +11,13 @@ const { Title } = Typography;
 const { Search } = Input;
 
 
+const initPagination = {
+    page : 1,
+    size : 6,
+    direction : 'ASC'
+}
 const RoomsByCategory = (props) => {
     const categoryId = props.match.params.id;
-
-    const initPagination = {
-        page : 1,
-        size : 6,
-        direction : 'ASC'
-    }
     const [orderType, setOrderType] = useState(null);
     const [keyword, setKeyword] = useState('');
     const [pagination, setPagination] = useState(initPagination);

@@ -14,6 +14,7 @@ import AccessMemberOnly from './Sections/AccessMemberOnly';
 
 import PostsPage from 'containers/PostsByRoom';
 import MembersPage from 'containers/MembersByRoom';
+import AttendanceCheck from "../AttendanceCheck";
 
 
 const RoomDetailPage = (props) => {
@@ -53,7 +54,8 @@ const RoomDetailPage = (props) => {
 
     const tabItems = [
         <PostsPage {...props} currentAccount={currentAccount} />,
-        <MembersPage {...props} currentAccount={currentAccount} />
+        <MembersPage {...props} currentAccount={currentAccount} />,
+        <AttendanceCheck/>
     ]
 
     if(loadingRoomDetail) {
@@ -79,7 +81,7 @@ const RoomDetailPage = (props) => {
                                 </Affix>
                             </Col>
                             <Col xs={24} md={16} lg={17}>
-                                <Card tabList={[{key : 0, tab : 'Posts'},{ key : 1, tab : 'Members'},{key : 2, tab : 'Chatting'}]}
+                                <Card tabList={[{key : 0, tab : '게시글'},{ key : 1, tab : '멤버'},{key : 2, tab : '출석체크'}]}
                                       defaultActiveTabKey={tabKey} onTabChange={(key) => setTabKey(key)}>
                                     {currentAccount.member ? tabItems[tabKey] : <AccessMemberOnly/>}
                                 </Card>

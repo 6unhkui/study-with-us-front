@@ -1,25 +1,19 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import styled from "styled-components";
-import { Form, Input, Button, Alert, Checkbox} from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Form, Input, Button} from 'antd';
 
+import CardWrap from "../components/Layout/Main/Card";
 
-import { Typography } from 'antd';
-
-const { Title } = Typography;
 
 export default function ForgotPasswordPage() {
     const { t } = useTranslation();
+
     const validateMessages = {
       required: t('validate.required', { name: '${name}'})
     };
 
     return (
-      <div className="bg-gray">
-        <div className="container content-wrap">
-          <div className="card-wrap card-width-small">
-          <Title style={{textAlign : 'center'}}>{t('auth.resetPassword')}</Title>
+        <CardWrap title={t('auth.resetPassword')} size={'small'}>
           <div className="sub-text">{t('auth.enterEmailToResetPassword')}</div>
           <Form
               name="normal_login"
@@ -47,8 +41,6 @@ export default function ForgotPasswordPage() {
                 </Button>
               </Form.Item>
           </Form>
-          </div>
-        </div>
-      </div>
+        </CardWrap>
     )
 }

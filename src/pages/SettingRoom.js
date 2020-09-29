@@ -1,12 +1,11 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
 import { http } from 'utils/HttpHandler';
 
-import { Button, PageHeader, Card, Divider} from 'antd';
+import { Button, Divider} from 'antd';
+import CardWrap from "../components/Layout/Main/Card";
 
 const SettingRoom = (props) => {
-    const history = useHistory();
-    
+    const roomId = props.match.params.id;
     const {name, currentAccount} = props.location.state;
 
     const handleDeleteMember = () => {
@@ -18,23 +17,12 @@ const SettingRoom = (props) => {
       .then(response => {
         props.history.push("/");
       })
-  }
+    }
 
     return (
-      <div className="bg-gray">
-        <div className="container content-wrap">
-            <Card>
-              <PageHeader
-                onBack={() => history.push(`${props.location.state.from.pathname}`)}
-                title={name}
-                style={{padding : '0', marginBottom : '1rem'}}
-              /> 
-              <Divider/>
-              
+        <CardWrap pageHeader={{title : name, backUrl : `/room/${roomId}`}}>
               <Button onClick={handleDeleteMember}>회원 탈퇴</Button>
-            </Card>
-        </div>
-      </div>
+        </CardWrap>
     )
 }
 

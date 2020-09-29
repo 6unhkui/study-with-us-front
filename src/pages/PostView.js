@@ -13,6 +13,7 @@ import Comments from "components/Comments";
 
 import {Divider, Dropdown, Menu, Typography, PageHeader, List, Modal} from 'antd';
 import { EllipsisOutlined, DeleteOutlined,  EditOutlined, PaperClipOutlined} from '@ant-design/icons';
+import CardWrap from "../components/Layout/Main/Card";
 
 const { Title } = Typography;
 
@@ -63,8 +64,8 @@ const PostView = (props) => {
 
     const menuItems = (
         <Menu>
-            <Menu.Item key="0">
-                <EditOutlined /> 수정
+            <Menu.Item key="0" onClick={() => {history.push(`/post/${postId}/edit`)}}>
+                <EditOutlined/> 수정
             </Menu.Item>
             <Menu.Item key="1">
                 <span onClick={() => {setDeleteModalVisible(true)}}>
@@ -83,61 +84,48 @@ const PostView = (props) => {
     )
 
     return (
-        <div className="bg-gray">
-            <div className="container content-wrap">
-                <div className="card-wrap card-width-full">
-                    <PageHeader
-                        onBack={() => history.push(`/room/${postDetail.roomId}`)}
-                        title={postDetail.roomName}
-                        style={{padding: '0', marginBottom: '1rem'}}
-                    />
+        <CardWrap pageHeader={{title : postDetail && postDetail.roomName, backUrl : `/room/${postDetail.roomId}`}}>
+            <Title level={2}>{postDetail.title}</Title>
 
-                    <Title level={2}>{postDetail.title}</Title>
+            {hasEditPermission &&
+                <MoreBtn>
+                    <Dropdown overlay={menuItems} trigger={['click']}>
+                        <EllipsisOutlined/>
+                    </Dropdown>
+                </MoreBtn>
+            }
 
-                    {hasEditPermission &&
-                        <MoreBtn>
-                            <Dropdown overlay={menuItems} trigger={['click']}>
-                                <EllipsisOutlined/>
-                            </Dropdown>
-                        </MoreBtn>
-                    }
+            {writer && <Avatar user={postDetail.writer} showName={true} subText={postDetail.createdDate}/>}
 
-                    {writer &&
-                        <Avatar user={postDetail.writer} showName={true} subText={postDetail.createdDate}/>
-                    }
+            <Divider/>
 
-                    <Divider/>
+            <ContentWrap>
+                {ReactHtmlParser(postDetail.content)}
+            </ContentWrap>
 
-                    <ContentWrap>
-                        {ReactHtmlParser(postDetail.content)}
-                    </ContentWrap>
+            {postDetail.files &&
+            <List grid={{gutter: 20, column: 1}}
+                  dataSource={postDetail.files}
+                  style={{marginTop: '3rem'}}
+                  renderItem={item => (
+                      <List.Item>
+                          <FileItemWrap>
+                              <PaperClipOutlined/>
+                              <FileName onClick={() => {
+                                  handleFileDownload(item.saveName, item.originName)
+                              }}>
+                                  {item.originName}
+                              </FileName>
+                              <Divider type="vertical"/>
+                              <FileSize>{bytesToSize(item.fileSize)}</FileSize>
+                          </FileItemWrap>
+                      </List.Item>
+                  )}
+            />
+            }
 
-                    {postDetail.files &&
-                        <List
-                            grid={{gutter: 20, column: 1}}
-                            dataSource={postDetail.files}
-                            style={{marginTop: '3rem'}}
-                            renderItem={item => (
-                                <List.Item>
-                                    <FileItemWrap>
-                                        <PaperClipOutlined/>
-                                        <FileName onClick={() => {
-                                            handleFileDownload(item.saveName, item.originName)
-                                        }}>
-                                            {item.originName}
-                                        </FileName>
-                                        <Divider type="vertical"/>
-                                        <FileSize>{bytesToSize(item.fileSize)}</FileSize>
-                                    </FileItemWrap>
-                                </List.Item>
-                            )}
-                        />
-                    }
-
-                    <Comments postId={postId}/>
-                </div>
-            </div>
-        </div>
+            <Comments postId={postId}/>
+    </CardWrap>
   )
 }
 

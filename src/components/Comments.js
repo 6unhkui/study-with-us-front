@@ -13,10 +13,9 @@ import Avatar from "./Avatar";
 
 const Comments = ({postId}) => {
     const dispatch = useDispatch();
-    const { name, profileImg, accountId } = useSelector(state => state.account.me);
+    const { me : {name, profileImg} } = useSelector(state => state.account);
     const { postDetail, comments } = useSelector(state => state.post);
     const [value, setValue] = useState('');
-
     const [tree, setTree] = useState([]);
 
     useEffect(() => {

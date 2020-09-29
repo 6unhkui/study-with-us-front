@@ -16,11 +16,12 @@ import MyAccount from 'pages/MyAccount';
 import MyStudyRoom from 'pages/MyStudyRoom';
 import CreateStudyRoom from 'pages/CreateStudyRoom';
 
-import StudyRoom from 'pages/RoomDetail';
-import WritePost from 'pages/WritePost';
+import RoomDetail from 'pages/RoomDetail';
+import AddPost from 'pages/AddPost';
 import SettingRoom from 'pages/SettingRoom';
 
 import PostView from 'pages/PostView';
+import EditPost from "pages/EditPost";
 
 import NewsFeed from 'pages/NewsFeed';
 
@@ -41,10 +42,11 @@ export default [
 
     <Route path="/room/create" component={Auth(CreateStudyRoom, true)} />,
 
-    <Route path="/room/:id/post/write" component={Auth(WritePost, true)} />,
+    <Route path="/room/:id/post/write" component={Auth(AddPost, true)} />,
     <Route path="/room/:id/setting" component={Auth(SettingRoom, true)} />,
-    <Route path="/room/:id" component={Auth(StudyRoom, true)} />,
+    <Route path="/room/:id" component={Auth(RoomDetail, true)} />,
 
+    <Route path="/post/:id/edit" component={Auth(EditPost, true)} />,
     <Route path="/post/:id" component={Auth(PostView, true)} />,
 
     <Route path="/feed" component={Auth(NewsFeed, true)} />,

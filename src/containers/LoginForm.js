@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Form, Input, Button, Alert, Checkbox} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from "react-redux";
-import { LOG_IN_REQUEST, LOAD_ACCOUNT_REQUEST, REMEMBER_ME } from 'store/modules/account';
+import { LOG_IN_REQUEST, REMEMBER_ME } from 'store/modules/account';
 
 
 const LoginForm = (props)  => {

@@ -9,11 +9,11 @@ import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 
 
-const TextEditor = ({initValue = '', onChange}) => {
+const TextEditor = ({value = '', onChange}) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   useEffect(() => {
-    const contentBlock = htmlToDraft(initValue);
+    const contentBlock = htmlToDraft(value);
     if (contentBlock) {
       const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
       const editorState = EditorState.createWithContent(contentState);

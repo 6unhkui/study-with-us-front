@@ -11,20 +11,17 @@ import EmptyThumbnail from 'assets/image/empty-thumbnail.png';
 
 const { Paragraph } = Typography;
 
-export default function RoomCard({roomId, category, coverImage, name, description, manager, joinCount, maxCount}) {
-
-  const coverSection = (
-    <div className='cover'>
-      <img alt="cover" src={(coverImage ? SERVER_URI + '/api/v1/files/cover/' + coverImage : EmptyThumbnail)}/>
-    </div>
-  )
-
+const RoomCard = ({roomId, category, coverImage, name, description, manager, joinCount, maxCount}) => {
   return (
     <Link to={`/room/${roomId}`}>
       <CardWrap>
         <Badge>{category}</Badge>
         <Card className='light-primary-border'
-              cover={coverSection}
+              cover={
+                  <div className='cover'>
+                      <img alt="cover" src={(coverImage ? SERVER_URI + '/api/v1/files/cover/' + coverImage : EmptyThumbnail)}/>
+                  </div>
+              }
         >
 
           <CardMetaWrap>
@@ -63,6 +60,7 @@ export default function RoomCard({roomId, category, coverImage, name, descriptio
   )
 }
 
+export default RoomCard;
 
 RoomCard.propTypes = {
   id : PropTypes.number,
@@ -80,7 +78,6 @@ RoomCard.propTypes = {
 
 
 
-// Style - s /////////////////////////////
 const Badge = styled.span`
     position: absolute;
     z-index: 1;
@@ -161,4 +158,3 @@ const JoinCountWrap = styled.span`
     margin-left : .2rem;
   }
 `
-// Style - e /////////////////////////////

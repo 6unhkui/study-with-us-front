@@ -16,14 +16,15 @@ import {SearchOutlined} from "@ant-design/icons";
 const { Title } = Typography;
 
 
+const mainBanners = [
+    {color : '#fbf5f8', image : Banner1},
+    {color : '#f4fcff', image : Banner2}
+]
+
 const Main = () => {
   const dispatch = useDispatch();
   const { popularRooms, recentlyCreatedRooms } = useSelector(state => state.room);
 
-  const mainBanners = [
-    {color : '#fbf5f8', image : Banner1},
-    {color : '#f4fcff', image : Banner2}
-  ]
 
   useEffect(() => {
     dispatch({

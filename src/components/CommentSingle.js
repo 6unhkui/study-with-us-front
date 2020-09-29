@@ -9,8 +9,7 @@ import {DELETE_COMMENT_REQUEST, ADD_COMMENT_REQUEST, UPDATE_COMMENT_REQUEST} fro
 
 const CommentSingle = ({postId, commentId, writer, content, createdDate, seq, children, isWriter}) => {
     const dispatch = useDispatch();
-    const { name, profileImg, accountId } = useSelector(state => state.account.me);
-
+    const { me : {name, profileImg, accountId} } = useSelector(state => state.account);
     const [hasEditPermission, setHasEditPermission] = useState(false);
     const [showEditInput, setShowEditInput] = useState(false);
     const [editValue, setEditValue] = useState(content);
@@ -50,6 +49,7 @@ const CommentSingle = ({postId, commentId, writer, content, createdDate, seq, ch
         })
 
         setReplyValue('');
+        setShowReplyInput(false);
     }, [dispatch, commentId, postId, replyValue]);
 
 
@@ -64,9 +64,9 @@ const CommentSingle = ({postId, commentId, writer, content, createdDate, seq, ch
             data
         })
 
+        setEditValue(editValue);
         setShowEditInput(false);
-        setEditValue('');
-    }, [commentId, dispatch, editValue]);
+    }, [commentId, dispatch, editValue, content]);
 
 
     const handleEditChange = useCallback(e => {
@@ -81,6 +81,7 @@ const CommentSingle = ({postId, commentId, writer, content, createdDate, seq, ch
 
     const onEditClick = useCallback(() => {
         setShowEditInput(!showEditInput);
+        setEditValue(content);
     }, [showEditInput])
 
 

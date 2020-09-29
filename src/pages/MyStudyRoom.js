@@ -14,12 +14,12 @@ import CategorySelector from 'components/CategorySelector';
 const { Title } = Typography;
 const { Search } = Input;
 
+const initPagination = {
+    page : 1,
+    size : 6,
+    direction : 'ASC'
+}
 const MyStudyRoomPage = () => {
-    const initPagination = {
-        page : 1,
-        size : 6,
-        direction : 'ASC'
-    }
     const [orderType, setOrderType] = useState(null);
     const [categoriesId, setCategoriesId] = useState([]);
     const [keyword, setKeyword] = useState('');

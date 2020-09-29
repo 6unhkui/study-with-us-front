@@ -4,11 +4,12 @@ import PropTypes from "prop-types";
 import {Button, Input, Row, Col, Comment} from 'antd';
 const { TextArea } = Input;
 
-const CommentEditor = ({ avatar, onChange, value, onSubmit, submitText}) => {
-    const style = {
-        minHeight : '70px'
-    }
 
+const style = {
+    minHeight : '70px'
+}
+
+const CommentEditor = ({ avatar, onChange, value, onSubmit, submitText}) => {
     return (
         <Comment avatar={avatar}
                  content={

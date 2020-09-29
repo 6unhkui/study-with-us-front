@@ -14,21 +14,21 @@ const Sidebar = (props) => {
     const {room} = props;
     const [joinModalVisible, setJoinModalVisible] = useState(false);
 
-    const writeBtn = () => (
+    const writeBtn = (
         <Link to={{pathname : `/room/${props.id}/post/write`,
             state : {from: props.location, name : room.name, currentAccount : room.currentAccount}}}>
             <EditOutlined/>
         </Link>
     )
 
-    const settingBtn = () => (
+    const settingBtn =  (
         <Link to={{pathname : `/room/${props.id}/setting`,
             state : {from: props.location, name : room.name, currentAccount : room.currentAccount}}}>
             <SettingOutlined/>
         </Link>
     )
 
-    const joinBtn = () => (
+    const joinBtn = (
         <>
             <Button type="link" onClick={() => {setJoinModalVisible(true)}}>
                 <FontAwesomeIcon icon={faSignInAlt} style={{marginRight : '6px'}}/>스터디방 가입하기
@@ -46,9 +46,9 @@ const Sidebar = (props) => {
 
     const cardActionItems = () => {
         if(room.currentAccount.member) {
-            return [writeBtn(), settingBtn()]
+            return [writeBtn, settingBtn]
         }else {
-            return [joinBtn()];
+            return [joinBtn];
         }
     }
 
@@ -71,7 +71,7 @@ const Sidebar = (props) => {
                         <SectionTitle>Member</SectionTitle>
                         <span>
                             <UserOutlined style={{marginRight : '8px'}}/>
-                            {room.joinCount + (room.unlimited ? '' : ' / ' + room.maxCount) + ' members'}
+                            {room.joinCount + (room.unlimited ? '' : ' / ' + room.maxCount) + ' member' + (room.joinCount > 1 ? 's' : '')}
                         </span>
                     </SectionWrap>
 

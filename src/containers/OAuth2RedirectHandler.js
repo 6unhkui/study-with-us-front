@@ -22,17 +22,19 @@ const OAuth2RedirectHandler = (props) => {
         });
 
         return <Redirect to={{
-                pathname: "/",
-                state: { from: props.location }
-        }}/>; 
+                    pathname: "/",
+                    state: { from: props.location }
+                 }}
+               />;
     }else {
         return <Redirect to={{
-                pathname: "/login",
-                state: {
-                    from: props.location,
-                    error : error
-                }
-        }}/>; 
+                    pathname: "/login",
+                    state: {
+                        from: props.location,
+                        error : error
+                    }
+                  }}
+                />;
     }
 }
 

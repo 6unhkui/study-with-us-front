@@ -6,11 +6,11 @@ import styled from 'styled-components';
 import Avatar from 'components/Avatar';
 
 import { Typography, Divider} from 'antd';
-import {CommentOutlined, LikeOutlined, PaperClipOutlined} from '@ant-design/icons';
+import {CommentOutlined, PaperClipOutlined} from '@ant-design/icons';
 
 const { Title, Text, Paragraph} = Typography;
 
-export default function PostCard({postId, title, content, writer, createdDate, thumbnail, commentCount, fileCount, likeCount} ) {
+export default function PostCard({postId, title, content, writer, createdDate, thumbnail, commentCount, fileCount} ) {
 
     const thumbnailSection = (
       <ThumbnailWrap>

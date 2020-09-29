@@ -9,7 +9,7 @@ import { CloseOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
-export default function LayerPopup({title, size, setLayerOpen, children, loading = false}) {
+export default function LayerPopup({title, size, setLayerOpen, children, loading}) {
     return (
         <LayerWrap>
             <Layer size={size}>
@@ -31,14 +31,16 @@ LayerPopup.propTypes = {
     title : PropTypes.string,
     size : PropTypes.string,
     setLayerOpen : PropTypes.func.isRequired,
-    children : PropTypes.node
+    children : PropTypes.node,
+    loading : PropTypes.bool
 };
 
 LayerPopup.defaultProps = {
     title : '',
     size : '60vw',
-    setLayerOpen : (val) => { console.error("layer open function is not defined"); },
-    children : <div>content</div>
+    setLayerOpen : () => { console.error("layer open function is not defined"); },
+    children : <div>content</div>,
+    loading : false
 };
 
 

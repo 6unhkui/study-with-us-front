@@ -1,16 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {http} from 'utils/HttpHandler';
 import { useTranslation } from 'react-i18next';
+import {useDispatch, useSelector} from "react-redux";
+import {LOAD_ACCOUNT_REQUEST} from "store/modules/account";
 
-import { Typography, Badge, Divider, Tabs} from 'antd';
-
-import Loading from 'components/Loading';
 import EditAccountInfo from './Sections/EditAccountInfo';
 import ChangePassword from './Sections/ChangePassword';
 import DeleteAccount from './Sections/DeleteAccount';
-import {useDispatch, useSelector} from "react-redux";
-import {LOAD_ACCOUNT_REQUEST} from "store/modules/account";
+
+import { Typography, Badge, Tabs} from 'antd';
 
 const { Title } = Typography;
 const { TabPane } = Tabs;

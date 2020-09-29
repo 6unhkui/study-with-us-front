@@ -13,12 +13,11 @@ import {LOAD_CATEGORIES_REQUEST} from "store/modules/category";
 function Layer(props) {
     const [selected, setSelected] = useState(props.selected || []);
 
-    const handleCheckboxChange = e => {
+    const handleCheckboxChange = useCallback( e => {
         if(e.target.checked) {
             setSelected(selected.concat(e.target.value));
         }else setSelected(selected.filter(val => val !== e.target.value))
-    }
-
+    }, [selected]);
 
     return (
         <LayerPopup title="카테고리 선택" setLayerOpen={props.setLayerOpen} size="400px" loading={props.loading}>

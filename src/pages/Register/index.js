@@ -3,21 +3,7 @@ import { useTranslation } from 'react-i18next';
 import RegisterForm from './Sections/RegisterForm';
 import Success from './Sections/Success';
 
-import { Typography, Steps, Card } from 'antd';
-
-const { Title } = Typography;
-const { Step } = Steps;
-
-const steps = [
-    {
-        title: 'First',
-        content: 'First-content',
-    },
-    {
-        title: 'Second',
-        content: 'Second-content',
-    },
-];
+import CardWrap from "../../components/Layout/Main/Card";
 
 export default function RegisterPage() {
     const { t } = useTranslation();
@@ -25,13 +11,10 @@ export default function RegisterPage() {
     const [user, setUser] = useState({name : ''});
 
     return (
-      <div className="bg-gray">
-        <div className="container content-wrap">
-          <div className="card-wrap card-width-small">
-            <Title>{t('auth.createAccount')}</Title>
-            {success ? <Success user={user}/> : <RegisterForm success={{setSuccess}} user={{setUser}}/>}
-          </div>
-        </div>
-      </div>
+        <CardWrap title={t('auth.createAccount')} size={'small'}>
+            {success ?
+                <Success user={user}/> :
+                <RegisterForm success={{setSuccess}} user={{setUser}}/>}
+        </CardWrap>
     )
 }

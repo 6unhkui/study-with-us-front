@@ -1,13 +1,13 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import { http } from 'utils/HttpHandler';
+import React, {useState, useCallback} from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from "styled-components";
-import { Form, Input, Row, Col, Checkbox, Button, message} from 'antd';
-
-import {PasswordRegex} from "utils/Form/FormValidation";
-import AgreeLayer from './AgreeLayer';
 import {useDispatch, useSelector} from "react-redux";
 import {CHECK_DUPLICATED_ACCOUNT_REQUEST, REGISTER_REQUEST} from "store/modules/account";
+import {PasswordRegex} from "utils/Form/FormValidation";
+
+import { Form, Input, Row, Col, Checkbox, Button} from 'antd';
+
+import AgreeLayer from './AgreeLayer';
 
 
 export default function RegisterForm(props) {
@@ -33,8 +33,6 @@ export default function RegisterForm(props) {
         email : values.email.trim(),
       }
 
-      console.log(duplicateCheckCompleted, isDuplicateAccount)
-
       if(duplicateCheckCompleted && !isDuplicateAccount) {
           dispatch({
               type : REGISTER_REQUEST,
@@ -54,7 +52,7 @@ export default function RegisterForm(props) {
               },
           ]);
       }
-    }, []);
+    }, [duplicateCheckCompleted, isDuplicateAccount]);
 
 
     const handleCheckDuplicateEmail = useCallback( () => {
@@ -82,7 +80,7 @@ export default function RegisterForm(props) {
               }
           })
       }
-    }, []);
+    }, [duplicateCheckCompleted]);
 
     return (
       <>
