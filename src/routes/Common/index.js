@@ -18,6 +18,7 @@ import CreateStudyRoom from 'pages/CreateStudyRoom';
 
 import RoomDetail from 'pages/RoomDetail';
 import AddPost from 'pages/AddPost';
+import Chatting from "pages/Chatting";
 import SettingRoom from 'pages/SettingRoom';
 
 import PostView from 'pages/PostView';
@@ -44,6 +45,7 @@ export default [
 
     <Route path="/room/:id/post/write" component={Auth(AddPost, true)} />,
     <Route path="/room/:id/setting" component={Auth(SettingRoom, true)} />,
+    <Route path="/room/:id/chatting" component={Auth(Chatting, true)} />,
     <Route path="/room/:id" component={Auth(RoomDetail, true)} />,
 
     <Route path="/post/:id/edit" component={Auth(EditPost, true)} />,

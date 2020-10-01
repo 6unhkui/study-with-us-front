@@ -1,12 +1,15 @@
 import React from 'react';
 import { http } from 'utils/HttpHandler';
+import {useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import CardWrap from "components/Layout/Main/Card";
 
-import { Button, Divider} from 'antd';
-import CardWrap from "../components/Layout/Main/Card";
+import { Button} from 'antd';
 
 const SettingRoom = (props) => {
     const roomId = props.match.params.id;
-    const {name, currentAccount} = props.location.state;
+    const history = useHistory();
+    const { roomDetail : {name, currentAccount} } = useSelector(state => state.room);
 
     const handleDeleteMember = () => {
       if(currentAccount.role === 'MANAGER') {
@@ -15,7 +18,7 @@ const SettingRoom = (props) => {
       }
       http.delete(`/api/v1/room/${props.match.params.id}`)
       .then(response => {
-        props.history.push("/");
+        history.push("/");
       })
     }
 

@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
+import breakpoint from 'styled-components-breakpoint';
 import { SERVER_URI } from 'constants/index';
-
 import {Row, Col, Card, Affix, message} from 'antd';
 
 import {useDispatch, useSelector} from "react-redux";
@@ -15,22 +15,38 @@ import AccessMemberOnly from './Sections/AccessMemberOnly';
 import PostsPage from 'containers/PostsByRoom';
 import MembersPage from 'containers/MembersByRoom';
 import AttendanceCheck from "../AttendanceCheck";
+import {useTabs} from "../../hooks/useTabs";
+
 
 
 const RoomDetailPage = (props) => {
+    const tabItems = [
+        {
+            tab : '게시글',
+            content : <PostsPage {...props}/>,
+        },
+        {
+            tab : '멤버',
+            content : <MembersPage {...props}/>,
+        },
+        {
+            tab : '출석체크',
+            content : <AttendanceCheck/>
+        }
+    ]
+
     const roomId = props.match.params.id;
     const dispatch = useDispatch();
     const { loadingRoomDetail, roomDetail, joinedRoom } = useSelector(state => state.room);
-    const [tabKey, setTabKey] = useState(0);
-
     const {coverImage, currentAccount, unlimited, joinCount, maxCount} = useSelector(state => state.room.roomDetail);
+    const {currentItem, changeItem} = useTabs(0, tabItems);
 
     useEffect(() => {
         dispatch({
             type : LOAD_ROOM_DETAIL_REQUEST,
             data : roomId
         })
-    }, [dispatch, roomId, joinedRoom === true]);
+    }, [dispatch, roomId, joinedRoom]);
 
 
     const handleJoin = useCallback(() => {
@@ -52,15 +68,10 @@ const RoomDetailPage = (props) => {
     }, [unlimited, joinCount, maxCount, dispatch, roomId]);
 
 
-    const tabItems = [
-        <PostsPage {...props} currentAccount={currentAccount} />,
-        <MembersPage {...props} currentAccount={currentAccount} />,
-        <AttendanceCheck/>
-    ]
-
     if(loadingRoomDetail) {
         return (<Loading/>)
     }else {
+
         return (
             <div className='bg-gray'>
                 <CoverWrap className='bg-gray'>
@@ -72,18 +83,17 @@ const RoomDetailPage = (props) => {
                     <ContentWrap>
                         <Row gutter={[16, 26]}>
                             <Col xs={24} md={8} lg={7}>
-                                <Affix offsetTop={100}>
-                                    <Sidebar room={roomDetail}
-                                             id={roomId}
-                                             location={props.location}
-                                             join={handleJoin}
-                                    />
-                                </Affix>
+                                <Sidebar id={roomId}
+                                         location={props.location}
+                                         room={roomDetail}
+                                         join={handleJoin}
+                                />
                             </Col>
                             <Col xs={24} md={16} lg={17}>
-                                <Card tabList={[{key : 0, tab : '게시글'},{ key : 1, tab : '멤버'},{key : 2, tab : '출석체크'}]}
-                                      defaultActiveTabKey={tabKey} onTabChange={(key) => setTabKey(key)}>
-                                    {currentAccount.member ? tabItems[tabKey] : <AccessMemberOnly/>}
+                                <Card tabList={tabItems.map((item, i) => {return {...item, key : i}})}
+                                      defaultActiveTabKey={0}
+                                      onTabChange={key => changeItem(key)}>
+                                    {currentAccount.member ? currentItem.content : <AccessMemberOnly/>}
                                 </Card>
                             </Col>
                         </Row>
@@ -97,7 +107,14 @@ const RoomDetailPage = (props) => {
 export default RoomDetailPage;
 
 const CoverWrap = styled.div`
-    height : 22rem;
+    ${breakpoint('tablet')`
+        height : 22rem;
+    `}
+    
+    ${breakpoint('mobile')`
+        height : 8rem;
+    `}
+    
     text-align : center;
 
     img {
@@ -112,7 +129,14 @@ const CoverWrap = styled.div`
 `
 
 const ContentWrap = styled.div`
-    padding : 3rem 0;
+    ${breakpoint('tablet')`
+        padding : 3rem 0;
+    `}
+    
+    ${breakpoint('mobile')`
+        padding : 1rem 0;
+    `}
+    
     /* margin-top: 3rem;
     padding-bottom: 3rem; */
 `

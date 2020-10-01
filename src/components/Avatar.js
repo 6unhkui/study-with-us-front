@@ -17,7 +17,8 @@ export default function Avater ({size, style, showName, subText, user, loading})
                             backgroundColor: !profileImg && stringToColor(name),
                             ...style}}
                     alt="referrerPolicy='no-referrer'"
-                    className={subText && 'include-subtext'}>
+                    className={subText && 'include-subtext'}
+            >
                     {loading ? <LoadingOutlined spin/> : name.charAt(0).toLocaleUpperCase()}
             </Avatar>
             <Metadata>
@@ -39,6 +40,7 @@ Avatar.propTypes = {
 };
 
 Avatar.defaultProps = {
+    showName : false,
     user : {
         name : '',
         profileImg : ''

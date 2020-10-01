@@ -8,12 +8,11 @@ import {LOAD_POST_DETAIL_REQUEST, DELETE_POST_REQUEST} from "store/modules/post"
 import {useHistory} from "react-router-dom";
 import {SERVER_URI} from "constants/index";
 import {bytesToSize} from "utils/File";
-
+import CardWrap from "components/Layout/Main/Card";
 import Comments from "components/Comments";
 
-import {Divider, Dropdown, Menu, Typography, PageHeader, List, Modal} from 'antd';
+import {Divider, Dropdown, Menu, Typography, List, Modal} from 'antd';
 import { EllipsisOutlined, DeleteOutlined,  EditOutlined, PaperClipOutlined} from '@ant-design/icons';
-import CardWrap from "../components/Layout/Main/Card";
 
 const { Title } = Typography;
 
@@ -21,8 +20,7 @@ const PostView = (props) => {
     const postId = props.match.params.id;
     const history = useHistory();
     const dispatch = useDispatch();
-    const { postDetail } = useSelector(state => state.post);
-    const { writer } = useSelector(state => state.post.postDetail);
+    const { postDetail, postDetail : {writer} } = useSelector(state => state.post);
     const { me } = useSelector(state => state.account);
 
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -103,7 +101,7 @@ const PostView = (props) => {
                 {ReactHtmlParser(postDetail.content)}
             </ContentWrap>
 
-            {postDetail.files &&
+            {postDetail.files && postDetail.files.length > 0 &&
             <List grid={{gutter: 20, column: 1}}
                   dataSource={postDetail.files}
                   style={{marginTop: '3rem'}}

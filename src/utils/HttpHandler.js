@@ -1,6 +1,12 @@
 import axios from 'axios';
 import { SERVER_URI, ACCESS_TOKEN, BEARER_TOKEN_PREFIX, MULTI_LANG } from 'constants/index';
 
+export const header = () => {
+    return {
+        'Authorization': `${BEARER_TOKEN_PREFIX} ${localStorage.getItem(ACCESS_TOKEN) ? localStorage.getItem(ACCESS_TOKEN) : undefined}`
+    }
+}
+
 /**
  * Axios Interceptor - s /////////////////////////////////////
  */

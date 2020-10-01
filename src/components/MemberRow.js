@@ -1,21 +1,27 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Avatar from 'components/Avatar';
 import { List, Skeleton } from 'antd';
 import {SettingOutlined} from '@ant-design/icons';
+import {useSelector} from "react-redux";
 
 export default function MemberRow({loading, account, currentAccount}) {
+  const { me } = useSelector(state => state.account);
+  const { role } = currentAccount;
+  const { accountId } = account;
+  const [hasEditPermission, setHasEditPermission] = useState(false);
 
-  const cardActionItems = () => {
-    const {role} = currentAccount;
-    if(role === "MANAGER")
-        return [<SettingOutlined />];
+  useEffect(() => {
+      if(role === "MANAGER" || accountId == me.accountId) {
+          setHasEditPermission(true)
+      }
+  }, [accountId, me.accountId, role]);
 
-    return null;
-  }
 
   return (
-    <List.Item actions={cardActionItems()}>
+    <List.Item actions={
+            [hasEditPermission && <SettingOutlined />]
+    }>
         <Skeleton avatar title={false} loading={loading} active>
         <List.Item.Meta
             avatar={<Avatar user={account}/>}

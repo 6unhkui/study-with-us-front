@@ -6,11 +6,11 @@ import {PageHeader, Typography} from 'antd';
 import {useHistory} from "react-router-dom";
 const { Title } = Typography;
 
-const Card = ({title, size, pageHeader, children}) => {
+const Card = ({title, size, pageHeader, children, style}) => {
     const history = useHistory();
     return (
         <Background>
-            <div className="container content-wrap">
+            <div className="container content-wrap" {...style}>
                 <CardWrap size={size}>
                     {title && <Title>{title}</Title>}
                     {pageHeader &&
@@ -18,6 +18,7 @@ const Card = ({title, size, pageHeader, children}) => {
                             onBack={() => history.push(`${pageHeader.backUrl}`)}
                             title={pageHeader.title}
                             style={{padding : '0', marginBottom : '1rem'}}
+                            subTitle={pageHeader.subTitle}
                         />
                     }
                     {children}
@@ -38,6 +39,7 @@ const CardWrap = styled.div`
     border-radius : var(--border-radius);
     background : #fff;
     margin : 0 auto;
+    min-height: 30rem;
     
     ${({ size }) => {
         if(size === 'small') {

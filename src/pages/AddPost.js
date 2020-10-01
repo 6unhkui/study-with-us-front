@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import { useHistory } from "react-router-dom";
 
-import { PageHeader, Divider} from 'antd';
+import { PageHeader } from 'antd';
 import CreateForm from 'containers/PostForm';
 import {useDispatch, useSelector} from "react-redux";
 import {ADD_POST_REQUEST} from "../store/modules/post";
@@ -12,7 +12,7 @@ const AddPost = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
     const { roomDetail } = useSelector(state => state.room);
-    const {isAddingPost} = useSelector(state => state.post);
+    const { isAddingPost } = useSelector(state => state.post);
 
     const handleSubmit = useCallback( (values, content, fileList) => {
         const data = {
@@ -36,11 +36,11 @@ const AddPost = (props) => {
             data,
             meta: {
                 callbackAction : () => {
-                    props.history.push(`room/${roomDetail.roomId}`)
+                    history.push(`room/${roomDetail.roomId}`)
                 }
             }
         });
-    }, [dispatch, props.history, roomDetail.roomId, roomId]);
+    }, [dispatch, history, roomDetail.roomId, roomId]);
 
 
     return (

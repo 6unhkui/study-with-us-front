@@ -25,9 +25,20 @@ function addPostAPI(roomId, data) {
     return http.post(`/api/v1/room/${roomId}/post`, data);
 }
 
-function uploadAttachmentAPI(fileList) {
-    console.log(fileList);
-    return http.post(`/api/v1/files/attachment`, fileList, {'Content-type': 'multipart/form-data;charset=utf-8'});
+function uploadAttachmentAPI(fileGroupId, fileList) {
+    let param = '';
+    if(fileGroupId) {
+        param = `?fileGroupId=${fileGroupId}`;
+    }
+    return http.post(`/api/v1/files/attachment${param}`, fileList, {'Content-type': 'multipart/form-data;charset=utf-8'});
+}
+
+// function uploadMoreAttachmentAPI(fileGroupId, fileList) {
+//     return http.post(`/api/v1/files/attachment/${fileGroupId}`, fileList, {'Content-type': 'multipart/form-data;charset=utf-8'});
+// }
+
+function updatePostAPI(postId, data) {
+    return http.put(`/api/v1/post/${postId}`, data);
 }
 
 function deletePostAPI(postId) {
@@ -105,7 +116,7 @@ function* addPost(action){
 
         // 첨부 파일이 존재하면, 썸네일 이미지를 먼저 업로드 한 후 pk 값을 받아온다.
         if(files) {
-            const result = yield call(uploadAttachmentAPI, files);
+            const result = yield call(uploadAttachmentAPI, null, files);
             post.fileGroupId = result.data.data.fileGroupId;
         }
 
@@ -127,6 +138,41 @@ function* addPost(action){
 
 function* watchAddPost() {
     yield takeLatest(ADD_POST_REQUEST, addPost)
+}
+
+// 포스트 작성 ///////////////////////////////////
+function* updatePost(action){
+    try {
+        const {post, postId, fileGroupId, delFiles, files} = action.data;
+
+        if(delFiles) {
+            post.delFiles = delFiles;
+            post.fileGroupId = fileGroupId;
+        }
+
+        if(files) {
+            const result = yield call(uploadAttachmentAPI, fileGroupId, files);
+            post.fileGroupId = result.data.data.fileGroupId;
+        }
+
+        let result = yield call(updatePostAPI, postId, post);
+        yield put({
+            type : UPDATE_POST_SUCCESS,
+            data : result.data.data
+        })
+
+        action.meta.callbackAction();
+    }catch(e) {
+        console.error(e);
+        yield put({
+            type : UPDATE_POST_FAILURE,
+            error : e
+        })
+    }
+}
+
+function* watchUpdatePost() {
+    yield takeLatest(UPDATE_POST_REQUEST, updatePost)
 }
 
 
@@ -253,6 +299,7 @@ export default function* postSaga() {
         fork(watchLoadPosts),
         fork(watchLoadPostDetail),
         fork(watchAddPost),
+        fork(watchUpdatePost),
         fork(watchDeletePost),
         fork(watchLoadComments),
         fork(watchAddComment),
