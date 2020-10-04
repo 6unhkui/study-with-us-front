@@ -7,11 +7,15 @@ import { ChatFeed, Message } from 'react-chat-ui'
 import {SERVER_URI} from 'constants/index';
 import {header} from 'utils/HttpHandler';
 import { Input, Badge } from 'antd';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import ChatMessage from "components/ChatMessage";
-import SockJS from "sockjs-client";
-import webstomp from "webstomp-client";
+import {http} from 'utils/HttpHandler';
+import {LOAD_MESSAGE_HISTORY_REQUEST, ADD_CHAT_MESSAGE} from 'store/modules/chat';
 
+import { Tooltip, Avatar as AntAvatar, Button } from 'antd';
+import {UserOutlined} from '@ant-design/icons';
+import ChatMember from "components/ChatMember";
+import Avater from "../components/Avatar";
 
 const sendType = {
     enter: "ENTER",
@@ -21,22 +25,48 @@ const sendType = {
 
 const Chatting = (props) => {
     const roomId = props.match.params.id;
-    const $websocket = useRef (null);
-    const { me, me : {accountId, name} } = useSelector(state => state.account);
+    const dispatch = useDispatch();
+    const $websocket = useRef(null);
+    const $messageList = useRef(null);
+    const { me, me : {accountId} } = useSelector(state => state.account);
     const { roomDetail } = useSelector(state => state.room);
+    const {chatMessages } = useSelector(state => state.chat);
     const [clientConnected, setClientConnected] = useState(false);
     const [inputMessage, setInputMessage] = useState('');
-    const [isTyping, setIsTyping] = useState(true);
-    const [messages, setMessages] = useState([]);
+    const [memberCount, setMemberCount] = useState(1);
+    const [chatMemberLayerOpen, setChatMemberLayerOpen] = useState(false);
+
+    useEffect(() => {
+        dispatch({
+            type : LOAD_MESSAGE_HISTORY_REQUEST,
+            data : roomId
+        })
+    }, [roomId, clientConnected === true]);
+
+    useEffect(() => {
+        const lastMessage = chatMessages[chatMessages.length - 1];
+        setMemberCount(lastMessage && lastMessage.memberCount ? lastMessage.memberCount : memberCount)
+    }, [chatMessages]);
 
 
+    useEffect(() => {
+        scrollToBottom();
+    }, [chatMessages])
+
+    const scrollToBottom = () => {
+        $messageList.current.scrollIntoView({block: 'end', behavior: 'smooth'});
+    };
+
+    const handleLayerOpen = useCallback( isOpen => {
+        setChatMemberLayerOpen(isOpen);
+    }, []);
 
     const sendMessage = useCallback((message, type = sendType.talk) => {
         try {
             if(message.length > 0) {
                 const send = {
                     roomId,
-                    messageType : type,
+                    type,
                     sender : {...me},
                     message
                 }
@@ -51,34 +81,49 @@ const Chatting = (props) => {
     }, []);
 
 
-    const onMessageReceive = useCallback(msg => {
-        setMessages(messages.concat({
-            ...msg
-        }))
-    }, [messages])
+    const onMessageReceive = useCallback(message => {
+        dispatch({
+            type : ADD_CHAT_MESSAGE,
+            data : message
+        })
+    }, [dispatch]);
 
 
     return (
-        <CardWrap pageHeader={{title : roomDetail && roomDetail.name,
-                              backUrl : `/room/${roomId}`,
-                              subTitle : (clientConnected ? <Badge status='success' text='Connected'/> : <Badge status='error' text='Error'/>)
-        }}
-        >
-            <SockJsClient url={`${SERVER_URI}/chatting`}
-                          headers={header()}
-                          subscribeHeaders={header()}
-                          topics={[`/sub/chat/room/${roomId}`]}
-                          onMessage={onMessageReceive}
-                          onConnect={() => {setClientConnected(true)}}
-                          onDisconnect={() => {setClientConnected(false)}}
-                          ref={$websocket}
-                          debug={true}
-            />
+        <>
+            {chatMemberLayerOpen && <ChatMember setLayerOpen={handleLayerOpen} roomId={roomId}/>}
+
+            <CardWrap pageHeader={{title : roomDetail && roomDetail.name,
+                                  backUrl : `/room/${roomId}`,
+                                  extra : (clientConnected ?
+                                            <Button onClick={() => {handleLayerOpen(true)}}>
+                                                <UserOutlined />{memberCount + '명 참여중'}
+                                            </Button> :
+                                            <Badge status='error' text='Disconnected'/>)
+            }}>
+
+                <SockJsClient url={`${SERVER_URI}/chatting`}
+                            headers={header()}
+                            subscribeHeaders={header()}
+                            topics={[`/sub/chat/room/${roomId}`]}
+                            onMessage={onMessageReceive}
+                            onConnect={() => {
+                                setClientConnected(true)
+                            }}
+                            onDisconnect={() => {
+                                setClientConnected(false)
+                            }}
+                            ref={$websocket}
+                            debug={true}
+                />
 
             <ChatMessageWrap>
-                {messages.map(msg =>
-                    <ChatMessage {...msg} isSelfMessage={accountId===msg.sender.accountId}/>
+                {chatMessages.map((message, i) =>
+                    <ChatMessage key={i}
+                                 isSelfMessage={accountId === message.sender.accountId}
+                                 {...message}/>
                 )}
+                <span ref={$messageList}/>
             </ChatMessageWrap>
 
             <ChatInputWrap>
@@ -88,7 +133,8 @@ const Chatting = (props) => {
                        onPressEnter={() => sendMessage(inputMessage, sendType.talk)}
                 />
             </ChatInputWrap>
-        </CardWrap>
+            </CardWrap>
+        </>
     )
 }
 

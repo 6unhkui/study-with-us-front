@@ -19,6 +19,7 @@ const Card = ({title, size, pageHeader, children, style}) => {
                             title={pageHeader.title}
                             style={{padding : '0', marginBottom : '1rem'}}
                             subTitle={pageHeader.subTitle}
+                            extra={pageHeader.extra}
                         />
                     }
                     {children}

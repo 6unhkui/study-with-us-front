@@ -71,7 +71,7 @@ const MembersByRoom = (props) => {
                 itemLayout="horizontal"
                 dataSource={members}
                 renderItem={item => (
-                    <MemberRow currentAccount={roomDetail.currentAccount} account={item} loading={item.loading}/>
+                    <MemberRow showSettingBtn={true} account={item} loading={item.loading}/>
                 )}
             />
         </ContentWrap>

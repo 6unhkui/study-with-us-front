@@ -3,19 +3,14 @@ import styled, { css } from "styled-components";
 import Avater from "./Avatar";
 import {timeForToday} from 'utils/Date';
 
-const senderType = {
-    bot : "BOT",
-    member : "MEMBER",
-}
-
-const ChatMessage = ({sender, message, isSelfMessage, senderType, timestamp}) => {
-    if(senderType === "BOT") {
+const ChatMessage = ({sender, message, isSelfMessage, timestamp, type}) => {
+    if(type !== "TALK") {
         return (
             <BotMessageWrap>{message}</BotMessageWrap>
         )
     }
 
-    if(!isSelfMessage) {
+    if(isSelfMessage) {
         return (
             <ChatMessageWrap position='right'>
                 <MyBubbleWrap>
@@ -58,7 +53,7 @@ const BotMessageWrap = styled.div`
     margin: 10px auto;
     background-color: var(--bg-gray);
     padding: 4px 10px;
-    border-radius: 8px;
+    border-radius: 30px;
     font-size : .8rem;
     color : var(--primary-color);
 `
@@ -83,7 +78,6 @@ const MyBubble = styled.div`
 
 const MyBubbleWrap = styled.div`
     display: inline-block;
-    max-width: calc(50% - 20px);
     position : relative;
     top: -4px;
     margin-left: auto;

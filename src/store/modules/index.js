@@ -8,6 +8,7 @@ import category from "./category"
 import room from "./room";
 import post from "./post";
 import member from "./member";
+import chat from "./chat";
 
 // persist config
 const persistConfig = {
@@ -28,7 +29,8 @@ const rootReducer = combineReducers({
   category,
   room,
   post,
-  member
+  member,
+  chat
 });
 
 export default persistReducer(persistConfig, rootReducer);
