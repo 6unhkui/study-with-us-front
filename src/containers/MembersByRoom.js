@@ -8,19 +8,18 @@ import MemberRow from 'components/MemberRow';
 import {Button, Input, List} from 'antd';
 const { Search } = Input;
 
-const initPagination = {
-    page : 1,
-    size : 6,
-    direction : 'ASC'
-}
+
 const MembersByRoom = (props) => {
+    const initPagination = {
+        page : 1,
+        size : 6,
+        direction : 'ASC'
+    }
     const roomId = props.match.params.id;
     const dispatch = useDispatch();
-    const { roomDetail } = useSelector(state => state.room);
     const { members, loadingMembers, hasMoreMembers} = useSelector(state => state.member);
     const [keyword, setKeyword] = useState('');
     const [pagination, setPagination] = useState(initPagination);
-
 
     useEffect(() => {
         dispatch({
@@ -66,12 +65,12 @@ const MembersByRoom = (props) => {
 
             <List
                 loading={loadingMembers}
-                loadMore={hasMoreMembers ?
-                    (<MoreBtnWrap><Button ghost type="primary" onClick={handleLoadMore}>load more</Button></MoreBtnWrap>) : null}
+                loadMore={hasMoreMembers &&
+                        <MoreBtnWrap><Button ghost type="primary" onClick={handleLoadMore}>load more</Button></MoreBtnWrap>}
                 itemLayout="horizontal"
                 dataSource={members}
                 renderItem={item => (
-                    <MemberRow showSettingBtn={true} account={item} loading={item.loading}/>
+                    <MemberRow member={item} loading={loadingMembers} showView={true}/>
                 )}
             />
         </ContentWrap>
