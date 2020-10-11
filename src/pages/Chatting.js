@@ -1,28 +1,23 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import SockJsClient from 'react-stomp';
 import styled from "styled-components";
-import { TalkBox } from "react-talk";
 import CardWrap from "../components/Layout/Main/Card";
-import { ChatFeed, Message } from 'react-chat-ui'
 import {SERVER_URI} from 'constants/index';
 import {header} from 'utils/HttpHandler';
-import { Input, Badge } from 'antd';
 import {useDispatch, useSelector} from "react-redux";
-import ChatMessage from "components/ChatMessage";
-import {http} from 'utils/HttpHandler';
 import {LOAD_MESSAGE_HISTORY_REQUEST, ADD_CHAT_MESSAGE} from 'store/modules/chat';
-
-import { Tooltip, Avatar as AntAvatar, Button } from 'antd';
-import {UserOutlined} from '@ant-design/icons';
+import ChatMessage from "components/ChatMessage";
 import ChatMember from "components/ChatMember";
-import Avater from "../components/Avatar";
+
+import { Input, Badge, Button } from 'antd';
+import {UserOutlined, SendOutlined} from '@ant-design/icons';
+const {Search} = Input;
 
 const sendType = {
     enter: "ENTER",
     quit : "QUIT",
     talk : "TALK"
 }
-
 const Chatting = (props) => {
     const roomId = props.match.params.id;
     const dispatch = useDispatch();
@@ -127,10 +122,13 @@ const Chatting = (props) => {
             </ChatMessageWrap>
 
             <ChatInputWrap>
-                <Input placeholder="채팅을 입력해주세요."
-                       value={inputMessage}
-                       onChange={e => {setInputMessage(e.target.value)}}
-                       onPressEnter={() => sendMessage(inputMessage, sendType.talk)}
+                <Search
+                    placeholder="채팅을 입력해주세요."
+                    enterButton={<SendOutlined />}
+                    size="large"
+                    value={inputMessage}
+                    onChange={e => {setInputMessage(e.target.value)}}
+                    onSearch={() => sendMessage(inputMessage, sendType.talk)}
                 />
             </ChatInputWrap>
             </CardWrap>

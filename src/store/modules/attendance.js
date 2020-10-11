@@ -1,8 +1,8 @@
 import produce from 'immer';
 
 const initialState = {
-    loadingMonthlyStatistics : false, // 월별 출석 기록 데이터
-    monthlyStatistics : [],
+    loadingMembersStatistics : false, // 월별 출석 기록 데이터
+    MembersStatistics : [],
 
     loadingMembersAttendance : false, // 금일 출석 멤버 리스트
     membersAttendance : [],
@@ -14,9 +14,9 @@ const initialState = {
 
 
 // Actions
-export const LOAD_MONTHLY_STATISTIC_REQUEST = 'LOAD_MONTHLY_STATISTIC_REQUEST';
-export const LOAD_MONTHLY_STATISTIC_SUCCESS = 'LOAD_MONTHLY_STATISTIC_SUCCESS';
-export const LOAD_MONTHLY_STATISTIC_FAILURE = 'LOAD_MONTHLY_STATISTIC_FAILURE';
+export const LOAD_MEMBERS_STATISTIC_REQUEST = 'LOAD_MEMBERS_STATISTIC_REQUEST';
+export const LOAD_MEMBERS_STATISTIC_SUCCESS = 'LOAD_MEMBERS_STATISTIC_SUCCESS';
+export const LOAD_MEMBERS_STATISTIC_FAILURE = 'LOAD_MEMBERS_STATISTIC_FAILURE';
 
 export const LOAD_MEMBERS_ATTENDANCE_TODAY_REQUEST = 'LOAD_MEMBERS_ATTENDANCE_TODAY_REQUEST';
 export const LOAD_MEMBERS_ATTENDANCE_TODAY_SUCCESS = 'LOAD_MEMBERS_ATTENDANCE_TODAY_SUCCESS';
@@ -30,17 +30,17 @@ export const REGISTER_ATTENDANCE_FAILURE = 'REGISTER_ATTENDANCE_FAILURE';
 const member = (state = initialState, action) => {
     return produce(state, (draft) => {
         switch (action.type) {
-            case LOAD_MONTHLY_STATISTIC_REQUEST : {
-                draft.loadingMonthlyStatistics = true;
+            case LOAD_MEMBERS_STATISTIC_REQUEST : {
+                draft.loadingMembersStatistics = true;
                 break;
             }
-            case LOAD_MONTHLY_STATISTIC_SUCCESS : {
-                draft.loadingMonthlyStatistics = false;
-                draft.monthlyStatistics = action.data;
+            case LOAD_MEMBERS_STATISTIC_SUCCESS : {
+                draft.loadingMembersStatistics = false;
+                draft.MembersStatistics = action.data;
                 break;
             }
-            case LOAD_MONTHLY_STATISTIC_FAILURE : {
-                draft.loadingMonthlyStatistics = false;
+            case LOAD_MEMBERS_STATISTIC_FAILURE : {
+                draft.loadingMembersStatistics = false;
                 break;
             }
             case LOAD_MEMBERS_ATTENDANCE_TODAY_REQUEST : {

@@ -23,9 +23,12 @@ const RegisterAttendance = ({roomId, setLayerOpen}) => {
             <Form name="registerForm"
                   style={{textAlign : 'center'}}
                   onFinish={handleSubmit}
+                  initialValues={{
+                      memo : "오늘도 출석 완료 (๑˃̵ᴗ˂̵)"
+                  }}
             >
                 <Form.Item name="memo">
-                    <Input.TextArea style={{minHeight : '100px', maxHeight : '100px'}} />
+                    <Input/>
                 </Form.Item>
                 <Form.Item>
                     <Button htmlType="submit" type="primary">

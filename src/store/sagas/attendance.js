@@ -1,18 +1,18 @@
 import {all, fork, takeEvery, put, call, takeLatest} from 'redux-saga/effects';
 import {
-    LOAD_MONTHLY_STATISTIC_REQUEST, LOAD_MONTHLY_STATISTIC_SUCCESS, LOAD_MONTHLY_STATISTIC_FAILURE,
+    LOAD_MEMBERS_STATISTIC_REQUEST, LOAD_MEMBERS_STATISTIC_SUCCESS, LOAD_MEMBERS_STATISTIC_FAILURE,
     LOAD_MEMBERS_ATTENDANCE_TODAY_REQUEST, LOAD_MEMBERS_ATTENDANCE_TODAY_SUCCESS, LOAD_MEMBERS_ATTENDANCE_TODAY_FAILURE,
     REGISTER_ATTENDANCE_REQUEST, REGISTER_ATTENDANCE_SUCCESS, REGISTER_ATTENDANCE_FAILURE
 } from 'store/modules/attendance';
 import {http} from 'utils/HttpHandler';
 
 
-function loadMonthlyStatisticAPI(roomId, date) {
-    return http.get(`/api/v1/room/${roomId}/attendance/monthly?date=${date}`);
+function loadMembersStatisticAPI(roomId, startDate, endDate) {
+    return http.get(`/api/v1/room/${roomId}/attendance/members?startDate=${startDate}&endDate=${endDate}`);
 }
 
 function loadMembersAttendanceTodayAPI(roomId) {
-    return http.get(`/api/v1/room/${roomId}/attendance`);
+    return http.get(`/api/v1/room/${roomId}/attendance/members/today`);
 }
 
 function registerAttendanceAPI(roomId, data) {
@@ -20,24 +20,24 @@ function registerAttendanceAPI(roomId, data) {
 }
 
 
-function* loadMonthlyStatistic(action){
+function* loadMembersStatistic(action){
     try {
-        const {data : {data}} = yield call(loadMonthlyStatisticAPI, action.roomId, action.date);
+        const {data : {data}} = yield call(loadMembersStatisticAPI, action.roomId, action.startDate, action.endDate);
         yield put({
-            type : LOAD_MONTHLY_STATISTIC_SUCCESS,
+            type : LOAD_MEMBERS_STATISTIC_SUCCESS,
             data
         })
     }catch(e) {
         console.error(e);
         yield put({
-            type : LOAD_MONTHLY_STATISTIC_FAILURE,
+            type : LOAD_MEMBERS_STATISTIC_FAILURE,
             error : e
         })
     }
 }
 
-function* watchLoadMonthlyStatistic() {
-    yield takeEvery(LOAD_MONTHLY_STATISTIC_REQUEST, loadMonthlyStatistic)
+function* watchLoadMembersStatistic() {
+    yield takeEvery(LOAD_MEMBERS_STATISTIC_REQUEST, loadMembersStatistic)
 }
 
 function* loadMembersAttendanceToday(action){
@@ -86,7 +86,7 @@ function* watchRegisterAttendance() {
 
 export default function* attendanceSaga() {
     yield all([
-        fork(watchLoadMonthlyStatistic),
+        fork(watchLoadMembersStatistic),
         fork(watchMembersAttendanceToday),
         fork(watchRegisterAttendance)
     ]);

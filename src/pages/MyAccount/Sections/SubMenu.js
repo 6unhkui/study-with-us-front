@@ -31,7 +31,7 @@ const SubMenuWrap = (props) => {
             type : UPLOAD_PROFILE_REQUEST,
             file : data
         })
-    }, []);
+    }, [dispatch]);
 
     const handleLogout = useCallback(() => {
         dispatch({
@@ -43,12 +43,12 @@ const SubMenuWrap = (props) => {
                 }
             }
         })
-    }, []);
+    }, [dispatch, props.history]);
 
     
     const items = [
-        <Link to={`${props.match.path}/studyroom`}>나의 스터디방 관리</Link>,
-        <Link to={`${props.match.path}/studyroom`}>스터디 기록</Link>,
+        // <Link to={`${props.match.path}/studyroom`}>나의 스터디방 관리</Link>,
+        // <Link to={`${props.match.path}/studyroom`}>스터디 기록</Link>,
         <Link to={`${props.match.path}/setting`}>{t('mypage.editAccountSettings.title')}</Link>,
         <div onClick={handleLogout}>로그아웃</div>
     ]

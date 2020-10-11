@@ -9,18 +9,17 @@ import {useDispatch, useSelector} from "react-redux";
 import Avatar from 'components/Avatar';
 import { LOG_OUT } from 'store/modules/account';
 
+
+const items = [
+    {path : "/user/room", name  : "나의 스터디방"},
+    {path : "/feed", name  : "새글 피드"},
+    {path : "/search", name  : "스터디방 찾기"}
+]
+
 const NavBar = (props) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const {name, profileImg} = useSelector(state => state.account.me);
-    const {isLoggedIn} = useSelector(state => state.account);
-
-    const items = [
-        {path : "/user/room", name  : "나의 스터디방"},
-        {path : "/feed", name  : "새글 피드"},
-        {path : "/search", name  : "스터디방 찾기"},
-        {path : "/qna", name  : "문의 사항"}
-    ]
 
     const handleLogout = useCallback(() => {
         dispatch({
@@ -55,7 +54,7 @@ const NavBar = (props) => {
                 <div className="user-wrap">
                     <LanguageSeleoctor/>
 
-                    <Link to="/login"><Button type="primary" ghost>{t('auth.login')}</Button></Link>
+                    <Link to="/login"><Button type="primary">{t('auth.login')}</Button></Link>
                 </div>
             )
         }

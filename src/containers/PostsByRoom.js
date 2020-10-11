@@ -8,13 +8,15 @@ import PostCard from 'components/PostCard';
 import {Button, Input, List} from 'antd';
 const { Search } = Input;
 
+
+
 const PostsByRoom = (props) => {
-    const roomId = props.match.params.id;
     const initPagination = {
         page : 1,
         size : 6,
         direction : 'ASC'
     }
+    const roomId = props.match.params.id;
     const dispatch = useDispatch();
     const { posts, loadingPosts, hasMorePosts} = useSelector(state => state.post);
     const [keyword, setKeyword] = useState('');

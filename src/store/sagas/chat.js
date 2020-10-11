@@ -17,13 +17,12 @@ function loadChatMemberInfoAPI(roomId) {
 
 function* loadMessageHistory(action){
     try {
-        let result = yield call(loadMessageHistoryAPI, action.data);
-        const {data} = result.data;
+        const {data : {data}} = yield call(loadMessageHistoryAPI, action.data);
 
-        let arr = data.map(v => JSON.parse(v));
+        // let arr = data.map(v => JSON.parse(v));
         yield put({
             type : LOAD_MESSAGE_HISTORY_SUCCESS,
-            data : arr
+            data : data
         })
     }catch(e) {
         console.error(e);
@@ -41,8 +40,7 @@ function* watchLoadMessageHistory() {
 
 function* loadChatMemberInfo(action){
     try {
-        let result = yield call(loadChatMemberInfoAPI, action.data);
-        const {data} = result.data;
+        const {data : {data}} = yield call(loadChatMemberInfoAPI, action.data);
 
         yield put({
             type : LOAD_CURRENT_CHAT_MEMBERS_SUCCESS,

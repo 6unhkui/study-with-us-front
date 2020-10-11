@@ -10,7 +10,7 @@ import {CommentOutlined, PaperClipOutlined} from '@ant-design/icons';
 
 const { Title, Text, Paragraph} = Typography;
 
-export default function PostCard({postId, title, content, writer, createdDate, thumbnail, commentCount, fileCount} ) {
+const PostCard = ({postId, title, content, writer, createdDate, thumbnail, commentCount, fileCount, showRoomName, roomName}) =>{
 
     const thumbnailSection = (
       <ThumbnailWrap>
@@ -21,6 +21,17 @@ export default function PostCard({postId, title, content, writer, createdDate, t
     return (
       <Link to={`/post/${postId}`}>
         <div className='card-wrap'>
+
+            {showRoomName &&
+                <>
+                    <RoomNameWrap>
+                        {roomName}
+                    </RoomNameWrap>
+                    <Divider style={{margin : '0'}}/>
+                </>
+            }
+
+
             <AvatarWrap>
                 <Avatar user={writer} showName={true} subText={createdDate}/>
             </AvatarWrap>
@@ -57,6 +68,7 @@ export default function PostCard({postId, title, content, writer, createdDate, t
     )
 }
 
+export default PostCard;
 
 PostCard.propTypes = {
   title : PropTypes.string.isRequired,
@@ -67,16 +79,29 @@ PostCard.propTypes = {
   }),
   createdDate : PropTypes.string,
   thumbnail : PropTypes.string,
-  commentCount : PropTypes.number
+  commentCount : PropTypes.number,
+  showRoomName : PropTypes.bool,
+  roomName : PropTypes.string,
+};
+
+PostCard.defaultProps = {
+    showRoomName : false
 };
 
 
-const AvatarWrap = styled.div`
-    padding : 1rem 1.4rem;
+const RoomNameWrap = styled.div`
+    padding : 10px 1.4rem;
+    color : var(--primary-color);
+    background : var(--bg-gray);
+    // font-weight : bold;
 `
 
 const ContentWrap = styled.div`
     padding : 0 1.4rem 1rem 1.4rem;
+`
+
+const AvatarWrap = styled.div`
+    padding : 1rem 1.4rem;
 `
 
 const ThumbnailWrap = styled.div`

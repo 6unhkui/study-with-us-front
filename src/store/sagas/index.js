@@ -5,6 +5,7 @@ import room from "./room";
 import member from "./member";
 import post from "./post";
 import chat from "./chat";
+import attendance from "./attendance";
 
 export default function* rootSaga() {
     yield all([
@@ -13,6 +14,7 @@ export default function* rootSaga() {
         call(room),
         call(member),
         call(post),
-        call(chat)
+        call(chat),
+        call(attendance)
     ])
 }

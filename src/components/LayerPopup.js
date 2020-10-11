@@ -22,7 +22,7 @@ export default function LayerPopup({title, size, setLayerOpen, children, loading
                     {loading ? <Loading/> : children}
                 </Content>
             </Layer>
-            <LayerDim onClick={() => {setLayerOpen(false);}}/>
+            <LayerDim onClick={() => {setLayerOpen(false)}}/>
         </LayerWrap>
     )
 }

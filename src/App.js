@@ -10,7 +10,7 @@ import {CommonRouter} from 'routes';
 function App() {
   return (
     <Suspense fallback={<Loading/>}>
-      <Router onUpdate={() => window.scrollTo(0, 0)} >
+      <Router>
           <NavBar/>
           <Switch>
             {CommonRouter}

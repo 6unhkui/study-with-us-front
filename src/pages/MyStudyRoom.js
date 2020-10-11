@@ -1,32 +1,38 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
-import { Typography, Button, Divider, List, Input} from 'antd';
-import {PlusOutlined} from '@ant-design/icons';
-
 import {useDispatch, useSelector} from "react-redux";
 import {LOAD_MY_ROOMS_REQUEST} from "store/modules/room";
-
+import {LOAD_CATEGORIES_REQUEST} from "store/modules/category";
 import Card from 'components/RoomCard';
 import RoomOrderSelector from 'components/RoomOrderSelector';
-import CategorySelector from 'components/CategorySelector';
+
+import { Typography, Button, Divider, List, Input, Select} from 'antd';
+import {PlusOutlined} from '@ant-design/icons';
 
 const { Title } = Typography;
 const { Search } = Input;
+const { Option } = Select;
 
-const initPagination = {
-    page : 1,
-    size : 6,
-    direction : 'ASC'
-}
-const MyStudyRoomPage = () => {
+const MyStudyRoomPage = (props) => {
+    const initPagination = {
+        page : 1,
+        size : 6,
+        direction : 'ASC'
+    }
+    const dispatch = useDispatch();
+    const { myRooms, hasMoreMyRooms } = useSelector(state => state.room);
     const [orderType, setOrderType] = useState(null);
     const [categoriesId, setCategoriesId] = useState([]);
+    const { categories, loadingCategories } = useSelector(state => state.category);
     const [keyword, setKeyword] = useState('');
     const [pagination, setPagination] = useState(initPagination);
 
-    const dispatch = useDispatch();
-    const { myRooms, hasMoreMyRooms } = useSelector(state => state.room);
+    useEffect(() => {
+        dispatch({
+            type: LOAD_CATEGORIES_REQUEST
+        })
+    },[]);
 
     useEffect(() => {
         dispatch({
@@ -95,7 +101,16 @@ const MyStudyRoomPage = () => {
 
             <FilterWrap>
                 <RoomOrderSelector onSubmit={handleChangeOrderType}/>
-                <CategorySelector onSubmit={handleChangeCategoriseId} style={{marginLeft : '10px'}}/>
+                <Select
+                    mode="multiple"
+                    allowClear
+                    style={{minWidth: '200px', marginLeft: '10px'}}
+                    placeholder="카테고리를 선택해주세요."
+                    showSearch={false}
+                    onChange={handleChangeCategoriseId}
+                >
+                    {categories.map(v => <Option key={v.categoryId}>{v.name}</Option>)}
+                </Select>
 
                 <Search
                     className='search'

@@ -4,23 +4,20 @@ import breakpoint from 'styled-components-breakpoint';
 import { Link } from "react-router-dom";
 import Avatar from 'components/Avatar';
 import {Modal, Button, Typography, Card, Divider} from 'antd';
-import { EditOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignInAlt } from '@fortawesome/free-solid-svg-icons'
+import { EditOutlined, UserOutlined, SettingOutlined, MessageOutlined, LoginOutlined} from '@ant-design/icons';
 import {useSelector} from "react-redux";
 
 const { Title, Text } = Typography;
 
 const Sidebar = (props) => {
     const { roomDetail : {
-        roomId, currentAccount, name, description, joinCount, createDate, manager, category, maxCount, unlimited
+        roomId, isMember, name, description, joinCount, createDate, manager, category, maxCount, unlimited
     }} = useSelector(state => state.room);
-    const isJoined = useState(currentAccount && currentAccount.member)[0];
     const [joinModalVisible, setJoinModalVisible] = useState(false);
 
 
     const writeBtn = (
-        <Link to={`/room/${roomId}/post/write`}>
+        <Link to={`/room/${roomId}/post/create`}>
             <EditOutlined/>
         </Link>
     )
@@ -34,7 +31,7 @@ const Sidebar = (props) => {
     const joinBtn = (
         <>
             <Button type="link" onClick={() => {setJoinModalVisible(true)}}>
-                <FontAwesomeIcon icon={faSignInAlt} style={{marginRight : '6px'}}/>스터디방 가입하기
+                <LoginOutlined />스터디방 가입하기
             </Button>
             <Modal
                 title={name}
@@ -49,7 +46,7 @@ const Sidebar = (props) => {
 
     return (
         <SideBarWrap>
-            <Card actions={isJoined ?  [writeBtn, settingBtn] : [joinBtn]}>
+            <Card actions={isMember ?  [writeBtn, settingBtn] : [joinBtn]}>
                 <BadgeWrap>{category}</BadgeWrap>
                 <Title level={2}>{name}</Title>
                 <Text type="secondary">{description}</Text>
@@ -75,10 +72,10 @@ const Sidebar = (props) => {
                         <span>{createDate}</span>
                     </SectionWrap>
 
-                    {isJoined &&
+                    {isMember &&
                         <Link to={`/room/${roomId}/chatting`}>
                             <Button type="primary" block className='shadow' style={{marginTop: '2rem'}}>
-                                Chatting
+                                <MessageOutlined /> Chatting
                             </Button>
                         </Link>
                     }

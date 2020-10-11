@@ -4,5 +4,6 @@ import { Route } from "react-router-dom"
 import EditAccountSettings from 'pages/EditAccountSettings';
 
 export default (path) => [
-    <Route path={`${path}/setting`} component={EditAccountSettings} />
+    // <Route path={`${path}/setting`} component={EditAccountSettings} />
+    <Route component={EditAccountSettings} />
 ]

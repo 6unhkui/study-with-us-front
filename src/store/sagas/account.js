@@ -71,13 +71,13 @@ function* watchRegister() {
 // 계정 중복 체크 ///////////////////////////////////
 function* checkingAccountDuplication(action){
     try {
-        let result = yield call(checkingAccountDuplicationAPI, action.data);
+        const {data : {data}} = yield call(checkingAccountDuplicationAPI, action.data);
         yield put({
             type : CHECK_DUPLICATED_ACCOUNT_SUCCESS,
-            data : result.data.data
+            data
         })
 
-        action.meta.callbackAction(result.data.data);
+        action.meta.callbackAction(data);
     }catch(e) { // loginAPI 실패
         yield put({
             type : CHECK_DUPLICATED_ACCOUNT_FAILURE,
@@ -95,8 +95,8 @@ function* watchCheckingAccountDuplication() {
 // 로그인 ///////////////////////////////////
 function* login(action){
     try {
-        let loginResult = yield call(loginAPI, action.data);
-        const {accessToken} = loginResult.data.data;
+        const {data : {data}} = yield call(loginAPI, action.data);
+        const {accessToken} = data;
         window.localStorage.setItem(ACCESS_TOKEN, accessToken);
 
         yield put({
@@ -124,16 +124,15 @@ function* watchLogin() {
 // 회원 정보 가져오기 ///////////////////////////////////
 function* loadAccount(){
     try {
-        let result = yield call(loadAccountAPI);
-        result = result.data.data;
+        const {data : {data}} = yield call(loadAccountAPI);
         yield put({
             type : LOAD_ACCOUNT_SUCCESS,
             data : {
-                accountId : result.accountId,
-                email : result.email,
-                name : result.name,
-                profileImg : result.profileImg,
-                provider : result.provider
+                accountId : data.accountId,
+                email : data.email,
+                name : data.name,
+                profileImg : data.profileImg,
+                provider : data.provider
             }
         })
     }catch(e) { // loginAPI 실패
@@ -152,11 +151,10 @@ function* watchLoadAccount() {
 // 프로필 이미지 변경 ///////////////////////////////////
 function* uploadProfileImage(action){
     try {
-        let result = yield call(uploadProfileImageAPI, action.file);
-        result = result.data.data;
+        const {data : {data}} = yield call(uploadProfileImageAPI, action.file);
         yield put({
             type : UPLOAD_PROFILE_SUCCESS,
-            data : result
+            data
         })
     }catch(e) { // loginAPI 실패
         yield put({

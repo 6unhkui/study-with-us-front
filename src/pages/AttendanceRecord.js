@@ -3,28 +3,34 @@ import {useDispatch, useSelector} from "react-redux";
 import ReactHighcharts from 'react-highcharts';
 import moment from 'moment';
 import styled from "styled-components";
-import {LOAD_MONTHLY_STATISTIC_REQUEST} from "store/modules/attendance";
+import {LOAD_MEMBERS_STATISTIC_REQUEST} from "store/modules/attendance";
 import {stringToColor} from "utils/ColorGenerator";
 import {DatePicker, Typography} from 'antd';
+
 const { Title } = Typography;
+const { RangePicker } = DatePicker;
 
 const AttendanceRecord = (props) => {
     const dispatch = useDispatch();
     const roomId = props.match.params.id;
-    const { monthlyStatistics } = useSelector(state => state.attendance);
-    const [date, setDate] = useState(moment().date(1));
+    const { MembersStatistics } = useSelector(state => state.attendance);
+    const [startDate, setStartDate] = useState(moment().startOf('month'));
+    const [endDate, setEndDate] = useState(moment().endOf('month'));
+
 
     useEffect(() => {
         dispatch({
-            type : LOAD_MONTHLY_STATISTIC_REQUEST,
+            type : LOAD_MEMBERS_STATISTIC_REQUEST,
             roomId,
-            date : date.format("YYYY-MM-DD")
+            startDate : startDate.format("YYYY-MM-DD"),
+            endDate : endDate.format("YYYY-MM-DD")
         })
-    }, [date, dispatch, roomId])
+    }, [dispatch, endDate, roomId, startDate])
 
     const handleChangeDate = useCallback((m, s) => {
         if(m) {
-            setDate(m);
+            setStartDate(m[0]);
+            setEndDate(m[1]);
         }
     }, [])
 
@@ -33,7 +39,7 @@ const AttendanceRecord = (props) => {
             type: 'column'
         },
         title: {
-            text: date.format('YYYY.MM'),
+            text: startDate.format('YYYY.MM.DD') + " ~ " + endDate.format('YYYY.MM.DD'),
             style : {
                 "fontSize" : "20px",
                 "fontWeight" : "bold"
@@ -43,7 +49,7 @@ const AttendanceRecord = (props) => {
             type: 'category'
         },
         yAxis: {
-            max : 31,
+            // max : 31,
             min: 0,
             title: {
                 text: '출석 횟수'
@@ -57,9 +63,9 @@ const AttendanceRecord = (props) => {
         },
         colors: ['var(--primary-color)'],
         series: [{
-            name: 'Monthly',
+            name: 'Count',
             colorByPoint: true,
-            data: monthlyStatistics.map(v => ({
+            data: MembersStatistics.map(v => ({
                 name : v.name,
                 y: v.count,
                 color : stringToColor(v.name)
@@ -78,11 +84,15 @@ const AttendanceRecord = (props) => {
     return (
         <ContentWrap>
             <TitleWrap>
-                <Title level={3} className="title">월별 출석 기록</Title>
-                <DatePicker defaultValue={moment(date, 'YYYY.MM')}
-                            format={'YYYY.MM'}
-                            picker="month"
-                            onChange={handleChangeDate}
+                <Title level={3} className="title">출석 기록</Title>
+                <RangePicker
+                    ranges={{
+                        Today: [moment(), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    }}
+                    format={'YYYY.MM.DD'}
+                    defaultValue={[startDate, endDate]}
+                    onChange={handleChangeDate}
                 />
             </TitleWrap>
             <ReactHighcharts config={config}/>

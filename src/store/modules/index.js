@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { createWhitelistFilter } from 'redux-persist-transform-filter';
@@ -9,6 +10,7 @@ import room from "./room";
 import post from "./post";
 import member from "./member";
 import chat from "./chat";
+import attendance from "./attendance";
 
 // persist config
 const persistConfig = {
@@ -30,7 +32,9 @@ const rootReducer = combineReducers({
   room,
   post,
   member,
-  chat
+  chat,
+  attendance,
+  routing: routerReducer
 });
 
 export default persistReducer(persistConfig, rootReducer);

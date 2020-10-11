@@ -1,5 +1,4 @@
 import produce from 'immer';
-import {LOAD_CATEGORIES_REQUEST} from "./category";
 
 const initialState = {
     myRooms : [], // 유저가 가입한 스터디방 리스트
@@ -18,7 +17,8 @@ const initialState = {
         roomId: 0,
         category: "",
         createDate: "",
-        currentAccount: {},
+        isMember : false,
+        isManager : false,
         description: "",
         joinCount: 0,
         manager: {},
@@ -26,10 +26,23 @@ const initialState = {
         name: "",
         unlimited: false,
     },
+    loadRoomDetailError : null,
 
-    isJoiningRoom: false,
+    isJoiningRoom: false, // 스터디방 가입
     joinedRoom: false,
     joinRoomErrorReason: '',
+
+    isDeletingRoom : false, // 스터디방 폐쇄
+    deleteRoomErrorReason: '',
+
+    isChangingCover : false, // 커버 이미지 변경
+    changeCoverErrorReason: '',
+
+    isChangingCategory : false, // 카테고리 변경
+    changeCategoryErrorReason: '',
+
+    isEditingRoom : false, // 방 정보 수정
+    editRoomErrorReason: '',
 };
 
 
@@ -62,6 +75,25 @@ export const JOIN_ROOM_REQUEST = 'JOIN_ROOM_REQUEST';
 export const JOIN_ROOM_SUCCESS = 'JOIN_ROOM_SUCCESS';
 export const JOIN_ROOM_FAILURE = 'JOIN_ROOM_FAILURE';
 
+export const DELETE_ROOM_REQUEST = 'DELETE_ROOM_REQUEST';
+export const DELETE_ROOM_SUCCESS = 'DELETE_ROOM_SUCCESS';
+export const DELETE_ROOM_FAILURE = 'DELETE_ROOM_FAILURE';
+
+export const CHANGE_COVER_REQUEST = 'CHANGE_COVER_REQUEST';
+export const CHANGE_COVER_SUCCESS = 'CHANGE_COVER_SUCCESS';
+export const CHANGE_COVER_FAILURE = 'CHANGE_COVER_FAILURE';
+
+export const CHANGE_CATEGORY_REQUEST = 'CHANGE_CATEGORY_REQUEST';
+export const CHANGE_CATEGORY_SUCCESS = 'CHANGE_CATEGORY_SUCCESS';
+export const CHANGE_CATEGORY_FAILURE = 'CHANGE_CATEGORY_FAILURE';
+
+export const EDIT_ROOM_REQUEST = 'EDIT_ROOM_REQUEST';
+export const EDIT_ROOM_SUCCESS = 'EDIT_ROOM_SUCCESS';
+export const EDIT_ROOM_FAILURE = 'EDIT_ROOM_FAILURE';
+
+export const DECREMENT_MEMBER_COUNT = 'DECREMENT_MEMBER_COUNT';
+
+export const DEPOSE_MANAGER = 'DEPOSE_MANAGER';
 
 
 const room = (state = initialState, action) => {
@@ -156,6 +188,7 @@ const room = (state = initialState, action) => {
             case LOAD_ROOM_DETAIL_REQUEST :{
                 draft.loadingRoomDetail = true;
                 draft.roomDetail = {};
+                draft.loadRoomDetailError = null;
                 break;
             }
             case LOAD_ROOM_DETAIL_SUCCESS :{
@@ -165,6 +198,7 @@ const room = (state = initialState, action) => {
             }
             case LOAD_ROOM_DETAIL_FAILURE :{
                 draft.loadingRoomDetail = false;
+                draft.loadRoomDetailError = action.error;
                 break;
             }
 
@@ -184,6 +218,90 @@ const room = (state = initialState, action) => {
                 draft.isJoiningRoom = false;
                 draft.joinedRoom = true;
                 draft.joinRoomErrorReason = action.error;
+                break;
+            }
+
+            // 스터디방 삭제
+            case DELETE_ROOM_REQUEST :{
+                draft.isDeletingRoom = true;
+                draft.deleteRoomErrorReason = '';
+                break;
+            }
+            case DELETE_ROOM_SUCCESS :{
+                draft.isDeletingRoom = false;
+                break;
+            }
+            case DELETE_ROOM_FAILURE :{
+                draft.isDeletingRoom = false;
+                draft.deleteRoomErrorReason = action.error;
+                break;
+            }
+
+            // 커버 이미지 변경
+            case CHANGE_COVER_REQUEST :{
+                draft.isChangingCover = true;
+                draft.changeCoverErrorReason = '';
+                break;
+            }
+            case CHANGE_COVER_SUCCESS :{
+                draft.isChangingCover = false;
+                draft.roomDetail.coverImage = action.cover;
+                draft.roomDetail.coverGroupId = action.coverGroupId;
+                break;
+            }
+            case CHANGE_COVER_FAILURE :{
+                draft.isChangingCover = false;
+                draft.changeCoverErrorReason = action.error;
+                break;
+            }
+
+            // 카테고리 변경
+            case CHANGE_CATEGORY_REQUEST :{
+                draft.isChangingCategory = true;
+                draft.changeCategoryErrorReason = '';
+                break;
+            }
+            case CHANGE_CATEGORY_SUCCESS :{
+                draft.isChangingCategory = false;
+                draft.roomDetail.category = action.category;
+                draft.roomDetail.categoryId = action.categoryId;
+                break;
+            }
+            case CHANGE_CATEGORY_FAILURE :{
+                draft.isChangingCategory = false;
+                draft.changeCategoryErrorReason = action.error;
+                break;
+            }
+
+            // 스터디방 정보 수정
+            case EDIT_ROOM_REQUEST :{
+                draft.isEditingRoom = true;
+                draft.editRoomErrorReason = '';
+                break;
+            }
+            case EDIT_ROOM_SUCCESS :{
+                draft.isEditingRoom = false;
+                draft.roomDetail.name = action.name;
+                draft.roomDetail.description = action.description;
+                draft.roomDetail.maxCount = action.maxCount;
+                draft.roomDetail.unlimited = action.unlimited;
+                break;
+            }
+            case EDIT_ROOM_FAILURE :{
+                draft.isEditingRoom = false;
+                draft.editRoomErrorReason = action.error;
+                break;
+            }
+
+            // 멤버수 감소
+            case DECREMENT_MEMBER_COUNT : {
+                draft.roomDetail.joinCount = --draft.roomDetail.joinCount;
+                break;
+            }
+
+            // 매니저 권한 박탈
+            case DEPOSE_MANAGER : {
+                draft.roomDetail.isManager = false;
                 break;
             }
 

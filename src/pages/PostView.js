@@ -9,7 +9,7 @@ import {useHistory} from "react-router-dom";
 import {SERVER_URI} from "constants/index";
 import {bytesToSize} from "utils/File";
 import CardWrap from "components/Layout/Main/Card";
-import Comments from "components/Comments";
+import Comments from "containers/Comments";
 
 import {Divider, Dropdown, Menu, Typography, List, Modal} from 'antd';
 import { EllipsisOutlined, DeleteOutlined,  EditOutlined, PaperClipOutlined} from '@ant-design/icons';
@@ -20,7 +20,7 @@ const PostView = (props) => {
     const postId = props.match.params.id;
     const history = useHistory();
     const dispatch = useDispatch();
-    const { postDetail, postDetail : {writer} } = useSelector(state => state.post);
+    const { postDetail, postDetail : {writer, isWriter} } = useSelector(state => state.post);
     const { me } = useSelector(state => state.account);
 
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -32,15 +32,6 @@ const PostView = (props) => {
             data : postId
         })
     }, [dispatch, postId]);
-
-    useEffect(() => {
-        if(me.accountId === (writer && writer.accountId)) {
-            setHasEditPermission(true);
-        }else {
-            setHasEditPermission(false);
-        }
-    }, [me && me.accountId, writer && writer.accountId]);
-
 
     const handleFileDownload = useCallback((identifier, fileName) => {
         FileSaver.saveAs(`${SERVER_URI}/api/v1/files/attachment/${identifier}`, fileName);
@@ -85,7 +76,7 @@ const PostView = (props) => {
         <CardWrap pageHeader={{title : postDetail && postDetail.roomName, backUrl : `/room/${postDetail.roomId}`}}>
             <Title level={2}>{postDetail.title}</Title>
 
-            {hasEditPermission &&
+            {isWriter &&
                 <MoreBtn>
                     <Dropdown overlay={menuItems} trigger={['click']}>
                         <EllipsisOutlined/>

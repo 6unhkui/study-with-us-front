@@ -16,11 +16,25 @@ import PostsPage from 'containers/PostsByRoom';
 import MembersPage from 'containers/MembersByRoom';
 import AttendanceCheck from "../AttendanceCheck";
 import {useTabs} from "../../hooks/useTabs";
-
+import {Redirect} from "react-router-dom";
+import AttendanceRecord from "../AttendanceRecord";
 
 
 const RoomDetailPage = (props) => {
+    const roomId = props.match.params.id;
+    const dispatch = useDispatch();
+    const {loadingRoomDetail,loadRoomDetailError, roomDetail, joinedRoom,
+        roomDetail : {coverImage, isMember, unlimited, joinCount, maxCount}
+    } = useSelector(state => state.room);
     const tabItems = [
+        {
+            tab : '출석 체크',
+            content : <AttendanceCheck {...props}/>,
+        },
+        {
+            tab : '출석 기록',
+            content : <AttendanceRecord {...props}/>,
+        },
         {
             tab : '게시글',
             content : <PostsPage {...props}/>,
@@ -29,17 +43,9 @@ const RoomDetailPage = (props) => {
             tab : '멤버',
             content : <MembersPage {...props}/>,
         },
-        {
-            tab : '출석체크',
-            content : <AttendanceCheck/>
-        }
     ]
-
-    const roomId = props.match.params.id;
-    const dispatch = useDispatch();
-    const { loadingRoomDetail, roomDetail, joinedRoom } = useSelector(state => state.room);
-    const {coverImage, currentAccount, unlimited, joinCount, maxCount} = useSelector(state => state.room.roomDetail);
     const {currentItem, changeItem} = useTabs(0, tabItems);
+
 
     useEffect(() => {
         dispatch({
@@ -68,7 +74,9 @@ const RoomDetailPage = (props) => {
     }, [unlimited, joinCount, maxCount, dispatch, roomId]);
 
 
-    if(loadingRoomDetail) {
+    if(loadRoomDetailError) {
+        return (<Redirect to='/404'/>)
+    }if(loadingRoomDetail) {
         return (<Loading/>)
     }else {
 
@@ -92,8 +100,9 @@ const RoomDetailPage = (props) => {
                             <Col xs={24} md={16} lg={17}>
                                 <Card tabList={tabItems.map((item, i) => {return {...item, key : i}})}
                                       defaultActiveTabKey={0}
-                                      onTabChange={key => changeItem(key)}>
-                                    {currentAccount.member ? currentItem.content : <AccessMemberOnly/>}
+                                      onTabChange={key => changeItem(key)}
+                                >
+                                    {isMember ? currentItem.content : <AccessMemberOnly/>}
                                 </Card>
                             </Col>
                         </Row>

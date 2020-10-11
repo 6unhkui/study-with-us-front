@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from "react-redux";
-import {LOAD_COMMENTS_REQUEST, ADD_COMMENT_REQUEST} from "store/modules/post";
+import {LOAD_COMMENTS_REQUEST, CREATE_COMMENT_REQUEST} from "store/modules/post";
 import CommentEditor from "../components/CommentEditor";
-import CommentSingle from "components/CommentSingle";
+import CommentSingle from "containers/CommentSingle";
 
 import LTT from "list-to-tree";
 
 import {Divider} from 'antd';
-import Avatar from "./Avatar";
+import Avatar from "../components/Avatar";
 
 
 const Comments = ({postId}) => {
@@ -47,7 +47,7 @@ const Comments = ({postId}) => {
         }
 
         dispatch({
-            type : ADD_COMMENT_REQUEST,
+            type : CREATE_COMMENT_REQUEST,
             postId,
             data
         })
@@ -66,7 +66,7 @@ const Comments = ({postId}) => {
                            content={item.content}
                            createdDate={item.createdDate}
                            seq={item.seq}
-                           isWriter={(item.writer && item.writer.accountId) === (postDetail.writer && postDetail.writer.accountId)}
+                           isWriter={item.isWriter}
             >
                 {item.child && item.child.length > 0 && renderComments(item.child)}
             </CommentSingle>

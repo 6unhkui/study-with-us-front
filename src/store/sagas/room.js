@@ -6,14 +6,17 @@ import {
     LOAD_RECENTLY_CREATED_ROOMS_REQUEST,LOAD_RECENTLY_CREATED_ROOMS_SUCCESS, LOAD_RECENTLY_CREATED_ROOMS_FAILURE,
     LOAD_ROOMS_BY_CATEGORY_REQUEST, LOAD_ROOMS_BY_CATEGORY_SUCCESS, LOAD_ROOMS_BY_CATEGORY_FAILURE,
     LOAD_ROOM_DETAIL_REQUEST, LOAD_ROOM_DETAIL_SUCCESS, LOAD_ROOM_DETAIL_FAILURE,
-    JOIN_ROOM_REQUEST, JOIN_ROOM_SUCCESS, JOIN_ROOM_FAILURE
+    JOIN_ROOM_REQUEST, JOIN_ROOM_SUCCESS, JOIN_ROOM_FAILURE,
+    DELETE_ROOM_REQUEST, DELETE_ROOM_SUCCESS, DELETE_ROOM_FAILURE,
+    CHANGE_COVER_REQUEST, CHANGE_COVER_SUCCESS, CHANGE_COVER_FAILURE,
+    CHANGE_CATEGORY_REQUEST, CHANGE_CATEGORY_SUCCESS, CHANGE_CATEGORY_FAILURE,
+    EDIT_ROOM_REQUEST, EDIT_ROOM_SUCCESS, EDIT_ROOM_FAILURE
 } from 'store/modules/room';
 import {http} from 'utils/HttpHandler';
-import {DELETE_ACCOUNT_REQUEST} from "../modules/account";
 
 
-function uploadCoverImageAPI(file) {
-    return http.post(`/api/v1/files/cover`, file, {'Content-type': 'multipart/form-data;charset=utf-8'});
+function uploadCoverImageAPI(file, fileGroupId) {
+    return http.post(`/api/v1/files/cover${fileGroupId ? `?fileGroupId=${fileGroupId}` : ''}`, file, {'Content-type': 'multipart/form-data;charset=utf-8'});
 }
 
 function createRoomAPI(data) {
@@ -35,6 +38,22 @@ function loadRoomDetailAPI(roomId) {
 
 function joinRoomAPI(roomId) {
     return http.post(`/api/v1/room/${roomId}/join`);
+}
+
+function deleteRoomAPI(roomId) {
+    return http.delete(`/api/v1/room/${roomId}`);
+}
+
+function changeCoverImageAPI(roomId, fileGroupId) {
+    return http.put(`/api/v1/room/${roomId}/cover?coverId=${fileGroupId}`);
+}
+
+function changeCategoryAPI(roomId, categoryId) {
+    return http.put(`/api/v1/room/${roomId}/category?categoryId=${categoryId}`);
+}
+
+function editRoomAPI(roomId, formData) {
+    return http.put(`/api/v1/room/${roomId}`, formData);
 }
 
 
@@ -203,11 +222,110 @@ function* joinRoom(action){
 }
 
 function* watchJoinRoom() {
-    yield takeEvery(JOIN_ROOM_REQUEST, joinRoom)
+    yield takeLatest(JOIN_ROOM_REQUEST, joinRoom)
 }
 
 
+// 스터디방 삭제
+function* deleteRoom(action){
+    try {
+        yield call(deleteRoomAPI, action.data);
+        yield put({
+            type : DELETE_ROOM_SUCCESS,
+        })
+        action.meta.callbackAction();
+    }catch(e) {
+        console.error(e);
+        yield put({
+            type : DELETE_ROOM_FAILURE,
+            error : e
+        })
+    }
+}
 
+function* watchDeleteRoom() {
+    yield takeLatest(DELETE_ROOM_REQUEST, deleteRoom)
+}
+
+
+// 커버 이미지 변경
+function* changeCover(action){
+    try {
+        const {data : {data : {fileGroupId, files}}} = yield call(uploadCoverImageAPI, action.file, action.fileGroupId);
+
+        if(!action.fileGroupId) {
+            yield call(changeCoverImageAPI, action.roomId, fileGroupId);
+        }
+
+        yield put({
+            type : CHANGE_COVER_SUCCESS,
+            cover : files[0] && files[0].saveName,
+            coverGroupId : fileGroupId
+        })
+    }catch(e) {
+        console.error(e);
+        yield put({
+            type : CHANGE_COVER_FAILURE,
+            error : e
+        })
+    }
+}
+
+function* watchChangeCover() {
+    yield takeLatest(CHANGE_COVER_REQUEST, changeCover)
+}
+
+
+// 카테고리 변경
+function* changeCategory(action){
+    try {
+        const {data : {data : {categoryId, name}}} = yield call(changeCategoryAPI, action.roomId, action.categoryId);
+
+
+        yield put({
+            type : CHANGE_CATEGORY_SUCCESS,
+            category : name,
+            categoryId
+        })
+
+        action.meta.callbackAction();
+    }catch(e) {
+        console.error(e);
+        yield put({
+            type : CHANGE_CATEGORY_FAILURE,
+            error : e
+        })
+    }
+}
+
+
+function* watchChangeCategory() {
+    yield takeLatest(CHANGE_CATEGORY_REQUEST, changeCategory)
+}
+
+// 스터디방 정보 변경
+function* editRoom(action){
+    try {
+        yield call(editRoomAPI, action.roomId, action.data);
+
+        yield put({
+            type : EDIT_ROOM_SUCCESS,
+            ...action.data
+        })
+        action.meta.callbackAction();
+    }catch(e) {
+        console.error(e);
+        yield put({
+            type : EDIT_ROOM_FAILURE,
+            error : e
+        })
+    }
+}
+
+
+function* watchEditRoom() {
+    yield takeLatest(EDIT_ROOM_REQUEST, editRoom)
+}
 
 export default function* roomSaga() {
     yield all([
@@ -217,7 +335,11 @@ export default function* roomSaga() {
         fork(watchLoadRecentlyCreatedRooms),
         fork(watchLoadRoomsByCategory),
         fork(watchLoadRoomDetail),
-        fork(watchJoinRoom)
+        fork(watchJoinRoom),
+        fork(watchDeleteRoom),
+        fork(watchChangeCover),
+        fork(watchChangeCategory),
+        fork(watchEditRoom)
     ]);
 }
 

@@ -8,7 +8,7 @@ import CardWrap from "../components/Layout/Main/Card";
 const EditPost = (props) => {
     const postId = props.match.params.id;
     const dispatch = useDispatch();
-    const { postDetail, isAddingPost } = useSelector(state => state.post);
+    const { postDetail, isCreatingPost } = useSelector(state => state.post);
     const [initialValue, setInitialValue] = useState({});
     const [loading, setLoading] = useState(true);
 
@@ -51,6 +51,8 @@ const EditPost = (props) => {
         // 이미 등록된 첨부 파일이 존재한다면
         if(initialValue.fileList && initialValue.fileList.length > 0) {
             data.fileGroupId = postDetail.fileGroupId;
+            console.log(initialValue.fileList)
+            console.log(fileList)
 
             // 기존 파일 리스트에서 삭제된 파일 리스트
             const delFiles = initialValue.fileList.filter(v => !fileList.includes(v)).map(v => v.uid);
@@ -77,6 +79,9 @@ const EditPost = (props) => {
             }
         }
 
+
+        
+
         dispatch({
             type : UPDATE_POST_REQUEST,
             data,
@@ -94,7 +99,7 @@ const EditPost = (props) => {
         <CardWrap pageHeader={{title : postDetail && postDetail.roomName, backUrl : `/post/${postId}`}}>
             {!loading &&
                 <PostForm initialValue={initialValue}
-                          submitLoading={isAddingPost}
+                          submitLoading={isCreatingPost}
                           onSubmit={handleSubmit}
                           submitText="수정하기"
                 />

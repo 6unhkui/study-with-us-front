@@ -1,7 +1,5 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import PropTypes from 'prop-types';
-import {Button, Checkbox, Row, Col, List} from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import React, {useEffect} from 'react';
+import {List} from 'antd';
 
 import MemberRow from "./MemberRow";
 import LayerPopup from 'components/LayerPopup';
@@ -28,7 +26,7 @@ const ChatMember = ({setLayerOpen, roomId}) => {
                 itemLayout="horizontal"
                 dataSource={chatMembers}
                 renderItem={item => (
-                    <MemberRow account={item} loading={item.loading}/>
+                    <MemberRow member={item} loading={item.loading}/>
                 )}
             />
         </LayerPopup>

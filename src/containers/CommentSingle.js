@@ -5,7 +5,7 @@ import Avatar from 'components/Avatar';
 import {Comment, message} from 'antd';
 import CommentEditor from 'components/CommentEditor';
 import {useDispatch, useSelector} from "react-redux";
-import {DELETE_COMMENT_REQUEST, ADD_COMMENT_REQUEST, UPDATE_COMMENT_REQUEST} from "store/modules/post";
+import {DELETE_COMMENT_REQUEST, CREATE_COMMENT_REQUEST, UPDATE_COMMENT_REQUEST} from "store/modules/post";
 
 const CommentSingle = ({postId, commentId, writer, content, createdDate, seq, children, isWriter}) => {
     const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const CommentSingle = ({postId, commentId, writer, content, createdDate, seq, ch
     const [replyValue, setReplyValue] = useState('');
 
     useEffect(() => {
-        if(accountId === (writer && writer.accountId)) {
+        if(isWriter) {
             setHasEditPermission(true);
         }
     }, [accountId, writer]);
@@ -43,7 +43,7 @@ const CommentSingle = ({postId, commentId, writer, content, createdDate, seq, ch
         if(commentId) data.parentId = commentId;
 
         dispatch({
-            type : ADD_COMMENT_REQUEST,
+            type : CREATE_COMMENT_REQUEST,
             postId,
             data
         })
@@ -105,7 +105,7 @@ const CommentSingle = ({postId, commentId, writer, content, createdDate, seq, ch
                          hasEditPermission && <span onClick={onEditClick}>수정</span>,
                          hasEditPermission && <span onClick={handleDeleteComment}>삭제</span>
                      ]}
-                     author={<>{writer.name}{isWriter && <IsWriterBadge>작성자</IsWriterBadge>}</>}
+                     author={writer.name}
                      avatar={<Avatar user={{name : writer.name, profileImg : writer.profileImg}}/>}
                      content={showEditInput ? editInput : content}
                      datetime={createdDate}>

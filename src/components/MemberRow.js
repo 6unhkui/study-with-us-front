@@ -1,46 +1,37 @@
-import React, {useState, useEffect} from 'react';
-import styled from 'styled-components';
+import React, {useState, useCallback} from 'react';
 import Avatar from 'components/Avatar';
-import { List, Skeleton } from 'antd';
-import {SettingOutlined} from '@ant-design/icons';
-import {useSelector} from "react-redux";
+import { List, Skeleton, Button } from 'antd';
+import MemberDetailDrawer from "containers/MemberDetailDrawer";
+import MemberRoleBadge from "./MemberRoleBadge";
 
-export default function MemberRow({loading, account, showSettingBtn = false}) {
-  const { roomDetail : {currentAccount : {role}} } = useSelector(state => state.room);
-  const { me : {accountId} } = useSelector(state => state.account);
-  const [hasEditPermission, setHasEditPermission] = useState(false);
+const MemberRow = ({loading, member, showView = false}) => {
+  const [detailVisible, setDetailVisible] = useState(false);
 
-  useEffect(() => {
-      if(role === "MANAGER" || account.accountId === accountId) {
-          setHasEditPermission(true)
-      }
-  }, [accountId, accountId, role]);
+  const handleMemberDetailVisible = useCallback(isVisible => {
+      setDetailVisible(isVisible)
+  }, []);
 
   return (
-    <List.Item actions={
-            [showSettingBtn && hasEditPermission && <SettingOutlined />]
-    }>
+    <List.Item
+        key={member.accountId}
+        actions={[showView && <Button type="link" onClick={() => handleMemberDetailVisible(true)} >view</Button>]}
+    >
         <Skeleton avatar title={false} loading={loading} active>
             <List.Item.Meta
-                avatar={<Avatar user={account}/>}
-                title={<><span>{account.name}</span>
-                         {account.role && <RoleBadge role={account.role}>{account.role}</RoleBadge>}
-                       </>}
-                description={<span>{account.email}</span>}
+                avatar={<Avatar user={member}/>}
+                title={<span>{member.name}{member.role && <MemberRoleBadge role={member.role}/>}</span>}
+                description={<span>{member.email}</span>}
             />
+
+            {showView && detailVisible &&
+            <MemberDetailDrawer memberId={member.memberId}
+                                visible={detailVisible}
+                                onClose={() => handleMemberDetailVisible(false)}/>
+            }
         </Skeleton>
     </List.Item>
   )
 }
 
+export default MemberRow;
 
-const RoleBadge = styled.span`
-  margin-left: 6px;
-  background-color: ${(props) => props.role === 'MANAGER'? "var(--primary-color)" : "var(--bg-gray)"};
-  color: ${(props) => props.role === 'MANAGER' ? "#fff" : "var(--font-color-gray)"};
-  font-size: .6rem;
-  padding: 2px 4px;
-  border-radius: 3px;
-  position: relative;
-  bottom: 1px;
-`

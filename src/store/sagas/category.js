@@ -9,10 +9,10 @@ function loadCategoriesAPI() {
 
 function* loadCategories(){
     try {
-        let result = yield call(loadCategoriesAPI);
+        const {data : {data}} = yield call(loadCategoriesAPI);
         yield put({
             type : LOAD_CATEGORIES_SUCCESS,
-            data : result.data.data
+            data
         })
     }catch(e) {
         console.error(e);

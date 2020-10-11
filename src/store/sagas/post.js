@@ -1,10 +1,11 @@
 import {all, fork, takeEvery, put, call, takeLatest} from 'redux-saga/effects';
 import {
+    LOAD_NEWS_FEED_REQUEST, LOAD_NEWS_FEED_SUCCESS, LOAD_NEWS_FEED_FAILURE,
     LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE,
     LOAD_POST_DETAIL_REQUEST, LOAD_POST_DETAIL_SUCCESS, LOAD_POST_DETAIL_FAILURE,
     LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_SUCCESS, LOAD_COMMENTS_FAILURE,
-    ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
-    ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE,
+    CREATE_POST_REQUEST, CREATE_POST_SUCCESS, CREATE_POST_FAILURE,
+    CREATE_COMMENT_REQUEST, CREATE_COMMENT_SUCCESS, CREATE_COMMENT_FAILURE,
     DELETE_POST_REQUEST, DELETE_POST_SUCCESS, DELETE_POST_FAILURE,
     UPDATE_POST_REQUEST, UPDATE_POST_SUCCESS, UPDATE_POST_FAILURE,
     DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE,
@@ -12,6 +13,10 @@ import {
 } from 'store/modules/post';
 import {http} from 'utils/HttpHandler';
 
+
+function loadNewsFeedAPI(pagination, keyword) {
+    return http.get(`/api/v1/posts/new?${makeParamForPosts(pagination, keyword)}`)
+}
 
 function loadPostsAPI(roomId, pagination, keyword) {
     return http.get(`/api/v1/room/${roomId}/posts?${makeParamForPosts(pagination, keyword)}`)
@@ -45,7 +50,6 @@ function deletePostAPI(postId) {
     return http.delete(`/api/v1/post/${postId}`);
 }
 
-
 function loadCommentsAPI(postId) {
     return http.get(`/api/v1/post/${postId}/comments`)
 }
@@ -64,15 +68,39 @@ function deleteCommentAPI(commentId) {
 
 
 
+// 새 글 피드 리스트 /////////////////////////////
+function* loadNewsFeed(action){
+    try {
+        const {data : {data}} = yield call(loadNewsFeedAPI, action.pagination, action.keyword);
+        yield put({
+            type : LOAD_NEWS_FEED_SUCCESS,
+            data : data.content,
+            first : data.first,
+            last : data.last,
+        })
+    }catch(e) {
+        console.error(e);
+        yield put({
+            type : LOAD_NEWS_FEED_FAILURE,
+            error : e
+        })
+    }
+}
+
+function* watchLoadNewsFeed() {
+    yield takeEvery(LOAD_NEWS_FEED_REQUEST, loadNewsFeed)
+}
+
+
 // 포스트 리스트 /////////////////////////////
 function* loadPosts(action){
     try {
-        let result = yield call(loadPostsAPI, action.roomId, action.pagination, action.keyword);
+        const {data : {data}} = yield call(loadPostsAPI, action.roomId, action.pagination, action.keyword);
         yield put({
             type : LOAD_POSTS_SUCCESS,
-            data : result.data.data.content,
-            first : result.data.data.first,
-            last : result.data.data.last,
+            data : data.content,
+            first : data.first,
+            last : data.last,
         })
     }catch(e) {
         console.error(e);
@@ -91,10 +119,10 @@ function* watchLoadPosts() {
 // 포스트 상세 //////////////////////////////
 function* loadPostDetail(action){
     try {
-        let result = yield call(loadPostDetailAPI, action.data);
+        const {data : {data}} = yield call(loadPostDetailAPI, action.data);
         yield put({
             type : LOAD_POST_DETAIL_SUCCESS,
-            data : result.data.data
+            data
         })
     }catch(e) {
         console.error(e);
@@ -120,24 +148,24 @@ function* addPost(action){
             post.fileGroupId = result.data.data.fileGroupId;
         }
 
-        let result = yield call(addPostAPI, roomId, post);
+        const {data : {data}} = yield call(addPostAPI, roomId, post);
         yield put({
-            type : ADD_POST_SUCCESS,
-            data : result.data.data
+            type : CREATE_POST_SUCCESS,
+            data
         })
 
         action.meta.callbackAction();
     }catch(e) {
         console.error(e);
         yield put({
-            type : ADD_POST_FAILURE,
+            type : CREATE_POST_FAILURE,
             error : e
         })
     }
 }
 
 function* watchAddPost() {
-    yield takeLatest(ADD_POST_REQUEST, addPost)
+    yield takeLatest(CREATE_POST_REQUEST, addPost)
 }
 
 // 포스트 작성 ///////////////////////////////////
@@ -155,10 +183,10 @@ function* updatePost(action){
             post.fileGroupId = result.data.data.fileGroupId;
         }
 
-        let result = yield call(updatePostAPI, postId, post);
+        const {data : {data}} = yield call(updatePostAPI, postId, post);
         yield put({
             type : UPDATE_POST_SUCCESS,
-            data : result.data.data
+            data
         })
 
         action.meta.callbackAction();
@@ -203,11 +231,11 @@ function* watchDeletePost() {
 // 댓글 리스트 /////////////////////////////
 function* loadComments(action){
     try {
-        let result = yield call(loadCommentsAPI, action.postId);
+        const {data : {data}} = yield call(loadCommentsAPI, action.postId);
 
         yield put({
             type : LOAD_COMMENTS_SUCCESS,
-            data : result.data.data,
+            data
             // first : result.data.data.first,
             // last : result.data.data.last,
         })
@@ -227,22 +255,22 @@ function* watchLoadComments() {
 // 댓글 추가 ///////////////////////////////////
 function* addComment(action){
     try {
-        let result = yield call(addCommentAPI, action.postId, action.data);
+        const {data : {data}} = yield call(addCommentAPI, action.postId, action.data);
         yield put({
-            type : ADD_COMMENT_SUCCESS,
-            data : result.data.data
+            type : CREATE_COMMENT_SUCCESS,
+            data
         })
     }catch(e) {
         console.error(e);
         yield put({
-            type : ADD_COMMENT_FAILURE,
+            type : CREATE_COMMENT_FAILURE,
             error : e
         })
     }
 }
 
 function* watchAddComment() {
-    yield takeLatest(ADD_COMMENT_REQUEST, addComment)
+    yield takeLatest(CREATE_COMMENT_REQUEST, addComment)
 }
 
 // 댓글 수정 ///////////////////////////////////
@@ -296,6 +324,7 @@ function* watchDeleteComment() {
 
 export default function* postSaga() {
     yield all([
+        fork(watchLoadNewsFeed),
         fork(watchLoadPosts),
         fork(watchLoadPostDetail),
         fork(watchAddPost),
