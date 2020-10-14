@@ -8,8 +8,8 @@ import {LOAD_POST_DETAIL_REQUEST, DELETE_POST_REQUEST} from "store/modules/post"
 import {useHistory} from "react-router-dom";
 import {SERVER_URI} from "constants/index";
 import {bytesToSize} from "utils/File";
-import CardWrap from "components/Layout/Main/Card";
-import Comments from "containers/Comments";
+import CardWrap from "components/CardBox";
+import Comments from "containers/PostView/Comments";
 
 import {Divider, Dropdown, Menu, Typography, List, Modal} from 'antd';
 import { EllipsisOutlined, DeleteOutlined,  EditOutlined, PaperClipOutlined} from '@ant-design/icons';
@@ -21,10 +21,8 @@ const PostView = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
     const { postDetail, postDetail : {writer, isWriter} } = useSelector(state => state.post);
-    const { me } = useSelector(state => state.account);
 
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-    const [hasEditPermission, setHasEditPermission] = useState(false);
 
     useEffect(() => {
         dispatch({

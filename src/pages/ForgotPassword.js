@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Form, Input, Button} from 'antd';
 
-import CardWrap from "../components/Layout/Main/Card";
+import CardWrap from "../components/CardBox";
 
 
 export default function ForgotPasswordPage() {

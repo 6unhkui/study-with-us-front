@@ -16,7 +16,7 @@ const CategorySlide = () => {
         dispatch({
             type: LOAD_CATEGORIES_REQUEST
         })
-    }, []);
+    }, [dispatch]);
 
     const responsive = {
         desktop: {

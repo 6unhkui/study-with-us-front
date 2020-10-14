@@ -11,7 +11,7 @@ import { LOG_OUT } from 'store/modules/account';
 
 
 const items = [
-    {path : "/user/room", name  : "나의 스터디방"},
+    {path : "/user/rooms", name  : "나의 스터디방"},
     {path : "/feed", name  : "새글 피드"},
     {path : "/search", name  : "스터디방 찾기"}
 ]

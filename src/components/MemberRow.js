@@ -1,8 +1,8 @@
 import React, {useState, useCallback} from 'react';
 import Avatar from 'components/Avatar';
 import { List, Skeleton, Button } from 'antd';
-import MemberDetailDrawer from "containers/MemberDetailDrawer";
-import MemberRoleBadge from "./MemberRoleBadge";
+import MemberDetailDrawer from "containers/RoomDetail/MembersByRoom/MemberDetailDrawer";
+import Badge from "./Badge";
 
 const MemberRow = ({loading, member, showView = false}) => {
   const [detailVisible, setDetailVisible] = useState(false);
@@ -19,7 +19,7 @@ const MemberRow = ({loading, member, showView = false}) => {
         <Skeleton avatar title={false} loading={loading} active>
             <List.Item.Meta
                 avatar={<Avatar user={member}/>}
-                title={<span>{member.name}{member.role && <MemberRoleBadge role={member.role}/>}</span>}
+                title={<span>{member.name}{member.role && <Badge text={member.role} type={member.role==='MANAGER' && 'primary'}/>}</span>}
                 description={<span>{member.email}</span>}
             />
 

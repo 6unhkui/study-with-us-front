@@ -1,9 +1,9 @@
 import React, {useState, useCallback, useEffect} from 'react';
 
-import PostForm from 'containers/PostForm';
+import PostForm from 'components/PostForm';
 import {useDispatch, useSelector} from "react-redux";
 import {LOAD_POST_DETAIL_REQUEST, UPDATE_POST_REQUEST} from "../store/modules/post";
-import CardWrap from "../components/Layout/Main/Card";
+import CardWrap from "../components/CardBox";
 
 const EditPost = (props) => {
     const postId = props.match.params.id;

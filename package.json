@@ -29,6 +29,7 @@
     "query-string": "^6.13.1",
     "quill-image-uploader": "^1.2.2",
     "react": "^16.13.1",
+    "react-app-polyfill": "^1.0.6",
     "react-chat-ui": "^0.4.0",
     "react-countdown": "^2.2.2",
     "react-devtools": "^4.8.2",
@@ -82,3 +83,4 @@
     "nodemon": "^2.0.4"
   }
 }
+

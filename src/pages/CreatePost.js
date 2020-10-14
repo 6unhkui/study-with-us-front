@@ -2,10 +2,10 @@ import React, {useCallback} from 'react';
 import { useHistory } from "react-router-dom";
 
 import { PageHeader } from 'antd';
-import CreateForm from 'containers/PostForm';
+import CreateForm from 'components/PostForm';
 import {useDispatch, useSelector} from "react-redux";
 import {CREATE_POST_REQUEST} from "../store/modules/post";
-import CardWrap from "../components/Layout/Main/Card";
+import CardWrap from "../components/CardBox";
 
 const CreatePost = (props) => {
     const roomId = props.match.params.id;

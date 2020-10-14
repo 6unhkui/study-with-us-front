@@ -2,10 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
-import LoginForm from 'containers/LoginForm';
-import SocialLogin from "containers/SocialLogin";
-
-import CardWrap from "../components/Layout/Main/Card";
+import LoginForm from 'containers/Login/LoginForm';
+import SocialLogin from "containers/Login/SocialLogin";
+import CardWrap from "components/CardBox";
 
 const Login = (props)  => {
     const { t } = useTranslation();

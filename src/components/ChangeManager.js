@@ -1,11 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Button, List, Radio} from 'antd';
 
-import MemberRow from "./MemberRow";
 import LayerPopup from 'components/LayerPopup';
 import {useDispatch, useSelector} from "react-redux";
-import {LOAD_CURRENT_CHAT_MEMBERS_REQUEST} from 'store/modules/chat';
-import {LOAD_MEMBERS_REQUEST, CHANGE_MANAGER_REQUEST} from "store/modules/member";
+import {LOAD_MEMBERS_REQUEST} from "store/modules/member";
 import Avatar from 'components/Avatar';
 import styled from "styled-components";
 

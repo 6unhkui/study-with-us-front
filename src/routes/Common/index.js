@@ -7,14 +7,14 @@ import NotFound from 'pages/NotFound';
 
 import Main from 'pages/Main';
 import LoginPage from 'pages/Login';
-import OAuth2RedirectHandler from "containers/OAuth2RedirectHandler";
+import OAuth2RedirectHandler from "pages/OAuth2RedirectHandler";
 import Register from 'pages/Register';
 import ForgotPassword from 'pages/ForgotPassword';
 
 import MyAccount from 'pages/MyAccount';
 
-import MyStudyRoom from 'pages/MyStudyRoom';
-import CreateStudyRoom from 'pages/CreateStudyRoom';
+import MyRooms from 'pages/MyRooms';
+import CreateStudyRoom from 'pages/CreateRoom';
 
 import RoomDetail from 'pages/RoomDetail';
 import CreatePost from 'pages/CreatePost';
@@ -39,7 +39,7 @@ export default [
 
     <Route path="/account" component={Auth(MyAccount, true)} />,
 
-    <Route path="/user/room" component={Auth(MyStudyRoom, true)} />,
+    <Route path="/user/rooms" component={Auth(MyRooms, true)} />,
 
     <Route path="/room/create" component={Auth(CreateStudyRoom, true)} />,
 

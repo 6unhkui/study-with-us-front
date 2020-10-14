@@ -1,0 +1,34 @@
+import React from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+
+const Badge = ({text, type}) => {
+    return (
+        <BadgeWrap type={type}>
+            {text}
+        </BadgeWrap>
+    )
+}
+
+Badge.propTypes = {
+    text : PropTypes.string.isRequired,
+    type : PropTypes.string
+};
+
+Badge.defaultProps = {
+    type : 'primary'
+};
+
+export default Badge;
+
+const BadgeWrap = styled.span`
+  margin-left: 6px;
+  background-color: ${(props) => props.type === 'primary'? "var(--primary-color)" : "var(--bg-gray)"};
+  color: ${(props) => props.type === 'primary' ? "#fff" : "var(--font-color-gray)"};
+  font-size: .6rem;
+  padding: 2px 4px;
+  border-radius: 3px;
+  position: relative;
+  bottom: 1px;
+`
+

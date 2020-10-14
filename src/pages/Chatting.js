@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import SockJsClient from 'react-stomp';
 import styled from "styled-components";
-import CardWrap from "../components/Layout/Main/Card";
+import CardWrap from "../components/CardBox";
 import {SERVER_URI} from 'constants/index';
 import {header} from 'utils/HttpHandler';
 import {useDispatch, useSelector} from "react-redux";

@@ -1,50 +1,51 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
-import { Typography, Button,  Divider, List, Input} from 'antd';
-
-import Card from 'components/RoomCard';
+import { Link } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {LOAD_ROOMS_BY_CATEGORY_REQUEST} from "store/modules/room";
-import RoomOrderSelector from "components/RoomOrderSelector";
+import {LOAD_MY_ROOMS_REQUEST} from "store/modules/room";
+import Card from 'components/RoomCard';
+import RoomOrderSelector from 'components/RoomOrderSelector';
+import { Typography, Button, Divider, List, Input} from 'antd';
+import {PlusOutlined} from '@ant-design/icons';
+import CategoryMultiSelector from "../containers/CategoryMultiSelector";
 import {useRoomFilter} from "../hooks/useRoomFilter";
 import MoreButton from "../components/MoreButton";
 
 const { Title } = Typography;
 const { Search } = Input;
 
-
-const RoomsByCategory = (props) => {
-    const categoryId = props.match.params.id;
-    const dispatch = useDispatch();
+const MyStudyRoomPage = (props) => {
     const initPagination = {
         page : 1,
         size : 6,
         direction : 'ASC'
     }
+    const dispatch = useDispatch();
+    const { myRooms, hasMoreMyRooms } = useSelector(state => state.room);
     const {
         keyword : [keyword, handleChangeKeyword],
         orderType : [orderType, handleChangeOrderType],
+        categoryIds : [categoryIds, handleChangeCategoryIds]
     } = useRoomFilter();
     const [pagination, setPagination] = useState(initPagination);
-    const { roomsByCategory, hasMoreRoomsByCategory } = useSelector(state => state.room);
 
     useEffect(() => {
         dispatch({
-            type : LOAD_ROOMS_BY_CATEGORY_REQUEST,
+            type : LOAD_MY_ROOMS_REQUEST,
             pagination,
-            categoryIds : [categoryId],
+            categoryIds,
             orderType
         })
     },[pagination.page]);
 
     useEffect(() => {
         dispatch({
-            type : LOAD_ROOMS_BY_CATEGORY_REQUEST,
+            type : LOAD_MY_ROOMS_REQUEST,
             pagination : initPagination,
-            categoryIds : [categoryId],
+            categoryIds,
             orderType
         })
-    },[orderType]);
+    },[categoryIds, orderType]);
 
 
     const handleLoadMore = useCallback(() => {
@@ -56,22 +57,34 @@ const RoomsByCategory = (props) => {
 
     const handleSubmitKeyword = useCallback(() => {
         dispatch({
-            type : LOAD_ROOMS_BY_CATEGORY_REQUEST,
+            type : LOAD_MY_ROOMS_REQUEST,
             pagination : initPagination,
-            categoryIds : [categoryId],
+            categoryIds,
             orderType,
             keyword
         })
-    }, [dispatch, initPagination, keyword, orderType]);
-
+    }, [categoryIds, dispatch, initPagination, keyword, orderType]);
+ 
 
     return (
         <div className="container content-wrap">
-            <Title>{props.location.state && props.location.state.name}</Title>
+            <TitleWrap>
+                <Title>나의 스터디방</Title>
+                <Link to="/room/create">
+                    <Button type="primary" ghost className="shadow"
+                            icon={<PlusOutlined />}
+                            size="large"
+                    >
+                        스터디방 만들기
+                    </Button>
+                </Link>
+            </TitleWrap>
+
             <Divider/>
 
             <FilterWrap>
                 <RoomOrderSelector onSubmit={handleChangeOrderType}/>
+                <CategoryMultiSelector onChange={handleChangeCategoryIds}/>
                 <Search
                     className='search'
                     enterButton="Search"
@@ -80,13 +93,13 @@ const RoomsByCategory = (props) => {
                     onChange={handleChangeKeyword}
                     value={keyword}
                 />
-            </FilterWrap>
+             </FilterWrap>
 
             <List
                 grid={{ gutter: 20, xs: 1, sm: 2, column :3}}
-                loadMore={hasMoreRoomsByCategory ?
+                loadMore={hasMoreMyRooms ?
                          (<MoreButton onClick={handleLoadMore}/>) : null}
-                dataSource={roomsByCategory}
+                dataSource={myRooms}
                 renderItem={item => (
                     <List.Item>
                         <Card {...item}/>
@@ -97,7 +110,15 @@ const RoomsByCategory = (props) => {
     )
 }
 
-export default RoomsByCategory;
+export default MyStudyRoomPage;
+
+const TitleWrap = styled.div`
+    display : flex;
+
+    h1 {
+        flex : 1;
+    }
+`
 
 const FilterWrap = styled.div`
     margin-bottom : 1.5rem;
