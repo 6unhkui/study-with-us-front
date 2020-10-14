@@ -10,7 +10,8 @@ import {
     DELETE_ROOM_REQUEST, DELETE_ROOM_SUCCESS, DELETE_ROOM_FAILURE,
     CHANGE_COVER_REQUEST, CHANGE_COVER_SUCCESS, CHANGE_COVER_FAILURE,
     CHANGE_CATEGORY_REQUEST, CHANGE_CATEGORY_SUCCESS, CHANGE_CATEGORY_FAILURE,
-    EDIT_ROOM_REQUEST, EDIT_ROOM_SUCCESS, EDIT_ROOM_FAILURE
+    EDIT_ROOM_REQUEST, EDIT_ROOM_SUCCESS, EDIT_ROOM_FAILURE,
+    LOAD_ROOMS_REQUEST, LOAD_ROOMS_SUCCESS, LOAD_ROOMS_FAILURE
 } from 'store/modules/room';
 import {http} from 'utils/HttpHandler';
 
@@ -23,13 +24,13 @@ function createRoomAPI(data) {
     return http.post(`/api/v1/room`, data);
 }
 
-function loadRoomsAPI(pagination, orderType, categoriesId, keyword) {
-    console.log(categoriesId)
-    return http.get(`/api/v1/rooms?${makeParamForRooms(pagination, orderType, categoriesId, keyword)}`);
+function loadRoomsAPI(pagination, orderType, categoryIds, keyword) {
+    console.log(categoryIds)
+    return http.get(`/api/v1/rooms?${makeParamForRooms(pagination, orderType, categoryIds, keyword)}`);
 }
 
-function loadUserRoomsAPI(pagination, orderType, categoriesId, keyword) {
-    return http.get(`/api/v1/user/rooms?${makeParamForRooms(pagination, orderType, categoriesId, keyword)}`);
+function loadUserRoomsAPI(pagination, orderType, categoryIds, keyword) {
+    return http.get(`/api/v1/user/rooms?${makeParamForRooms(pagination, orderType, categoryIds, keyword)}`);
 }
 
 function loadRoomDetailAPI(roomId) {
@@ -91,7 +92,7 @@ function* watchCreateRoom() {
 // 내가 가입한 스터디방 리스트 ///////////////////////////////////
 function* loadMyRooms(action){
     try {
-        let result = yield call(loadUserRoomsAPI, action.pagination,  action.orderType, action.categoriesId, action.keyword);
+        let result = yield call(loadUserRoomsAPI, action.pagination,  action.orderType, action.categoryIds, action.keyword);
         yield put({
             type : LOAD_MY_ROOMS_SUCCESS,
             data : result.data.data.content,
@@ -160,12 +161,12 @@ function* watchLoadRecentlyCreatedRooms() {
 // 카테고리 별 스터디방 리스트 ///////////////////////////////////
 function* loadRoomsByCategory(action){
     try {
-        let result = yield call(loadRoomsAPI, action.pagination,  action.orderType, action.categoriesId, action.keyword);
+        const {data : {data : {content, first, last}}} = yield call(loadRoomsAPI, action.pagination,  action.orderType, action.categoryIds, action.keyword);
         yield put({
             type : LOAD_ROOMS_BY_CATEGORY_SUCCESS,
-            data : result.data.data.content,
-            first : result.data.data.first,
-            last : result.data.data.last,
+            data : content,
+            first : first,
+            last : last,
         })
     }catch(e) {
         console.error(e);
@@ -178,6 +179,29 @@ function* loadRoomsByCategory(action){
 
 function* watchLoadRoomsByCategory() {
     yield takeEvery(LOAD_ROOMS_BY_CATEGORY_REQUEST, loadRoomsByCategory)
+}
+
+// 모든 스터디방 리스트
+function* loadRooms(action){
+    try {
+        const {data : {data : {content, first, last}}} = yield call(loadRoomsAPI, action.pagination,  action.orderType, action.categoryIds, action.keyword);
+        yield put({
+            type : LOAD_ROOMS_SUCCESS,
+            data : content,
+            first : first,
+            last : last,
+        })
+    }catch(e) {
+        console.error(e);
+        yield put({
+            type : LOAD_ROOMS_FAILURE,
+            error : e
+        })
+    }
+}
+
+function* watchLoadRooms() {
+    yield takeEvery(LOAD_ROOMS_REQUEST, loadRooms)
 }
 
 
@@ -339,15 +363,16 @@ export default function* roomSaga() {
         fork(watchDeleteRoom),
         fork(watchChangeCover),
         fork(watchChangeCategory),
-        fork(watchEditRoom)
+        fork(watchEditRoom),
+        fork(watchLoadRooms)
     ]);
 }
 
 
-const makeParamForRooms = (pagination, orderType, categoriesId, keyword)  => {
+const makeParamForRooms = (pagination, orderType, categoryIds, keyword)  => {
     let param = Object.entries(pagination).map(e => e.join('=')).join('&');
     if(orderType) param += `&orderType=${orderType}`;
-    if(categoriesId && categoriesId.length > 0) param += `&categoriesId=${categoriesId.join(",")}`;
+    if(categoryIds && categoryIds.length > 0) param += `&categoryIds=${categoryIds.join(",")}`;
     if(keyword) param += `&keyword=${keyword}`;
     return param;
 }

@@ -7,6 +7,8 @@ const initialState = {
     hasMoreRoomsByCategory : false,
     popularRooms : [], // 인기 스터디방 리스트
     recentlyCreatedRooms : [], // 신규 스터디방 리스트
+    rooms : [],
+    hasMoreRooms : false,
 
     isCreatingRoom : false, // 스터디방 생성 중
     createRoomErrorReason: '', // 스터디방 생성 실패 사유
@@ -66,6 +68,10 @@ export const LOAD_POPULAR_ROOMS_FAILURE = 'LOAD_POPULAR_ROOMS_FAILURE';
 export const LOAD_RECENTLY_CREATED_ROOMS_REQUEST = 'LOAD_RECENTLY_CREATED_ROOMS_REQUEST';
 export const LOAD_RECENTLY_CREATED_ROOMS_SUCCESS = 'LOAD_RECENTLY_CREATED_ROOMS_SUCCESS';
 export const LOAD_RECENTLY_CREATED_ROOMS_FAILURE = 'LOAD_RECENTLY_CREATED_ROOMS_FAILURE';
+
+export const LOAD_ROOMS_REQUEST = 'LOAD_ROOMS_REQUEST';
+export const LOAD_ROOMS_SUCCESS = 'LOAD_ROOMS_SUCCESS';
+export const LOAD_ROOMS_FAILURE = 'LOAD_ROOMS_FAILURE';
 
 export const LOAD_ROOM_DETAIL_REQUEST = 'LOAD_ROOM_DETAIL_REQUEST';
 export const LOAD_ROOM_DETAIL_SUCCESS = 'LOAD_ROOM_DETAIL_SUCCESS';
@@ -181,6 +187,26 @@ const room = (state = initialState, action) => {
                 break;
             }
             case LOAD_RECENTLY_CREATED_ROOMS_FAILURE: {
+                break;
+            }
+
+            // 모든 스터디방 리스트 ///////////////////////////////
+            case LOAD_ROOMS_REQUEST : {
+                draft.rooms = draft.hasMoreRooms ? draft.rooms : [];
+                break;
+            }
+            case LOAD_ROOMS_SUCCESS : {
+                if(action.first) {
+                    draft.rooms = action.data;
+                }else {
+                    action.data.forEach((d) => {
+                        draft.rooms.push(d);
+                    });
+                }
+                draft.hasMoreRooms = !action.last;
+                break;
+            }
+            case LOAD_ROOMS_FAILURE: {
                 break;
             }
 
