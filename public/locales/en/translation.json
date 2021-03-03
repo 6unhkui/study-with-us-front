@@ -37,7 +37,7 @@
     },
     "validate": {
         "email": "Must be a valid email",
-        "password": "Password must have at least 8 characters with at least one Capital letter or lower case letter and at least one number and special character(#?!@$%^&*-).",
+        "password": "Password must have at least 6 characters with at least one Capital letter or lower case letter and at least one number and special character(#?!@$%^&*-).",
         "confirmPassword": "The two passwords that you entered do not match",
         "required": "{{name}} is required"
     },

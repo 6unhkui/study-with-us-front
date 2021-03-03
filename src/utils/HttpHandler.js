@@ -51,7 +51,7 @@ export const http = instance;
 
 
 export const getParameter = (location, key) => {
-    key = key.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    key = key.replace(/[\\[]/, "\\[").replace(/[\]]/, "\\]");
 
     var regex = new RegExp('[\\?&]' + key + '=([^&#]*)');
 

@@ -5,9 +5,7 @@ import {Button, Input, Row, Col, Comment} from 'antd';
 const { TextArea } = Input;
 
 
-const style = {
-    minHeight : '70px'
-}
+const minHeight = '70px';
 
 const CommentEditor = ({ avatar, onChange, value, onSubmit, submitText}) => {
     return (
@@ -15,13 +13,13 @@ const CommentEditor = ({ avatar, onChange, value, onSubmit, submitText}) => {
                  content={
                      <Row gutter={10}>
                          <Col span={21}>
-                             <TextArea style={style} value={value} onChange={onChange}/>
+                             <TextArea style={{minHeight}} value={value} onChange={onChange}/>
                          </Col>
                          <Col span={3}>
                              <Button htmlType="submit"
                                      onClick={onSubmit}
                                      type="primary"
-                                     style={{minWidth : '100%', ...style}}>
+                                     style={{minWidth : '100%', minHeight}}>
                                  {submitText}
                              </Button>
                          </Col>

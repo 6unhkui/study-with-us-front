@@ -7,27 +7,26 @@ import Card from 'components/RoomCard';
 import RoomOrderSelector from 'components/RoomOrderSelector';
 import { Typography, Button, Divider, List, Input} from 'antd';
 import {PlusOutlined} from '@ant-design/icons';
-import CategoryMultiSelector from "../containers/CategoryMultiSelector";
-import {useRoomFilter} from "../hooks/useRoomFilter";
-import MoreButton from "../components/MoreButton";
+import CategoryMultiSelector from "containers/CategoryMultiSelector";
+import {useRoomFilter} from "hooks/useRoomFilter";
+import MoreButton from "components/MoreButton";
+import Pagination from 'utils/Pagination';
 
 const { Title } = Typography;
 const { Search } = Input;
 
+const initPagination = new Pagination();
+Object.freeze(initPagination);
+
 const MyStudyRoomPage = (props) => {
-    const initPagination = {
-        page : 1,
-        size : 6,
-        direction : 'ASC'
-    }
     const dispatch = useDispatch();
     const { myRooms, hasMoreMyRooms } = useSelector(state => state.room);
+    const [pagination, setPagination] = useState({...initPagination});
     const {
         keyword : [keyword, handleChangeKeyword],
         orderType : [orderType, handleChangeOrderType],
         categoryIds : [categoryIds, handleChangeCategoryIds]
     } = useRoomFilter();
-    const [pagination, setPagination] = useState(initPagination);
 
     useEffect(() => {
         dispatch({
@@ -36,16 +35,16 @@ const MyStudyRoomPage = (props) => {
             categoryIds,
             orderType
         })
-    },[pagination.page]);
+    },[categoryIds, dispatch, orderType, pagination, pagination.page]);
 
     useEffect(() => {
         dispatch({
             type : LOAD_MY_ROOMS_REQUEST,
             pagination : initPagination,
             categoryIds,
-            orderType
+            orderType,
         })
-    },[categoryIds, orderType]);
+    }, [categoryIds, dispatch, orderType]);
 
 
     const handleLoadMore = useCallback(() => {
@@ -63,8 +62,7 @@ const MyStudyRoomPage = (props) => {
             orderType,
             keyword
         })
-    }, [categoryIds, dispatch, initPagination, keyword, orderType]);
- 
+    }, [categoryIds, dispatch, keyword, orderType]);
 
     return (
         <div className="container content-wrap">
@@ -101,7 +99,7 @@ const MyStudyRoomPage = (props) => {
                          (<MoreButton onClick={handleLoadMore}/>) : null}
                 dataSource={myRooms}
                 renderItem={item => (
-                    <List.Item>
+                    <List.Item key={item.roomId}>
                         <Card {...item}/>
                     </List.Item>
                 )}

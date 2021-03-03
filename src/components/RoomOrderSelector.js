@@ -5,32 +5,31 @@ import { DownOutlined } from '@ant-design/icons';
 
 import LayerPopup from 'components/LayerPopup';
 
-const radioStyle = {
-    display: 'block',
-    height: '30px',
-    lineHeight: '30px',
-};
+const orderTypes = [
+    {key : "NAME", value : "이름 순"},
+    {key : "CREATED_DATE", value : "생성일 순"},
+    {key : "JOIN_COUNT", value : "멤버수 순"}
+];
 
-function Layer({setLayerOpen, orderTypes, onChangeOrderType, selected}) {
+function Layer({setLayerOpen, onChangeOrderType, selected}) {
     return (
         <LayerPopup title="정렬" setLayerOpen={setLayerOpen} size="400px">
              <Radio.Group value={selected.key}>
-                 {orderTypes.map(v => (
-                     <Radio style={radioStyle} value={v.key} 
-                        onClick={(e) => {onChangeOrderType(v)}}>
-                        {v.value}
+                 {orderTypes.map((orderType, i) => (
+                     <Radio style={{
+                                display: 'block',
+                                height: '30px',
+                                lineHeight: '30px',
+                            }} 
+                            value={orderType.key} 
+                            onClick={onChangeOrderType.bind(null, orderType)}>
+                        {orderType.value}
                     </Radio>
                  ))}
             </Radio.Group>
         </LayerPopup>
     )
 }
-
-const orderTypes = [
-    {key : "NAME", value : "이름 순"},
-    {key : "CREATED_DATE", value : "생성일 순"},
-    {key : "JOIN_COUNT", value : "멤버수 순"}
-];
 
 const RoomOrderSelect = ({onSubmit}) => {
     const [selected, setSelected] = useState(orderTypes[0]);
@@ -40,17 +39,15 @@ const RoomOrderSelect = ({onSubmit}) => {
         setSelected(val);
         onSubmit(val.key);
         setLayerOpen(false);
-    }, [selected, layerOpen]);
-
+    }, [onSubmit]);
 
     return (
         <>
             {layerOpen && <Layer setLayerOpen={setLayerOpen} 
-                                 orderTypes={orderTypes} 
                                  selected={selected} 
                                  onChangeOrderType={onChangeOrderType}/>}
                                  
-            <Button onClick={() => {setLayerOpen(true)}}>
+            <Button onClick={setLayerOpen.bind(null, true)}>
                 {selected.value} <DownOutlined />
             </Button>
         </>

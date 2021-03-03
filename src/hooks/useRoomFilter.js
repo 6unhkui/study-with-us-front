@@ -1,26 +1,28 @@
-import {useCallback, useState} from "react";
+import {useState} from "react";
 
-export const useRoomFilter = (initialValue) => {
-    const [orderType, setOrderType] = useState(initialValue && initialValue.orderType);
-    const [categoryIds, setCategoryIds] = useState(initialValue && initialValue.categoryIds);
-    const [keyword, setKeyword] = useState(initialValue && initialValue.keyword);
+export const useRoomFilter = (init) => {
+    const [values, setValues] = useState(Object.assign({orderType : '', categoryIds : 0, keyword : ''}, init));
 
-    const handleChangeOrderType = useCallback(value => {
-        setOrderType(value);
-    }, []);
+    const handleChange = key => {
+        // 실제로 사용될 함수 호출 이전에 key 값을 전달하고 클로저를 이용해 그 값에 접근한다.
+        return function(param) {
+            let value;
 
-    const handleChangeCategoryIds = useCallback(value => {
-        setCategoryIds(value);
-    }, []);
+            if(param.constructor.name === 'SyntheticEvent') { // 이벤트 객체가 전달된다면
+                value = param.target.value;
+            }else { // 값 자체가 전달된다면
+                value = param;
+            }
 
-    const handleChangeKeyword = useCallback(e => {
-        setKeyword(e.target.value);
-    }, []);
-
-
-    return {
-        orderType : [orderType, handleChangeOrderType],
-        categoryIds : [categoryIds, handleChangeCategoryIds],
-        keyword : [keyword, handleChangeKeyword],
+            setValues(state => ({
+                ...state,
+                [key] : value
+            }));
+        }
     }
+
+    return Object.keys(values).reduce((acc, cur) => {
+        acc[cur] = [values[cur], handleChange(cur)];
+        return acc;
+    }, {});
 }

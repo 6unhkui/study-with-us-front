@@ -13,7 +13,7 @@ import { Typography, Badge, Tabs} from 'antd';
 const { Title } = Typography;
 const { TabPane } = Tabs;
 
-const EditAccountSetting = (props) => {
+const EditAccountSetting = (props) => { 
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const {me} = useSelector(state => state.account);
@@ -47,7 +47,7 @@ const EditAccountSetting = (props) => {
               <Tabs defaultActiveKey="1" style={{marginTop : '2.4rem'}}>
                   <TabPane tab={t('mypage.editAccountSettings.changeProfileInfo')} key="1" className="content">
                     <Title level={4}>{t('mypage.editAccountSettings.changeProfileInfo')}</Title>
-                    <EditAccountInfo account={me}/>
+                    <EditAccountInfo/>
                   </TabPane>
 
                   {!isSocialAccount && 

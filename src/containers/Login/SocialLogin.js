@@ -7,25 +7,25 @@ import Naver from "assets/image/naver-ico.svg";
 import Google from "assets/image/google-ico.svg";
 
 
+const socialLogo = {
+  GOOGLE : Google,
+  NAVER : Naver
+}
+
 const SocialLogin = () => {
     const socialLoginHandler = provider => {
         if(provider === 'GOOGLE') window.location.assign(GOOGLE_AUTH_URL);
         else if(provider === 'NAVER') window.location.assign(NAVER_AUTH_URL);
     }
 
-    const socialLogo = provider => {
-        if(provider === 'GOOGLE') return Google
-        else if(provider === 'NAVER') return Naver
-    }
-
     return (
         <SocialLoginWrap>
             <Divider plain>Log In With</Divider>
             {
-                OAUTH_PROVIDER.map(v => (
-                    <ButtonWrap>
-                        <Button onClick={() => socialLoginHandler(v)} className={`social ${v.toLowerCase()}`}>
-                            <img src={socialLogo(v)} alt={v.toLowerCase()}/> {v}
+                OAUTH_PROVIDER.map((provider, i) => (
+                    <ButtonWrap key={i}>
+                        <Button onClick={socialLoginHandler.bind(null, provider)} className={`social ${provider.toLowerCase()}`}>
+                            <img src={socialLogo[provider]} alt={provider}/> {provider}
                         </Button>
                     </ButtonWrap>
                 ))

@@ -1,25 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {http} from 'utils/HttpHandler';
-import {SERVER_URI} from 'constants/index';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
+import loadFile from 'utils/loadFile';
 
 
 const TextEditor = ({value = '', onChange}) => {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-
-  useEffect(() => {
+  const [editorState, setEditorState] = useState(() => {
     const contentBlock = htmlToDraft(value);
     if (contentBlock) {
       const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-      const editorState = EditorState.createWithContent(contentState);
-      setEditorState(editorState);
-    }
-  }, [])
+      return EditorState.createWithContent(contentState);
+    }else return EditorState.createEmpty();
+  });
 
   const imageUploadCallback = file => {
     return new Promise((resolve, reject) => {
@@ -27,9 +24,8 @@ const TextEditor = ({value = '', onChange}) => {
       formData.append("file", file);
 
       http.post('/api/v1/files/editor', formData, {'Content-type': 'multipart/form-data;charset=utf-8'})
-      .then(response => {
-        const data = response.data.data;
-        resolve({ data: { link: `${SERVER_URI}/api/v1/files/editor/${data.saveName}`}})
+      .then(({data : {data}}) => {
+        resolve({ data: { link: loadFile(data.saveName, 'editor')}})
       }).catch(err => {
         reject("Upload failed");
       })
@@ -55,9 +51,10 @@ const TextEditor = ({value = '', onChange}) => {
 
   return (
       <EditorWrap>
-        <Editor toolbar={config} editorState={editorState}
-                onEditorStateChange={v =>{
-                  setEditorState(v);
+        <Editor toolbar={config} 
+                editorState={editorState}
+                onEditorStateChange={state => {
+                  setEditorState(state);
                   onChange(draftToHtml(convertToRaw(editorState.getCurrentContent())));
                 }}/>
       </EditorWrap>

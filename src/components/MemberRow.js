@@ -1,20 +1,16 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState} from 'react';
 import Avatar from 'components/Avatar';
 import { List, Skeleton, Button } from 'antd';
 import MemberDetailDrawer from "containers/RoomDetail/MembersByRoom/MemberDetailDrawer";
 import Badge from "./Badge";
 
-const MemberRow = ({loading, member, showView = false}) => {
-  const [detailVisible, setDetailVisible] = useState(false);
-
-  const handleMemberDetailVisible = useCallback(isVisible => {
-      setDetailVisible(isVisible)
-  }, []);
+const MemberRow = ({loading, member, idx, showActions = true}) => {
+  const [visibleDetail, setVisibleDetail] = useState(false);
 
   return (
     <List.Item
-        key={member.accountId}
-        actions={[showView && <Button type="link" onClick={() => handleMemberDetailVisible(true)} >view</Button>]}
+        key={idx}
+        actions={showActions && [<Button type="link" onClick={setVisibleDetail.bind(null, true)} >view</Button>]}
     >
         <Skeleton avatar title={false} loading={loading} active>
             <List.Item.Meta
@@ -23,10 +19,10 @@ const MemberRow = ({loading, member, showView = false}) => {
                 description={<span>{member.email}</span>}
             />
 
-            {showView && detailVisible &&
-            <MemberDetailDrawer memberId={member.memberId}
-                                visible={detailVisible}
-                                onClose={() => handleMemberDetailVisible(false)}/>
+            {visibleDetail &&
+            <MemberDetailDrawer memberId={idx}
+                                visible={visibleDetail}
+                                onClose={setVisibleDetail.bind(null, false)}/>
             }
         </Skeleton>
     </List.Item>

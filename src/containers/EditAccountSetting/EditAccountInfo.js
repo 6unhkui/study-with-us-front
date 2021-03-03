@@ -1,16 +1,18 @@
 import React, {useCallback} from 'react';
 import { useTranslation } from 'react-i18next';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 import { Form, Input, Button, message} from 'antd';
 import {EDIT_ACCOUNT_REQUEST} from "store/modules/account";
 
 
-const EditAccountInfo = ({account}) => {
+const EditAccountInfo = () => {
     const { t } = useTranslation();
     const [form] = Form.useForm();
     const dispatch = useDispatch();
+    const {me} = useSelector(state => state.account);
 
+    
     const validateMessages = {
       required: t('validate.required', { name: '${label}'})
     };
@@ -31,14 +33,14 @@ const EditAccountInfo = ({account}) => {
                 }
             }
         });
-    }, []);
+    }, [dispatch, form]);
 
     return (
         <Form
           form={form}
           name="profileInfo"
           onFinish={handleSubmit}
-          initialValues={account}
+          initialValues={me}
           scrollToFirstError
           layout = "vertical"
           requiredMark={false}

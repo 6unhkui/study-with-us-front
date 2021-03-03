@@ -2,21 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const Badge = ({text, type}) => {
-    return (
-        <BadgeWrap type={type}>
-            {text}
-        </BadgeWrap>
-    )
-}
+const Badge = ({text, type = 'primary'}) => (
+    <BadgeWrap type={type}>
+        {text}
+    </BadgeWrap>
+)
 
 Badge.propTypes = {
     text : PropTypes.string.isRequired,
     type : PropTypes.string
-};
-
-Badge.defaultProps = {
-    type : 'primary'
 };
 
 export default Badge;

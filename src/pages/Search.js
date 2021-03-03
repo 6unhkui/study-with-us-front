@@ -11,16 +11,16 @@ import {withRouter} from "react-router-dom";
 
 import {useRoomFilter} from 'hooks/useRoomFilter';
 import MoreButton from "../components/MoreButton";
+import Pagination from 'utils/Pagination';
 
 const { Title } = Typography;
 const { Search } = Input;
 
+const initPagination = new Pagination();
+Object.freeze(initPagination);
+
 const SearchPage = (props) => {
-    const initPagination = {
-        page : 1,
-        size : 6,
-        direction : 'ASC'
-    }
+
     const dispatch = useDispatch();
     const query = getParameter(props.location, 'query');
     const {
@@ -28,7 +28,7 @@ const SearchPage = (props) => {
         orderType : [orderType, handleChangeOrderType],
         categoryIds : [categoryIds, handleChangeCategoryIds]
     } = useRoomFilter({keyword : query ? query : ''});
-    const [pagination, setPagination] = useState(initPagination);
+    const [pagination, setPagination] = useState({...initPagination});
     const { rooms, hasMoreRooms } = useSelector(state => state.room);
 
     useEffect(() => {
@@ -37,20 +37,19 @@ const SearchPage = (props) => {
             pagination,
             categoryIds,
             orderType,
-            keyword
+            keyword : query ? query : ''
         })
-    },[pagination.page]);
+    },[categoryIds, dispatch, orderType, pagination, pagination.page, query]);
 
 
     useEffect(() => {
         dispatch({
             type : LOAD_ROOMS_REQUEST,
-            pagination : initPagination,
+            pagination : {...initPagination},
             categoryIds,
-            orderType,
-            keyword
+            orderType
         })
-    },[categoryIds, orderType]);
+    },[categoryIds, dispatch, orderType]);
 
 
     const handleLoadMore = useCallback(() => {
@@ -63,12 +62,12 @@ const SearchPage = (props) => {
     const handleSubmitKeyword = useCallback(() => {
         dispatch({
             type : LOAD_ROOMS_REQUEST,
-            pagination : initPagination,
+            pagination : {...initPagination},
             categoryIds,
             orderType,
             keyword
         })
-    }, [categoryIds, dispatch, initPagination, keyword, orderType]);
+    }, [categoryIds, dispatch, keyword, orderType]);
 
 
     return (

@@ -17,7 +17,7 @@ const MemberDetailDrawer = ({memberId, visible, onClose}) => {
             type : LOAD_MEMBER_DETAIL_REQUEST,
             memberId
         })
-    }, [dispatch, memberId])
+    }, [dispatch, memberId, role])
 
     const handleDeleteMember = useCallback(() => {
         dispatch({
@@ -88,8 +88,14 @@ const MemberDetailDrawer = ({memberId, visible, onClose}) => {
             visible={visible}
         >
             {loadingMemberDetail ? <Loading/> :
-                <Descriptions title={<><Avatar user={{name, profileImg}}/>{name}<Badge text={role} type={role==='MANAGER' && 'primary'}/></>}
-                              extra={isManager && role === "MATE" && <Button onClick={handleDeleteMember}>멤버 삭제</Button>}
+                <Descriptions title={
+                                    <>
+                                        <Avatar user={{name, profileImg}}/>
+                                        {name}
+                                        <Badge text={role} type={role === 'MANAGER' ? 'primary' : 'default'}/>
+                                    </>
+                                }
+                                extra={isManager && role === "MATE" && <Button onClick={handleDeleteMember}>멤버 삭제</Button>}
                 >
                     <Descriptions.Item label="Name" span={3}>{name}</Descriptions.Item>
                     <Descriptions.Item label="Email" span={3}>{email}</Descriptions.Item>

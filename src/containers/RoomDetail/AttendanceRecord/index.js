@@ -17,7 +17,6 @@ const AttendanceCheck = (props) => {
     const [startDate, setStartDate] = useState(moment().startOf('month'));
     const [endDate, setEndDate] = useState(moment().endOf('month'));
 
-
     useEffect(() => {
         dispatch({
             type : LOAD_MEMBERS_STATISTIC_REQUEST,
@@ -27,22 +26,22 @@ const AttendanceCheck = (props) => {
         })
     }, [dispatch, endDate, roomId, startDate])
 
-    const handleChangeDate = useCallback((m, s) => {
-        if(m) {
-            setStartDate(m[0]);
-            setEndDate(m[1]);
-        }
+    const handleChangeDate = useCallback(mt => {
+        if(mt) {
+            setStartDate(mt[0]);
+            setEndDate(mt[1]);
+        } 
     }, [])
-
+ 
     const config = {
         chart: {
             type: 'column'
-        },
+        }, 
         title: {
-            text: startDate.format('YYYY.MM.DD') + " ~ " + endDate.format('YYYY.MM.DD'),
+            text: `${startDate.format('YYYY.MM.DD')} ~ ${endDate.format('YYYY.MM.DD')}`,
             style : {
                 "fontSize" : "20px",
-                "fontWeight" : "bold"
+                "fontWeight" : "bold" 
             }
         },
         xAxis: {

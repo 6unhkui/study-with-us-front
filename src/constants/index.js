@@ -9,3 +9,4 @@ export const ACCESS_TOKEN = 'accessToken';
 export const REMEMBER_ME = 'rememberMe';
 export const MULTI_LANG = 'i18nextLng';
 
+export const __prood__ = process.env.NODE_ENV === 'production';

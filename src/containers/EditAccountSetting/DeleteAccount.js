@@ -1,9 +1,8 @@
 import React, {useState, useCallback} from 'react';
 import {ACCESS_TOKEN} from 'constants/index';
-import {http} from 'utils/HttpHandler';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import {Button, Checkbox, message} from 'antd';
+import {Button, Checkbox} from 'antd';
 
 import {useDispatch} from "react-redux";
 import {DELETE_ACCOUNT_REQUEST} from "store/modules/account";
@@ -12,7 +11,6 @@ import {DELETE_ACCOUNT_REQUEST} from "store/modules/account";
 const DeleteAccount = (props) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-
     const [confirm, setConfirm] = useState(false);
 
     const handleDeleteAccount = useCallback (() => {
@@ -27,7 +25,7 @@ const DeleteAccount = (props) => {
                 }
             })
         }
-    }, [confirm]);
+    }, [confirm, dispatch, props.history]);
 
     return (
         <>

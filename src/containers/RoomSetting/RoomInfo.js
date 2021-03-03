@@ -1,8 +1,6 @@
 import React, {useEffect, useCallback, useState, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
-import {SERVER_URI} from "constants/index";
-import EmptyThumbnail from "assets/image/empty-thumbnail.png";
 import {LOAD_ROOM_DETAIL_REQUEST, DELETE_ROOM_REQUEST, CHANGE_COVER_REQUEST, CHANGE_CATEGORY_REQUEST, EDIT_ROOM_REQUEST} from "store/modules/room";
 import {CHANGE_MANAGER_REQUEST} from "store/modules/member";
 import styled from "styled-components";
@@ -12,6 +10,7 @@ import CategorySelectLayer from "containers/CategorySelectLayer";
 
 import {Button, Descriptions, Modal, Input, InputNumber, Switch, message} from 'antd';
 import {CameraOutlined} from "@ant-design/icons";
+import loadFile from 'utils/loadFile';
 
 const { TextArea } = Input;
 
@@ -25,15 +24,14 @@ const RoomInfo = ({roomId}) => {
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [changeManagerModalVisible, setChangeManagerModalVisible] = useState(false);
     const [changeCategoryModalVisible, setChangeCategoryModalVisible] = useState(false);
-    const initialFormValues = () => {
+    const [modifyMode, toggleModifyMode] = useToggle(() => {
         setFormValues({
             name,
             description,
             maxCount,
             unlimited
         })
-    }
-    const [modifyMode, toggleModifyMode] = useToggle(initialFormValues);
+    });
     const [formValues, setFormValues] = useState({});
 
 
@@ -116,18 +114,13 @@ const RoomInfo = ({roomId}) => {
 
 
     const handleEditFormSubmit = useCallback(() => {
-        let isEmpty = false;
         for(const value of Object.values(formValues)) {
             if(typeof value === 'string' && value.trim().length === 0) {
-                isEmpty = true;
+                message.error('입력 폼을 모두 채워주세요.');
+                return;
             }
         }
-
-        if(isEmpty) {
-            message.error('입력 폼을 모두 채워주세요.');
-            return;
-        }
-
+   
         dispatch({
             type : EDIT_ROOM_REQUEST,
             roomId,
@@ -208,7 +201,7 @@ const RoomInfo = ({roomId}) => {
                                ref={inputRef}/>
                     </div>
                     }
-                    <img src={(coverImage ? `${SERVER_URI + '/api/v1/files/cover/' + coverImage}` : `${EmptyThumbnail}`)}
+                    <img src={loadFile(coverImage, 'cover')}
                         alt="cover_image" className={(coverImage && 'cover')}
                         style={{width : 'inherit', height : 'inherit', objectFit : 'cover'}}
                     />

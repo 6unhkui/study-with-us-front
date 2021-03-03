@@ -9,11 +9,16 @@ import {LOAD_POPULAR_ROOMS_REQUEST, LOAD_RECENTLY_CREATED_ROOMS_REQUEST} from "s
 import CategorySlide from "containers/CategorySlide";
 import Card from "components/RoomCard";
 
-import { Button, Divider, List, Typography} from 'antd';
+import { Divider, List, Typography} from 'antd';
 import {SearchOutlined} from "@ant-design/icons";
-import {BannerSlide, NowStartBanner} from "../containers/Main";
+import {BannerSlide, NowStartBanner} from "containers/Main";
+
+import Pagination from 'utils/Pagination';
 
 const { Title } = Typography;
+
+const initPagination = new Pagination(1, 3, 'ASC');
+Object.freeze(initPagination);
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -21,31 +26,21 @@ const Main = () => {
   const { popularRooms, recentlyCreatedRooms } = useSelector(state => state.room);
   const [searchValue, setSearchValue] = useState('');
 
-
   useEffect(() => {
     dispatch({
         type : LOAD_POPULAR_ROOMS_REQUEST,
-        pagination : {
-            page : 1,
-            size : 3,
-            direction : 'ASC',
-        },
+        pagination : initPagination,
         orderType : 'JOIN_COUNT'
     })
 
     dispatch({
           type : LOAD_RECENTLY_CREATED_ROOMS_REQUEST,
-          pagination : {
-              page : 1,
-              size : 3,
-              direction : 'ASC',
-          },
+          pagination : initPagination,
           orderType : 'CREATED_DATE'
      })
-  },[]);
+  },[dispatch]); 
 
-
-  const recommendRoomsSections = [
+  const recommendRooms = [
       {title : '지금, 인기 스터디방', data : popularRooms},
       {title : '신규 스터디방', data : recentlyCreatedRooms},
   ]
@@ -76,18 +71,17 @@ const Main = () => {
                            }
                        }}
                 />
-                <SearchOutlined className='ico-search'
-                                onClick={handleSearch}/>
+                <SearchOutlined className='ico-search' onClick={handleSearch}/>
             </SearchWrap>
 
             <CategorySlide/>
 
             <Divider/>
-            {recommendRoomsSections.map((value,i) => (
-                  <div style={{marginTop : '4rem'}}>
-                      <Title level={3} style={{marginBottom : '1rem'}}>{value.title}</Title>
+            {recommendRooms.map((section, i) => (
+                  <div style={{marginTop : '4rem'}} key={i}>
+                      <Title level={3} style={{marginBottom : '1rem'}}>{section.title}</Title>
                       <List grid={{ gutter: 20, xs: 1, sm: 2, column :3}}
-                            dataSource={value.data}
+                            dataSource={section.data}
                             renderItem={item => (
                                 <List.Item>
                                     <Card {...item}/>

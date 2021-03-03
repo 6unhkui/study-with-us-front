@@ -4,28 +4,27 @@ import {useDispatch, useSelector} from "react-redux";
 import {LOAD_NEWS_FEED_REQUEST} from "store/modules/post";
 
 import PostCard from 'components/PostCard';
+import Pagination from 'utils/Pagination';
 
-import {Button, Input, List, Typography} from 'antd';
+import {Button, List, Typography} from 'antd';
 
 const { Title } = Typography;
 
 
+const initPagination = new Pagination();
+Object.freeze(initPagination);
+
 const NewsFeed = (props) => {
-    const initPagination = {
-        page : 1,
-        size : 6,
-        direction : 'ASC'
-    }
     const dispatch = useDispatch();
     const { newsFeed, loadingNewsFeed, hasMoreNewsFeed} = useSelector(state => state.post);
-    const [pagination, setPagination] = useState(initPagination);
+    const [pagination, setPagination] = useState({...initPagination});
 
     useEffect(() => {
         dispatch({
             type : LOAD_NEWS_FEED_REQUEST,
             pagination,
         })
-    },[pagination.page]);
+    },[dispatch, pagination, pagination.page]);
 
     const handleLoadMore = useCallback(() => {
         setPagination({

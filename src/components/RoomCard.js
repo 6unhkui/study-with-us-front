@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {SERVER_URI} from 'constants/index';
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Card, Typography, Divider } from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 
 import Avatar from 'components/Avatar';
-import EmptyThumbnail from 'assets/image/empty-thumbnail.png';
+import loadFile from 'utils/loadFile';
 
 const { Paragraph } = Typography;
 
@@ -19,7 +18,7 @@ const RoomCard = ({roomId, category, coverImage, name, description, manager, joi
         <Card className='light-primary-border'
               cover={
                   <div className='cover'>
-                      <img alt="cover" src={(coverImage ? SERVER_URI + '/api/v1/files/cover/' + coverImage : EmptyThumbnail)}/>
+                      <img alt="cover" src={loadFile(coverImage, 'cover')}/>
                   </div>
               }
         >

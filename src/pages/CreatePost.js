@@ -4,8 +4,8 @@ import { useHistory } from "react-router-dom";
 import { PageHeader } from 'antd';
 import CreateForm from 'components/PostForm';
 import {useDispatch, useSelector} from "react-redux";
-import {CREATE_POST_REQUEST} from "../store/modules/post";
-import CardWrap from "../components/CardBox";
+import {CREATE_POST_REQUEST} from "store/modules/post";
+import CardWrap from "components/CardBox";
 
 const CreatePost = (props) => {
     const roomId = props.match.params.id;
@@ -35,12 +35,12 @@ const CreatePost = (props) => {
             type : CREATE_POST_REQUEST,
             data,
             meta: {
-                callbackAction : () => {
-                    history.push(`room/${roomDetail.roomId}`)
+                callbackAction : idx => {
+                    history.push(`/post/${idx}`)
                 }
             }
         });
-    }, [dispatch, history, roomDetail.roomId, roomId]);
+    }, [dispatch, history, roomId]);
 
 
     return (

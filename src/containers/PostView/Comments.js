@@ -2,19 +2,19 @@ import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from "react-redux";
 import {LOAD_COMMENTS_REQUEST, CREATE_COMMENT_REQUEST} from "store/modules/post";
-import CommentEditor from "../../components/CommentEditor";
+import CommentEditor from "components/CommentEditor";
 import CommentSingle from "containers/PostView/CommentSingle";
 
 import LTT from "list-to-tree";
 
 import {Divider} from 'antd';
-import Avatar from "../../components/Avatar";
+import Avatar from "components/Avatar";
 
 
 const Comments = ({postId}) => {
     const dispatch = useDispatch();
     const { me : {name, profileImg} } = useSelector(state => state.account);
-    const { postDetail, comments } = useSelector(state => state.post);
+    const { comments } = useSelector(state => state.post);
     const [value, setValue] = useState('');
     const [tree, setTree] = useState([]);
 
@@ -57,7 +57,6 @@ const Comments = ({postId}) => {
 
 
     const renderComments = (data) => (
-        // 대댓글이 존재하면 재귀호출
         data.map(item => (
             <CommentSingle key={item.commentId}
                            postId={postId}
@@ -68,11 +67,11 @@ const Comments = ({postId}) => {
                            seq={item.seq}
                            isWriter={item.isWriter}
             >
-                {item.child && item.child.length > 0 && renderComments(item.child)}
+                {/** 대댓글이 존재하면 재귀호출 */}
+                {item?.child?.length > 0 && renderComments(item.child)}
             </CommentSingle>
         ))
     )
-
 
     return (
         <CommentsWrap>

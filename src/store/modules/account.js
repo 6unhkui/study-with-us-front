@@ -20,7 +20,7 @@ const initialState = {
     isLoggingIn : false, // 로그인 시도중
     logInErrorReason : '', // 로그인 실패 사유
 
-    isRememberMe : false,
+    // isRememberMe : false,
 
     isUploadingProfile : false, // 프로필 이미지 업로드중
     uploadProfileErrorReason: '', // 프로필 이미지 업로드 실패 사유
@@ -51,7 +51,7 @@ export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
 
 export const LOG_OUT = 'LOG_OUT';
 
-export const REMEMBER_ME = 'REMEMBER_ME';
+// export const REMEMBER_ME = 'REMEMBER_ME';
 
 export const LOAD_ACCOUNT_REQUEST = 'LOAD_ACCOUNT_REQUEST';
 export const LOAD_ACCOUNT_SUCCESS = 'LOAD_ACCOUNT_SUCCESS';
@@ -131,10 +131,10 @@ const account = (state = initialState, action) => {
                 draft.logInErrorReason = action.error;
                 break;
              }
-            case REMEMBER_ME : {
-                draft.isRememberMe = action.data;
-                break;
-            }
+            // case REMEMBER_ME : {
+            //     draft.isRememberMe = action.data;
+            //     break;
+            // }
 
             case LOG_OUT : {
                 draft.me = {
@@ -236,7 +236,7 @@ const account = (state = initialState, action) => {
             default: {
                 break;
             }
-    }
+        }
     });
 };
 

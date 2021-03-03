@@ -25,7 +25,7 @@ const Chatting = (props) => {
     const $messageList = useRef(null);
     const { me, me : {accountId} } = useSelector(state => state.account);
     const { roomDetail } = useSelector(state => state.room);
-    const {chatMessages } = useSelector(state => state.chat);
+    const { chatMessages } = useSelector(state => state.chat);
     const [clientConnected, setClientConnected] = useState(false);
     const [inputMessage, setInputMessage] = useState('');
     const [memberCount, setMemberCount] = useState(1);
@@ -36,12 +36,12 @@ const Chatting = (props) => {
             type : LOAD_MESSAGE_HISTORY_REQUEST,
             data : roomId
         })
-    }, [roomId, clientConnected === true]);
+    }, [dispatch, roomId]);
 
     useEffect(() => {
         const lastMessage = chatMessages[chatMessages.length - 1];
-        setMemberCount(lastMessage && lastMessage.memberCount ? lastMessage.memberCount : memberCount)
-    }, [chatMessages]);
+        setMemberCount(count => lastMessage?.memberCount ? lastMessage.memberCount : count);
+    }, [chatMessages, memberCount]);
 
 
     useEffect(() => {
@@ -52,7 +52,7 @@ const Chatting = (props) => {
         $messageList.current.scrollIntoView({block: 'end', behavior: 'smooth'});
     };
 
-    const handleLayerOpen = useCallback( isOpen => {
+    const handleLayerOpen = useCallback(isOpen => {
         setChatMemberLayerOpen(isOpen);
     }, []);
 
@@ -73,7 +73,7 @@ const Chatting = (props) => {
             return false;
         }
 
-    }, []);
+    }, [me, roomId]);
 
 
     const onMessageReceive = useCallback(message => {
@@ -91,25 +91,21 @@ const Chatting = (props) => {
             <CardWrap pageHeader={{title : roomDetail && roomDetail.name,
                                   backUrl : `/room/${roomId}`,
                                   extra : (clientConnected ?
-                                            <Button onClick={() => {handleLayerOpen(true)}}>
+                                            <Button onClick={handleLayerOpen.bind(null, true)}>
                                                 <UserOutlined />{memberCount + '명 참여중'}
                                             </Button> :
                                             <Badge status='error' text='Disconnected'/>)
             }}>
 
                 <SockJsClient url={`${SERVER_URI}/chatting`}
-                            headers={header()}
-                            subscribeHeaders={header()}
-                            topics={[`/sub/chat/room/${roomId}`]}
-                            onMessage={onMessageReceive}
-                            onConnect={() => {
-                                setClientConnected(true)
-                            }}
-                            onDisconnect={() => {
-                                setClientConnected(false)
-                            }}
-                            ref={$websocket}
-                            debug={true}
+                              headers={header()}
+                              subscribeHeaders={header()}
+                              topics={[`/sub/chat/room/${roomId}`]}
+                              onMessage={onMessageReceive}
+                              onConnect={setClientConnected.bind(null, true)}
+                              onDisconnect={setClientConnected.bind(null, false)}
+                              ref={$websocket}
+                              debug={true}
                 />
 
             <ChatMessageWrap>
@@ -128,7 +124,7 @@ const Chatting = (props) => {
                     size="large"
                     value={inputMessage}
                     onChange={e => {setInputMessage(e.target.value)}}
-                    onSearch={() => sendMessage(inputMessage, sendType.talk)}
+                    onSearch={sendMessage.bind(null, inputMessage, sendType.talk)}
                 />
             </ChatInputWrap>
             </CardWrap>

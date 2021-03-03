@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import breakpoint from 'styled-components-breakpoint';
 import { Link } from "react-router-dom";
@@ -22,7 +22,7 @@ const Sidebar = (props) => {
         </Link>
     )
 
-    const settingBtn =  (
+    const settingBtn = (
         <Link to={`/room/${roomId}/setting`}>
             <SettingOutlined/> 설정
         </Link>
@@ -30,14 +30,14 @@ const Sidebar = (props) => {
 
     const joinBtn = (
         <>
-            <Button type="link" onClick={() => {setJoinModalVisible(true)}}>
+            <Button type="link" onClick={setJoinModalVisible.bind(null, true)}>
                 <LoginOutlined />스터디방 가입하기
             </Button>
             <Modal
                 title={name}
                 visible={joinModalVisible}
                 onOk={props.join}
-                onCancel={() => {setJoinModalVisible(false)}}
+                onCancel={setJoinModalVisible.bind(null, false)}
             >
                 {<p>{name} 스터디방에 가입 하시겠습니까?</p>}
             </Modal>
@@ -46,7 +46,8 @@ const Sidebar = (props) => {
 
     return (
         <SideBarWrap>
-            <Card actions={isMember ?  [writeBtn, settingBtn] : [joinBtn]}>
+            <Card actions={isMember ? [writeBtn, settingBtn] : 
+                            [!unlimited && joinCount === maxCount ? '가입 할 수 없는 스터디방입니다.' : joinBtn]}>
                 <BadgeWrap>{category}</BadgeWrap>
                 <Title level={2}>{name}</Title>
                 <Text type="secondary">{description}</Text>

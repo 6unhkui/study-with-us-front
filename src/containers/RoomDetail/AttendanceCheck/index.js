@@ -7,18 +7,22 @@ import RegisterAttendance from "containers/RoomDetail/AttendanceCheck/RegisterAt
 import {stringToColor} from "utils/ColorGenerator";
 
 import {Typography, List, Statistic, Divider, Button, Alert, Tooltip, Avatar as AntAvatar} from 'antd';
+import {ClockCircleOutlined} from '@ant-design/icons';
 const { Title } = Typography;
 const { Countdown } = Statistic;
 
-
-const remainUntilTomorrow = () => {
+const countdownToTomorrow = () => {
+    // 내일 0시 0분의 시간을 가진 Date 객체
     const date = new Date();
     date.setHours(0);
     date.setMinutes(0);
     date.setSeconds(0);
     date.setDate(date.getDate() + 1);
+
+    // 오늘 날짜의 Date 객체
     const now = new Date();
-    return Date.now() + (date - now);
+
+    return date + (date - now);
 }
 
 const Index = (props) => {
@@ -37,23 +41,28 @@ const Index = (props) => {
 
     return (
         <ContentWrap>
-            {registerLayerOpen && <RegisterAttendance setLayerOpen={() => {setRegisterLayerOpen(false)}} roomId={roomId}/>}
+            {registerLayerOpen && <RegisterAttendance setLayerOpen={setRegisterLayerOpen.bind(null, false)} roomId={roomId}/>}
 
             <TitleWrap>
                 <Title level={3} className="title">
                     출석 체크
                 </Title>
                 <Divider type="vertical" />
-                <Countdown value={remainUntilTomorrow()} className="count-down"/>
+                <Countdown value={countdownToTomorrow()} className="count-down"/>
             </TitleWrap>
 
             {!isRegisteredToday &&
             <Alert
-                message="오늘 아직 출석체크를 하지 않았습니다."
+                message="오늘은 아직 출석체크를 하지 않았습니다."
                 description={
-                    <Button type="primary" onClick={() => {setRegisterLayerOpen(true)}} style={{marginTop : '10px'}}>출석 체크하기</Button>
+                    <Button type="primary" 
+                            onClick={setRegisterLayerOpen.bind(null, true)} 
+                            style={{marginTop : '10px'}}>
+                        출석 체크하기
+                    </Button>
                 }
                 type="info"
+                icon={<ClockCircleOutlined />}
                 showIcon
                 style={{margin : '20px 0'}}
             />

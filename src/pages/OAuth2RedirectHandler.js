@@ -11,6 +11,10 @@ const OAuth2RedirectHandler = (props) => {
     const token = getParameter(props.location, 'token');
     const error = getParameter(props.location, 'error');
 
+    const code = getParameter(props.location, 'code');
+
+    console.log(token, error, code)
+
     // Oauth2 로그인 인증 후 파라미터로 토큰을 전달받으면, 
     if(token) {
         // 1. localStorage에 그 값을 저장한다.

@@ -6,10 +6,10 @@ import FileSaver from 'file-saver';
 import {useDispatch, useSelector} from "react-redux";
 import {LOAD_POST_DETAIL_REQUEST, DELETE_POST_REQUEST} from "store/modules/post";
 import {useHistory} from "react-router-dom";
-import {SERVER_URI} from "constants/index";
 import {bytesToSize} from "utils/File";
 import CardWrap from "components/CardBox";
 import Comments from "containers/PostView/Comments";
+import loadFile from 'utils/loadFile';
 
 import {Divider, Dropdown, Menu, Typography, List, Modal} from 'antd';
 import { EllipsisOutlined, DeleteOutlined,  EditOutlined, PaperClipOutlined} from '@ant-design/icons';
@@ -20,8 +20,7 @@ const PostView = (props) => {
     const postId = props.match.params.id;
     const history = useHistory();
     const dispatch = useDispatch();
-    const { postDetail, postDetail : {writer, isWriter} } = useSelector(state => state.post);
-
+    const { postDetail, postDetail : {writer, isWriter}} = useSelector(state => state.post);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
     useEffect(() => {
@@ -32,9 +31,8 @@ const PostView = (props) => {
     }, [dispatch, postId]);
 
     const handleFileDownload = useCallback((identifier, fileName) => {
-        FileSaver.saveAs(`${SERVER_URI}/api/v1/files/attachment/${identifier}`, fileName);
+        FileSaver.saveAs(loadFile(identifier, 'attachment'), fileName);
     },[])
-
 
     const handleDeletePost = useCallback(() => {
         dispatch({
@@ -55,14 +53,14 @@ const PostView = (props) => {
                 <EditOutlined/> 수정
             </Menu.Item>
             <Menu.Item key="1">
-                <span onClick={() => {setDeleteModalVisible(true)}}>
+                <span onClick={setDeleteModalVisible.bind(null, true)}>
                     <DeleteOutlined /> 삭제
                 </span>
                 <Modal
                     title={postDetail.title}
                     visible={deleteModalVisible}
                     onOk={handleDeletePost}
-                    onCancel={() => {setDeleteModalVisible(false)}}
+                    onCancel={setDeleteModalVisible.bind(null, false)}
                 >
                     {<p>{postDetail.title} 포스트를 정말 삭제 하시겠습니까?</p>}
                 </Modal>
@@ -71,7 +69,7 @@ const PostView = (props) => {
     )
 
     return (
-        <CardWrap pageHeader={{title : postDetail && postDetail.roomName, backUrl : `/room/${postDetail.roomId}`}}>
+        <CardWrap pageHeader={{title : postDetail?.roomName, backUrl : `/room/${postDetail.roomId}`}}>
             <Title level={2}>{postDetail.title}</Title>
 
             {isWriter &&
@@ -90,12 +88,12 @@ const PostView = (props) => {
                 {ReactHtmlParser(postDetail.content)}
             </ContentWrap>
 
-            {postDetail.files && postDetail.files.length > 0 &&
+            {postDetail?.files?.length > 0 &&
             <List grid={{gutter: 20, column: 1}}
                   dataSource={postDetail.files}
                   style={{marginTop: '3rem'}}
                   renderItem={item => (
-                      <List.Item>
+                      <List.Item key={item.fileId}>
                           <FileItemWrap>
                               <PaperClipOutlined/>
                               <FileName onClick={() => {

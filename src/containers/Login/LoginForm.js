@@ -1,23 +1,30 @@
-import React, {useCallback} from 'react';
+import React, {useState, useCallback} from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Form, Input, Button, Alert, Checkbox} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from "react-redux";
-import { LOG_IN_REQUEST, REMEMBER_ME } from 'store/modules/account';
+import { LOG_IN_REQUEST } from 'store/modules/account';
+import {REMEMBER_ME} from 'constants/index';
 
 
 const LoginForm = (props)  => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const {isLoggedIn, isLoggingIn, logInErrorReason, isRememberMe} = useSelector(state => state.account);
-
-    const initialAccount =  REMEMBER_ME && window.localStorage.getItem(REMEMBER_ME) ? window.localStorage.getItem(REMEMBER_ME) : '';
+    const [isRememberMe, setIsRememberMe] = useState(() => window.localStorage.getItem(REMEMBER_ME) ? true : false); 
+    const {isLoggedIn, isLoggingIn, logInErrorReason} = useSelector(state => state.account);
 
     const validateMessages = {
         required: t('validate.required', { name: '${name}'})
     };
+
+    const saveRememberMe = useCallback(email => {
+        if(isRememberMe) {
+            window.localStorage.setItem(REMEMBER_ME, email);
+        }else {
+            window.localStorage.removeItem(REMEMBER_ME)
+        }
+    }, [isRememberMe]);
 
     const handleLocalLogin = useCallback(values => {
         dispatch({
@@ -25,23 +32,12 @@ const LoginForm = (props)  => {
             data : values,
             meta: {
                 callbackAction : () => {
+                    saveRememberMe(values.email);
                     props.history.push(props.location.state ? props.location.state.from.pathname : "/");
                 }
             }
         });
-
-        if(!isLoggedIn) return false;
-
-        isRememberMe ? window.localStorage.setItem(REMEMBER_ME, values.email) : localStorage.removeItem(REMEMBER_ME);
-    }, []);
-
-
-    const handleRememberMe = useCallback(e => {
-        dispatch({
-            type: REMEMBER_ME,
-            data : e.target.checked
-        })
-    }, []);
+    }, [dispatch, props.history, props.location.state, saveRememberMe]);
 
     return (
         <>
@@ -52,7 +48,7 @@ const LoginForm = (props)  => {
             <Form
                 name="normal_login"
                 className="login-form"
-                initialValues={{'email' : initialAccount}}
+                initialValues={{'email' : isRememberMe ? window.localStorage.getItem(REMEMBER_ME) : ''}}
                 onFinish={handleLocalLogin}
                 size="large"
                 layout = "vertical"
@@ -85,7 +81,7 @@ const LoginForm = (props)  => {
                 </Form.Item>
 
                 <RememberMe>
-                  <Checkbox onClick={handleRememberMe} checked={isRememberMe}>
+                  <Checkbox onClick={e => setIsRememberMe(e.target.checked)} checked={isRememberMe}>
                     {t('auth.rememberAccount')}
                   </Checkbox>
                 </RememberMe>

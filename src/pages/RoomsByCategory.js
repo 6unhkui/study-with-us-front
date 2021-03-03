@@ -1,31 +1,30 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
-import { Typography, Button,  Divider, List, Input} from 'antd';
+import { Typography, Divider, List, Input} from 'antd';
 
 import Card from 'components/RoomCard';
 import {useDispatch, useSelector} from "react-redux";
 import {LOAD_ROOMS_BY_CATEGORY_REQUEST} from "store/modules/room";
 import RoomOrderSelector from "components/RoomOrderSelector";
-import {useRoomFilter} from "../hooks/useRoomFilter";
-import MoreButton from "../components/MoreButton";
+import {useRoomFilter} from "hooks/useRoomFilter";
+import MoreButton from "components/MoreButton";
+import Pagination from 'utils/Pagination';
 
 const { Title } = Typography;
 const { Search } = Input;
 
 
+const initPagination = new Pagination();
+Object.freeze(initPagination);
+
 const RoomsByCategory = (props) => {
     const categoryId = props.match.params.id;
     const dispatch = useDispatch();
-    const initPagination = {
-        page : 1,
-        size : 6,
-        direction : 'ASC'
-    }
     const {
         keyword : [keyword, handleChangeKeyword],
         orderType : [orderType, handleChangeOrderType],
     } = useRoomFilter();
-    const [pagination, setPagination] = useState(initPagination);
+    const [pagination, setPagination] = useState({...initPagination});
     const { roomsByCategory, hasMoreRoomsByCategory } = useSelector(state => state.room);
 
     useEffect(() => {
@@ -35,16 +34,16 @@ const RoomsByCategory = (props) => {
             categoryIds : [categoryId],
             orderType
         })
-    },[pagination.page]);
+    },[categoryId, dispatch, orderType, pagination, pagination.page]);
 
     useEffect(() => {
         dispatch({
             type : LOAD_ROOMS_BY_CATEGORY_REQUEST,
-            pagination : initPagination,
+            pagination : {...initPagination},
             categoryIds : [categoryId],
             orderType
         })
-    },[orderType]);
+    },[categoryId, dispatch, orderType]);
 
 
     const handleLoadMore = useCallback(() => {
@@ -62,7 +61,7 @@ const RoomsByCategory = (props) => {
             orderType,
             keyword
         })
-    }, [dispatch, initPagination, keyword, orderType]);
+    }, [categoryId, dispatch, keyword, orderType]);
 
 
     return (

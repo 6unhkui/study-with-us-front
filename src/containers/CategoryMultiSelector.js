@@ -24,7 +24,7 @@ const CategoryMultiSelector = ({onChange}) => {
             showSearch={false}
             onChange={onChange}
         >
-            {categories.map(v => <Option key={v.categoryId}>{v.name}</Option>)}
+            {categories.map(category => <Option key={category.categoryId}>{category.name}</Option>)}
         </Select>
     )
 }

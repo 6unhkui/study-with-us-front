@@ -31,7 +31,7 @@ const CreateStudyRoomPage = (props) => {
         dispatch({
             type: LOAD_CATEGORIES_REQUEST
         })
-    }, []);
+    }, [dispatch]);
 
 
     const handleSubmit = useCallback(values => {
@@ -60,7 +60,7 @@ const CreateStudyRoomPage = (props) => {
                 }
             }
         });
-    }, [file, maxCount, maxCountLimit]);
+    }, [dispatch, file, maxCount, maxCountLimit, props.history]);
 
 
     function getBase64(file) {
@@ -102,8 +102,11 @@ const CreateStudyRoomPage = (props) => {
                   ]}>
                   {categories.length > 0 &&
                   <Radio.Group buttonStyle="solid">
-                      {categories.map(value => (
-                          <Radio.Button value={value.categoryId}>{value.name}</Radio.Button>
+                      {categories.map(category => (
+                        <Radio.Button key={category.categoryId} 
+                                      value={category.categoryId}>
+                            {category.name}
+                        </Radio.Button>
                       ))}
                   </Radio.Group>
                   }
@@ -157,7 +160,7 @@ const CreateStudyRoomPage = (props) => {
 
               <Form.Item>
                   <Button type="primary" htmlType="submit" block size="large" className='shadow' style={{marginTop : '1rem'}}>
-                      생성
+                      만들기
                   </Button>
               </Form.Item>
           </Form>

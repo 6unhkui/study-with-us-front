@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Switch} from "react-router-dom";
-import {NavBar, Footer} from "./components/Layout";
+import {NavBar, Footer} from "./components/layout";
 import { BackTop } from 'antd';
 
 import Loading from "components/Loading";

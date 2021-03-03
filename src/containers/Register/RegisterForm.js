@@ -27,35 +27,38 @@ export default function RegisterForm(props) {
     };
 
     const handleSubmit = useCallback(values => {
+      if(!duplicateCheckCompleted || isDuplicateAccount) {
+        form.setFields([
+          {
+              name: 'email',
+              errors: [t('auth.isDuplicateAccount')],
+          },
+        ]);
+
+        return false;
+      }
+
       const data = {
         name : values.name.trim(),
         password : values.password.trim(),
         email : values.email.trim(),
       }
 
-      if(duplicateCheckCompleted && !isDuplicateAccount) {
-          dispatch({
-              type : REGISTER_REQUEST,
-              data,
-              meta : {
-                  callbackAction: () => {
-                      props.success.setSuccess(true);
-                      props.user.setUser({name : data.name});
-                  }
-              }
-          })
-      }else {
-          form.setFields([
-              {
-                  name: 'email',
-                  errors: [t('auth.isDuplicateAccount')],
-              },
-          ]);
-      }
-    }, [duplicateCheckCompleted, isDuplicateAccount]);
+      dispatch({
+        type : REGISTER_REQUEST,
+        data,
+        meta : {
+            callbackAction: () => {
+                props.setIsSuccess(true);
+                props.setUser({name : data.name});
+            }
+        }
+      })
+   
+    }, [dispatch, duplicateCheckCompleted, form, isDuplicateAccount, props, t]);
 
 
-    const handleCheckDuplicateEmail = useCallback( () => {
+    const handleCheckDuplicateEmail = useCallback(() => {
       setDuplicateCheckCompleted(false);
       const email = form.getFieldValue('email') ? form.getFieldValue('email').trim() : '';
 
@@ -65,22 +68,25 @@ export default function RegisterForm(props) {
               type : CHECK_DUPLICATED_ACCOUNT_REQUEST,
               data : email,
               meta : {
-                  callbackAction : (result) => {
-                      if(!result) {
-                          setDuplicateCheckCompleted(true);
-                      }else {
-                          form.setFields([
-                              {
-                                  name: 'email',
-                                  errors: [t('auth.isDuplicateAccount')],
-                              },
-                          ]);
-                      }
-                  }
+                  callbackAction : callback
               }
           })
       }
-    }, [duplicateCheckCompleted]);
+
+      function callback(result) {
+        console.log(result);
+        if(!result) {
+          setDuplicateCheckCompleted(true);
+        }else {
+          form.setFields([
+              {
+                  name: 'email',
+                  errors: [t('auth.isDuplicateAccount')],
+              },
+          ]);
+        }
+      }
+    }, [dispatch, duplicateCheckCompleted, form, t]);
 
     return (
       <>
@@ -201,7 +207,6 @@ export default function RegisterForm(props) {
 
 const AgreementText = styled.span`
   color : var(--primary-color);
-  /* margin-left : .6rem; */
   cursor: pointer;
   position : absolute
 ` 

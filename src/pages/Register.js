@@ -7,14 +7,12 @@ import CardWrap from "components/CardBox";
 
 export default function RegisterPage() {
     const { t } = useTranslation();
-    const [success, setSuccess] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
     const [user, setUser] = useState({name : ''});
 
     return (
         <CardWrap title={t('auth.createAccount')} size={'small'}>
-            {success ?
-                <Success user={user}/> :
-                <RegisterForm success={{setSuccess}} user={{setUser}}/>}
+            {isSuccess ? <Success user={user}/> : <RegisterForm setIsSuccess={setIsSuccess} setUser={setUser}/>}
         </CardWrap>
     )
 }

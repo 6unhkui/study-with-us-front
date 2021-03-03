@@ -35,7 +35,7 @@ const ChangePassword = () => {
              }
           }
       });
-    }, []);
+    }, [dispatch, form]);
 
     return (
       <>
@@ -59,7 +59,6 @@ const ChangePassword = () => {
               required: true
             },
           ]}
-          hasFeedback
         >
           <Input.Password placeholder={t('auth.oldPassword')}/>
         </Form.Item>

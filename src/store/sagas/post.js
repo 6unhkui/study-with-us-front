@@ -154,7 +154,7 @@ function* addPost(action){
             data
         })
 
-        action.meta.callbackAction();
+        action.meta.callbackAction(data);
     }catch(e) {
         console.error(e);
         yield put({
@@ -172,7 +172,7 @@ function* watchAddPost() {
 function* updatePost(action){
     try {
         const {post, postId, fileGroupId, delFiles, files} = action.data;
-
+        
         if(delFiles) {
             post.delFiles = delFiles;
             post.fileGroupId = fileGroupId;

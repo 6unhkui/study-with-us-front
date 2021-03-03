@@ -26,7 +26,12 @@ const ChatMember = ({setLayerOpen, roomId}) => {
                 itemLayout="horizontal"
                 dataSource={chatMembers}
                 renderItem={item => (
-                    <MemberRow member={item} loading={item.loading}/>
+                    <MemberRow key={item.accountId} 
+                               idx={item.accountId} 
+                               member={item} 
+                               loading={item.loading}
+                               showActions={false}
+                    />
                 )}
             />
         </LayerPopup>

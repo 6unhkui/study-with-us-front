@@ -6,13 +6,11 @@ import createSagaMiddleware from 'redux-saga';
 
 import rootReducer from './modules';
 import rootSaga from "./sagas";
+import {__prood__} from 'constants/index';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const enhancer =
-    process.env.NODE_ENV === "production"
-        ? compose(applyMiddleware(sagaMiddleware))
-        : composeWithDevTools(applyMiddleware(sagaMiddleware, logger));
+const enhancer = __prood__ ? compose(applyMiddleware(sagaMiddleware)) : composeWithDevTools(applyMiddleware(sagaMiddleware, logger));
 
 export const store = createStore(
     rootReducer,

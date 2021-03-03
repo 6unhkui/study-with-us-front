@@ -7,20 +7,15 @@ import {LOAD_MEMBERS_REQUEST} from "store/modules/member";
 import Avatar from 'components/Avatar';
 import styled from "styled-components";
 
+import Pagination from 'utils/Pagination';
 
-const radioStyle = {
-    display: 'block',
-    marginBottom : '16px'
-};
+const initPagination = new Pagination();
+Object.freeze(initPagination);
+
 const ChangeManager = ({setLayerOpen, roomId, onSubmit}) => {
-    const initPagination = {
-        page : 1,
-        size : 6,
-        direction : 'ASC'
-    }
     const dispatch = useDispatch();
     const { members, loadingMembers, hasMoreMembers} = useSelector(state => state.member);
-    const [pagination, setPagination] = useState(initPagination);
+    const [pagination, setPagination] = useState({...initPagination});
     const [selected, setSelected] = useState(0);
 
     useEffect(() => {
@@ -29,7 +24,7 @@ const ChangeManager = ({setLayerOpen, roomId, onSubmit}) => {
             roomId,
             pagination,
         })
-    },[pagination.page, roomId]);
+    },[dispatch, pagination, pagination.page, roomId]);
 
     const handleLoadMore = useCallback(() => {
         setPagination({
@@ -54,7 +49,10 @@ const ChangeManager = ({setLayerOpen, roomId, onSubmit}) => {
                 itemLayout="horizontal"
                 dataSource={members.filter(v => v.role === 'MATE')}
                 renderItem={item => (
-                    <Radio style={radioStyle} value={item.memberId}>
+                    <Radio style={{
+                        display: 'block',
+                        marginBottom : '16px'
+                    }} value={item.memberId}>
                         <Avatar user={{name : item.name, profileImg : item.profileImg}} showName={true}/>
                     </Radio>
                 )}

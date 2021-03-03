@@ -46,12 +46,12 @@ const MyInfo = ({roomId}) => {
             <Descriptions.Item label="권한" span={3}>{role}</Descriptions.Item>
             <Descriptions.Item label="작성 게시글 수" span={3}>{postCount}</Descriptions.Item>
             <Descriptions.Item label="스터디방 탈퇴" span={3}>
-                <Button type="dashed" onClick={() => {setWithdrawalModalVisible(true)}}>탈퇴</Button>
+                <Button type="dashed" onClick={setWithdrawalModalVisible.bind(null, true)}>탈퇴</Button>
                 <Modal
                     title={name}
                     visible={withdrawalModalVisible}
                     onOk={handleWithdrawal}
-                    onCancel={() => {setWithdrawalModalVisible(false)}}
+                    onCancel={setWithdrawalModalVisible.bind(null, false)}
                 >
                     {<p>{name} 스터디방에 정말 탈퇴하시겠습니까?</p>}
                 </Modal>

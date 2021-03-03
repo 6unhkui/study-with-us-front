@@ -4,22 +4,21 @@ import {useDispatch, useSelector} from "react-redux";
 import {LOAD_MEMBERS_REQUEST} from "store/modules/member";
 
 import MemberRow from 'components/MemberRow';
+import Pagination from 'utils/Pagination';
 
 import {Button, Input, List} from 'antd';
 const { Search } = Input;
 
 
+const initPagination = new Pagination();
+Object.freeze(initPagination);
+
 const Index = (props) => {
-    const initPagination = {
-        page : 1,
-        size : 6,
-        direction : 'ASC'
-    }
     const roomId = props.match.params.id;
     const dispatch = useDispatch();
     const { members, loadingMembers, hasMoreMembers} = useSelector(state => state.member);
     const [keyword, setKeyword] = useState('');
-    const [pagination, setPagination] = useState(initPagination);
+    const [pagination, setPagination] = useState({...initPagination});
 
     useEffect(() => {
         dispatch({
@@ -27,7 +26,7 @@ const Index = (props) => {
             roomId,
             pagination,
         })
-    },[pagination.page]);
+    },[dispatch, pagination, pagination.page, roomId]);
 
     const handleLoadMore = useCallback(() => {
         setPagination({
@@ -45,10 +44,10 @@ const Index = (props) => {
         dispatch({
             type : LOAD_MEMBERS_REQUEST,
             roomId,
-            pagination : initPagination,
+            pagination : {...initPagination},
             keyword
         })
-    }, [dispatch, initPagination, keyword]);
+    }, [dispatch, keyword, roomId]);
 
 
     return (
@@ -70,7 +69,7 @@ const Index = (props) => {
                 itemLayout="horizontal"
                 dataSource={members}
                 renderItem={item => (
-                    <MemberRow member={item} loading={loadingMembers} showView={true}/>
+                    <MemberRow key={item.memberId} idx={item.memberId} member={item} loading={loadingMembers}/>
                 )}
             />
         </ContentWrap>
