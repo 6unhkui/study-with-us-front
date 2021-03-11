@@ -1,0 +1,18 @@
+{
+    "extends": ["airbnb-base", "plugin:prettier/recommended"],
+    "plugins": ["prettier"],
+    "env": {
+        "browser": true
+    },
+    "ignorePatterns": ["node_modules/"],
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "paths": ["src"]
+            }
+        }
+    },
+    "rules": {
+        "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }]
+    }
+}
