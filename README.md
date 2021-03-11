@@ -1,5 +1,7 @@
 # Study With Us - Frontend
 
+> !!! 작성중 !!!
+
 ## 🔍 Overview
 
 ![메인](https://user-images.githubusercontent.com/41765537/110615240-905e0f80-81d6-11eb-843f-60de4cbf6937.gif)
@@ -22,7 +24,7 @@ Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 공부
 
 ## 💻 Dev Environment
 
--   OS : Mac OS, Linux CentOS 7
+-   OS : Mac OS, CentOS 7
 -   Tool : Visual Studio Code, Git
 
 ## 🔧 Tech Stack
