@@ -2,12 +2,13 @@
     white-space: pre-line;
 }
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
     background-color: #fff;
     color: @color-black;
-    transition: all .2s;
+    transition: all 0.2s;
 }
 
 ul {
@@ -23,29 +24,57 @@ ul {
 
 .container {
     max-width: @breakpoint-desktop;
-    margin : 0 auto;
+    margin: 0 auto;
 
-    @media @desktop-screen {
-        padding : 0 1rem;
+    @media @tablet-screen, @mobile-screen {
+        padding: 0 1rem;
     }
-
 }
 
 .card-wrap {
     border: 1px solid @border-gray;
-    border-radius : var(--border-radius);
-    background : #fff;
-    margin : 0 auto;
+    border-radius: var(--border-radius);
+    background: #fff;
+    margin: 0 auto;
 }
 
-.sub-text{
-    text-align : center;
-    margin-bottom : 2rem;
-    color : @font-color-gray;
+.sub-text {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: @font-color-gray;
 }
 
 .light-primary-border {
-    border : 1px solid lighten(@primary-color, 28);
+    border: 1px solid lighten(@primary-color, 28);
 }
 
+.ant-pagination {
+    text-align: center;
+}
 
+.ant-comment-avatar {
+    margin: 0 !important;
+}
+
+button.shadow {
+    &.ant-btn-primary {
+        box-shadow: 0 4px 6px rgba(134, 134, 134, 0.2);
+    }
+
+    box-shadow: 0 4px 6px rgba(134, 134, 134, 0.09);
+
+    &:hover {
+        box-shadow: none;
+    }
+}
+
+.language-selector-wrap {
+    padding-left: 0.5rem;
+    margin-right: 1rem;
+    cursor: pointer;
+    color: @font-color-gray;
+
+    .text {
+        margin: 0 0.4rem;
+    }
+}

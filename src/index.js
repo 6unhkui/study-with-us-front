@@ -1,26 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import React from "react";
+/** Polyfill - s */
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+import "react-app-polyfill/ie9";
+import "react-app-polyfill/ie11";
+import "react-app-polyfill/stable";
+/** Polyfill - e */
+
+import ReactDOM from "react-dom";
+import App from "./App";
 // import * as serviceWorker from './serviceWorker';
-import './assets/css/index.less';
-import './i18n';
-import 'react-app-polyfill/ie9'; // For IE 9-11 support
-import 'react-app-polyfill/ie11'; // For IE 11 support
 
-import { Provider } from 'react-redux';
+import { Provider } from "react-redux";
 
-import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from './store';
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./store";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+                <App />
+            </PersistGate>
+        </Provider>
+    </React.StrictMode>,
+    document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

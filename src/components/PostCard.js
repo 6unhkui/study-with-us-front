@@ -1,123 +1,126 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ReactHtmlParser from 'react-html-parser';
+import React from "react";
+import PropTypes from "prop-types";
+import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
-import styled from 'styled-components';
-import Avatar from 'components/Avatar';
+import styled from "styled-components";
+import Avatar from "components/Avatar";
+import { Typography, Divider } from "antd";
+import { CommentOutlined, PaperClipOutlined } from "@ant-design/icons";
 
-import { Typography, Divider} from 'antd';
-import {CommentOutlined, PaperClipOutlined} from '@ant-design/icons';
+const { Title, Text, Paragraph } = Typography;
 
-const { Title, Text, Paragraph} = Typography;
-
-const PostCard = ({postId, title, content, writer, createdDate, thumbnail, commentCount, fileCount, showRoomName, roomName}) =>{
-
+const PostCard = ({
+    postId,
+    title,
+    content,
+    writer,
+    createdDate,
+    thumbnail,
+    commentCount,
+    fileCount,
+    showRoomName,
+    roomName
+}) => {
     const thumbnailSection = (
-      <ThumbnailWrap>
-        <img alt="thumbnail" src={thumbnail}/>
-      </ThumbnailWrap>
-    )
+        <ThumbnailWrap>
+            <img alt="thumbnail" src={thumbnail} />
+        </ThumbnailWrap>
+    );
 
     return (
-      <Link to={`/post/${postId}`}>
-        <div className='card-wrap'>
+        <Link to={`/post/${postId}`}>
+            <div className="card-wrap">
+                {showRoomName && (
+                    <>
+                        <RoomNameWrap>{roomName}</RoomNameWrap>
+                        <Divider style={{ margin: "0" }} />
+                    </>
+                )}
 
-            {showRoomName &&
-                <>
-                    <RoomNameWrap>
-                        {roomName}
-                    </RoomNameWrap>
-                    <Divider style={{margin : '0'}}/>
-                </>
-            }
+                <AvatarWrap>
+                    <Avatar user={writer} showName={true} subText={createdDate} />
+                </AvatarWrap>
 
+                {thumbnail && thumbnailSection}
 
-            <AvatarWrap>
-                <Avatar user={writer} showName={true} subText={createdDate}/>
-            </AvatarWrap>
+                <ContentWrap>
+                    <Paragraph ellipsis style={{ margin: 0 }}>
+                        <Title level={4} style={{ margin: 0 }}>
+                            {title}
+                        </Title>
+                    </Paragraph>
 
-            {thumbnail && thumbnailSection}
+                    {content && content.replace(/(<([^>]+)>)/gi, "").trim().length > 0 && (
+                        <Paragraph ellipsis={{ rows: 3 }} style={{ margin: 0 }}>
+                            <Text type="secondary">{ReactHtmlParser(content.replace(/(<([^>]+)>)/gi, "").trim())}</Text>
+                        </Paragraph>
+                    )}
+                </ContentWrap>
 
-            <ContentWrap>
-                <Paragraph ellipsis style={{margin: 0}}>
-                    <Title level={4} style={{margin: 0}}>
-                        {title}
-                    </Title>
-                </Paragraph>
+                <Divider style={{ margin: "0" }} />
 
-                {content && content.replace(/(<([^>]+)>)/ig, "").trim().length > 0 &&
-                <Paragraph ellipsis={{rows: 3}} style={{margin: 0}}>
-                    <Text type="secondary">
-                        {ReactHtmlParser(content.replace(/(<([^>]+)>)/ig, "").trim())}
-                    </Text>
-                </Paragraph>}
-            </ContentWrap>
-
-            <Divider style={{margin : '0'}}/>
-
-            <CountWrap>
-                <span className="item">
-                    <CommentOutlined /> {commentCount}
-                </span>
-                <span className="item">
-                    <PaperClipOutlined/> {fileCount}
-                </span>
-            </CountWrap>
-        </div>
-      </Link>
-    )
-}
+                <CountWrap>
+                    <span className="item">
+                        <CommentOutlined /> {commentCount}
+                    </span>
+                    <span className="item">
+                        <PaperClipOutlined /> {fileCount}
+                    </span>
+                </CountWrap>
+            </div>
+        </Link>
+    );
+};
 
 export default PostCard;
 
 PostCard.propTypes = {
-  title : PropTypes.string.isRequired,
-  content : PropTypes.string,
-  writer : PropTypes.shape({
-    name : PropTypes.string.isRequired,
-    profileImg : PropTypes.string
-  }),
-  createdDate : PropTypes.string,
-  thumbnail : PropTypes.string,
-  commentCount : PropTypes.number,
-  showRoomName : PropTypes.bool,
-  roomName : PropTypes.string,
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string,
+    writer: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        profileImg: PropTypes.string
+    }),
+    createdDate: PropTypes.string,
+    thumbnail: PropTypes.string,
+    commentCount: PropTypes.number,
+    showRoomName: PropTypes.bool,
+    roomName: PropTypes.string
 };
 
 PostCard.defaultProps = {
-    showRoomName : false
+    showRoomName: false
 };
 
-
 const RoomNameWrap = styled.div`
-    padding : 10px 1.4rem;
-    color : var(--primary-color);
-    background : var(--bg-gray);
+    padding: 10px 1.4rem;
+    color: var(--primary-color);
+    background: var(--bg-gray);
     // font-weight : bold;
-`
+`;
 
 const ContentWrap = styled.div`
-    padding : 0 1.4rem 1rem 1.4rem;
-`
+    padding: 0 1.4rem 1rem 1.4rem;
+`;
 
 const AvatarWrap = styled.div`
-    padding : 1rem 1.4rem;
-`
+    padding: 1rem 1.4rem;
+`;
 
 const ThumbnailWrap = styled.div`
-  margin-bottom : 14px;
+    margin-bottom: 14px;
 
-  img {
-    width: 100%;
-    object-fit : cover;
-    height : 250px;
-  }
-`
+    img {
+        width: 100%;
+        object-fit: cover;
+        height: 250px;
+    }
+`;
 
 const CountWrap = styled.div`
-    padding : 1rem 1.4rem;
+    padding: 1rem 1.4rem;
     span.item {
-        margin-right : 20px;
-        color : var(--font-color-gray);
+        margin-right: 20px;
+        color: var(--font-color-gray, gray);
     }
-`
+`;

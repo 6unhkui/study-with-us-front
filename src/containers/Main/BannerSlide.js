@@ -1,39 +1,53 @@
 import React from "react";
-import {Carousel} from "antd";
+import breakpoint from "styled-components-breakpoint";
+import { Carousel } from "antd";
 import Banner1 from "assets/image/banner-1.png";
+import Banner1_700w from "assets/image/banner-1-700w.png";
 import Banner2 from "assets/image/banner-2.png";
+import Banner2_700w from "assets/image/banner-2-700w.png";
 import styled from "styled-components";
 
 const banners = [
-    {image : Banner1, backgroundColor : '#fffcf3'},
-    {image : Banner2, backgroundColor : '#fffaf6'},
-]
+    { images: [Banner1, Banner1_700w], backgroundColor: "#fffcf2" },
+    { images: [Banner2, Banner2_700w], backgroundColor: "#fffaf5" }
+];
 
-const BannerSlide = () => { 
+const BannerSlide = () => {
     return (
         <CarouselWrap>
             <Carousel autoplay>
-                {banners.map((banner, i) => 
-                    <BannerImage background={banner.backgroundColor} key={i}>
-                        <img src={banner.image} alt='banner'/>
-                    </BannerImage>)
-                }
+                {banners.map((banner, i) => (
+                    <BannerImage background={banner.backgroundColor} key={i} images={banner.images}>
+                        <img alt="banner" src={banner.images[0]} />
+                    </BannerImage>
+                ))}
             </Carousel>
         </CarouselWrap>
-    )
-}
+    );
+};
 
 export default BannerSlide;
 
 const BannerImage = styled.div`
-  background : ${props => props.background};
-  img {
-    margin : 0 auto;
-  }
-`
+    background: ${props => props.background};
+
+    img {
+        margin: 0 auto;
+        width: 100%;
+        content: url(${props => props.images[1]});
+
+        ${breakpoint("tablet")`
+        content: url(${props => props.images[0]});
+    `}
+
+        ${breakpoint("desktop")`
+        width: initial;
+    `}
+    }
+`;
 
 const CarouselWrap = styled.div`
     .ant-carousel .slick-dots li button {
-        background : var(--primary-light-color) !important
+        background: lightgray !important;
     }
-`
+`;

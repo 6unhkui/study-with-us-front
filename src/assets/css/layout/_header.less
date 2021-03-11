@@ -1,10 +1,10 @@
 .header-wrap {
-    flex : 1;
+    flex: 1;
     height: 4rem;
     line-height: 4rem;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.06);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
     display: flex;
-    padding : 0 6%;
+    padding: 0 6%;
     margin-bottom: 4px;
 
     position: fixed;
@@ -21,17 +21,15 @@
     }
 
     .gnb-wrap {
-        flex : 1;
         margin-left: 2rem;
-        max-width : 300px;
+        flex: inherit;
+        max-width: fit-content;
         ul {
-            display : flex;
-
             li {
                 display: inline-block;
-                flex : 1;
                 text-align: center;
-                font-weight : 400;
+                font-weight: 400;
+                margin-right: 30px;
 
                 a {
                     display: inline-block;
@@ -41,21 +39,22 @@
                     text-decoration: none;
                     background: none;
 
-                    &:hover:after, &.active:after {
+                    &:hover:after,
+                    &.active:after {
                         width: 100%;
                         left: 0;
                     }
 
                     &:after {
-                        -webkit-transition: width .1s ease-out, left .1s ease-out, border-color .1s ease-out;
-                        transition: width .1s ease-out, left .1s ease-out, border-color .1s ease-out;
+                        -webkit-transition: width 0.1s ease-out, left 0.1s ease-out, border-color 0.1s ease-out;
+                        transition: width 0.1s ease-out, left 0.1s ease-out, border-color 0.1s ease-out;
                         position: absolute;
                         display: block;
-                        bottom : 16px;
+                        bottom: 16px;
                         left: 50%;
                         width: 0;
                         border-top: 2px solid @primary-color;
-                        content: '';
+                        content: "";
                     }
                 }
             }
@@ -66,43 +65,49 @@
         margin-left: auto;
 
         .user-info {
-            margin-right: .5rem;
+            margin-right: 0.5rem;
             display: inline-block;
             cursor: pointer;
         }
 
         .session-btn {
-            border : 1px solid @border-gray;
-            padding : .6rem 1rem;
+            border: 1px solid @border-gray;
+            padding: 0.6rem 1rem;
         }
     }
 
-    .language-selector-wrap {
-        padding-left : .5rem;
-        margin-right : 1rem;
-        cursor: pointer;
-        color : @font-color-gray;
-
-        .text {
-            margin : 0 .4rem;
-        }
+    .loginout-wrap {
+        display: inline-block;
     }
-    
+
+    .sidebar-wrap {
+        display: none;
+    }
+
     a {
-        color : @color-black;
+        color: @color-black;
     }
 
     @media @tablet-screen, @mobile-screen {
-        padding : 0 1rem;
+        padding: 0 1rem;
 
-        .logo-wrap {
-            text-align: center;
-            flex : 1;
+        // .logo-wrap {
+        //     text-align: center;
+        //     flex : 1;
+        // }
+
+        .gnb-wrap,
+        .user-wrap .language-selector-wrap,
+        .user-wrap .loginout-wrap {
+            display: none;
         }
 
-        .user-wrap, .gnb-wrap {
-            display: none;
+        .sidebar-wrap {
+            display: block;
+            position: relative;
+            top: 24px;
+            display: block;
+            margin-left: 20px;
         }
     }
 }
-

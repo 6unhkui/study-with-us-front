@@ -1,38 +1,44 @@
-{   "common" : {
-        "goToMain" : "메인으로",
-        "save" : "저장하기"
+{
+    "common": {
+        "goToMain": "메인으로",
+        "save": "저장하기"
     },
-    "auth" : {
-        "login" : "로그인",
-        "logout" : "로그아웃",
-        "rememberAccount" : "계정 기억하기",
+    "navbar": {
+        "myStudyRooms": "나의 스터디방",
+        "newsFeed": "새글 피드",
+        "searchStudyRoom": "스터디룸 찾기"
+    },
+    "auth": {
+        "login": "로그인",
+        "logout": "로그아웃",
+        "rememberAccount": "계정 기억하기",
         "createAccount": "계정 생성",
-        "name" : "이름",
-        "email" : "이메일",
-        "password" : "비밀번호",
-        "confirmPassword" : "비밀번호 확인",
-        "oldPassword" : "기존 비밀번호",
-        "newPassword" : "새로운 비밀번호",
-        "confirmNewPassword" : "새로운 비밀번호 확인",
+        "name": "이름",
+        "email": "이메일",
+        "password": "비밀번호",
+        "confirmPassword": "비밀번호 확인",
+        "oldPassword": "기존 비밀번호",
+        "newPassword": "새로운 비밀번호",
+        "confirmNewPassword": "새로운 비밀번호 확인",
         "duplicateAccountCheck": "중복 체크",
-        "pleaseDuplicateAccountCheck" : "중복 체크를 진행해주세요.",
-        "isAvailableAccount" : "사용 가능한 계정입니다.",
+        "pleaseDuplicateAccountCheck": "중복 체크를 진행해주세요.",
+        "isAvailableAccount": "사용 가능한 계정입니다.",
         "isDuplicateAccount": "중복된 계정입니다.",
-        "AgreementOnTermsAndConditions" : "회원가입 약관 및 개인정보 수집 동의 (필수)",
-        "forgotPassword" : "비밀번호를 잊으셨나요?",
-        "resetPassword" : "비밀번호 재설정",
-        "enterEmailToResetPassword" : "비밀번호 재설정을 위한 이메일 계정을 입력하세요."
+        "AgreementOnTermsAndConditions": "회원가입 약관 및 개인정보 수집 동의 (필수)",
+        "forgotPassword": "비밀번호를 잊으셨나요?",
+        "resetPassword": "비밀번호 재설정",
+        "enterEmailToResetPassword": "비밀번호 재설정을 위한 이메일 계정을 입력하세요."
     },
-    "mypage" : {
-        "title" : "반가워요,\n{{name}} 메이트!",
-        "editAccountSettings" : {
-            "title" : "계정 설정 관리",
-            "isSocialAccount" : "소셜 로그인 계정입니다.",
-            "changeProfileInfo" : "프로필 정보 변경",
-            "changePassword" : "비밀번호 변경",
-            "deleteAccount" : "계정 삭제",
-            "deleteAccountWarning" : "계정을 삭제하면 되돌릴 수 없습니다. 정말 삭제하시겠습니까?",
-            "deleteAccountConfirm" : "네, 삭제하겠습니다."
+    "mypage": {
+        "title": "반가워요,\n{{name}} 메이트!",
+        "editAccountSettings": {
+            "title": "계정 설정 관리",
+            "isSocialAccount": "소셜 로그인 계정입니다.",
+            "changeProfileInfo": "프로필 정보 변경",
+            "changePassword": "비밀번호 변경",
+            "deleteAccount": "계정 삭제",
+            "deleteAccountWarning": "스터디룸에 작성한 게시글은 식제되지 않습니다.\n삭제를 원한다면, 탈퇴전에 삭제를 진행해주세요.\n\n계정을 삭제하면 되돌릴 수 없습니다.\n정말 삭제하시겠습니까?",
+            "deleteAccountConfirm": "네, 삭제하겠습니다."
         }
     },
     "validate": {
@@ -41,8 +47,8 @@
         "confirmPassword": "비밀번호가 일치하지 않습니다.",
         "required": "{{name}}은(는) 반드시 입력해야 합니다."
     },
-    "404" : {
-        "title" : "해당 페이지를 찾지 못했습니다.",
-        "subTitle" : "주소가 잘못되었거나 더 이상 제공되지 않는 페이지입니다."
+    "404": {
+        "title": "해당 페이지를 찾지 못했습니다.",
+        "subTitle": "주소가 잘못되었거나 더 이상 제공되지 않는 페이지입니다."
     }
 }

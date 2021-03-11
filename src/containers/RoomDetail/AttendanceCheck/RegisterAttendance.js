@@ -1,34 +1,38 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import LayerPopup from "components/LayerPopup";
-import { Form, Input, Button } from 'antd';
-import {useDispatch} from "react-redux";
-import {REGISTER_ATTENDANCE_REQUEST} from "store/modules/attendance";
+import { Form, Input, Button } from "antd";
+import { useDispatch } from "react-redux";
+import { REGISTER_ATTENDANCE_REQUEST } from "store/modules/attendance";
 
-const RegisterAttendance = ({roomId, setLayerOpen}) => {
+const RegisterAttendance = ({ roomId, setLayerOpen }) => {
     const dispatch = useDispatch();
 
-    const handleSubmit = useCallback(value => {
-        dispatch({
-            type : REGISTER_ATTENDANCE_REQUEST,
-            roomId,
-            data : {
-                memo : value.memo ? value.memo : ''
-            }
-        })
-        setLayerOpen(false);
-    }, [dispatch, roomId, setLayerOpen])
+    const handleSubmit = useCallback(
+        value => {
+            dispatch({
+                type: REGISTER_ATTENDANCE_REQUEST,
+                roomId,
+                data: {
+                    memo: value.memo ? value.memo : ""
+                }
+            });
+            setLayerOpen(false);
+        },
+        [dispatch, roomId, setLayerOpen]
+    );
 
     return (
         <LayerPopup title="출석 체크" setLayerOpen={setLayerOpen} size="400px">
-            <Form name="registerForm"
-                  style={{textAlign : 'center'}}
-                  onFinish={handleSubmit}
-                  initialValues={{
-                      memo : "오늘도 출석 완료 (๑˃̵ᴗ˂̵)"
-                  }}
+            <Form
+                name="registerForm"
+                style={{ textAlign: "center" }}
+                onFinish={handleSubmit}
+                initialValues={{
+                    memo: "오늘도 출석 완료 (๑˃̵ᴗ˂̵)"
+                }}
             >
                 <Form.Item name="memo">
-                    <Input/>
+                    <Input />
                 </Form.Item>
                 <Form.Item>
                     <Button htmlType="submit" type="primary">
@@ -37,7 +41,7 @@ const RegisterAttendance = ({roomId, setLayerOpen}) => {
                 </Form.Item>
             </Form>
         </LayerPopup>
-    )
-}
+    );
+};
 
 export default RegisterAttendance;

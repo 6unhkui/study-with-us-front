@@ -1,38 +1,44 @@
-{   "common" : {
-        "goToMain" : "go to main",
-        "save" : "Save"
+{
+    "common": {
+        "goToMain": "go to main",
+        "save": "Save"
     },
-    "auth" : {
-        "login" : "Log In",
-        "logout" : "Log Out",
-        "rememberAccount" : "Remember Account",
+    "navbar": {
+        "myStudyRooms": "My Study Rooms",
+        "newsFeed": "News Feed",
+        "searchStudyRoom": "Search Study Room"
+    },
+    "auth": {
+        "login": "Log In",
+        "logout": "Log Out",
+        "rememberAccount": "Remember Account",
         "createAccount": "Create Account",
-        "name" : "Name",
-        "email" : "Email",
-        "password" : "Password",
-        "confirmPassword" : "Confirm Password",
-        "oldPassword" : "Old Password",
-        "newPassword" : "New Password",
-        "confirmNewPassword" : "Confirm New Password",
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "oldPassword": "Old Password",
+        "newPassword": "New Password",
+        "confirmNewPassword": "Confirm New Password",
         "duplicateAccountCheck": "Duplicate Check",
-        "pleaseDuplicateAccountCheck" : "Please proceed with the duplicate account check.",
-        "isAvailableAccount" : "This account is available.",
+        "pleaseDuplicateAccountCheck": "Please proceed with the duplicate account check.",
+        "isAvailableAccount": "This account is available.",
         "isDuplicateAccount": "This account is duplicated",
-        "AgreementOnTermsAndConditions" : "Agreement on Terms & Conditions and Personal Information Collection (required)",
-        "forgotPassword" : "Forgot Password?",
-        "resetPassword" : "Reset Password",
-        "enterEmailToResetPassword" : "Enter your email to reset password"
+        "AgreementOnTermsAndConditions": "Agreement on Terms & Conditions and Personal Information Collection (required)",
+        "forgotPassword": "Forgot Password?",
+        "resetPassword": "Reset Password",
+        "enterEmailToResetPassword": "Enter your email to reset password"
     },
-    "mypage" : {
-        "title" : "Hello,\n{{name}} mate!",
-        "editAccountSettings" : {
-            "title" :  "Edit Account Settings",
-            "isSocialAccount" : "This is a social login account.",
-            "changeProfileInfo" : "Change Profile Infomation",
-            "changePassword" : "Change Password",
-            "deleteAccount" : "Delete Account",
-            "deleteAccountWarning" : "Once you delete your account, there is no going back. Are you sure you want to delete the account?",
-            "deleteAccountConfirm" : "Yes, I'll delete it."
+    "mypage": {
+        "title": "Hello,\n{{name}} mate!",
+        "editAccountSettings": {
+            "title": "Edit Account Settings",
+            "isSocialAccount": "This is a social login account.",
+            "changeProfileInfo": "Change Profile Infomation",
+            "changePassword": "Change Password",
+            "deleteAccount": "Delete Account",
+            "deleteAccountWarning": "The post you wrote in the study room will not be deleted.\nSo if you want to delete it, make sure you delete it before you leave.\n\nIf you delete an account, you can't activate it.\nAre you sure you're leaving?",
+            "deleteAccountConfirm": "Yes, I agree"
         }
     },
     "validate": {
@@ -41,8 +47,8 @@
         "confirmPassword": "The two passwords that you entered do not match",
         "required": "{{name}} is required"
     },
-    "404" : {
-        "title" : "No such page was found.",
-        "subTitle" : "The address is wrong or the page is no longer available."
+    "404": {
+        "title": "No such page was found.",
+        "subTitle": "The address is wrong or the page is no longer available."
     }
 }

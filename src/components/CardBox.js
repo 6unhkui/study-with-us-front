@@ -1,74 +1,74 @@
-import React from 'react';
+import React from "react";
 import styled, { css } from "styled-components";
-import breakpoint from 'styled-components-breakpoint';
+import breakpoint from "styled-components-breakpoint";
 
-import {PageHeader, Typography} from 'antd';
-import {useHistory} from "react-router-dom";
+import { PageHeader, Typography } from "antd";
+import { useHistory } from "react-router-dom";
 const { Title } = Typography;
 
-const CardBox = ({title, size, pageHeader, children, style}) => {
+const CardBox = ({ title, size, pageHeader, children, style }) => {
     const history = useHistory();
     return (
         <Background>
             <div className="container content-wrap" {...style}>
                 <CardWrap size={size}>
                     {title && <Title>{title}</Title>}
-                    {pageHeader &&
+                    {pageHeader && (
                         <PageHeader
                             onBack={() => history.push(`${pageHeader.backUrl}`)}
                             title={pageHeader.title}
-                            style={{padding : '0', marginBottom : '1rem'}}
+                            style={{ padding: "0", marginBottom: "1rem" }}
                             subTitle={pageHeader.subTitle}
                             extra={pageHeader.extra}
                         />
-                    }
+                    )}
                     {children}
                 </CardWrap>
             </div>
         </Background>
-    )
-}
+    );
+};
 
 export default CardBox;
 
 const Background = styled.div`
-    background : var(--bg-gray);
-`
+    background: var(--bg-gray);
+`;
 
 const CardWrap = styled.div`
     border: 1px solid var(--border-gray);
-    border-radius : var(--border-radius);
-    background : #fff;
-    margin : 0 auto;
+    border-radius: var(--border-radius);
+    background: #fff;
+    margin: 0 auto;
     min-height: 30rem;
-    
+
     ${({ size }) => {
-        if(size === 'small') {
+        if (size === "small") {
             return css`
-                max-width : 540px;
+                max-width: 540px;
                 h1 {
                     text-align: center;
                     margin-bottom: 3rem;
-                } 
-    
-                ${breakpoint('tablet')`
+                }
+
+                ${breakpoint("tablet")`
                     padding : 4rem;
                 `}
-                
-                ${breakpoint('mobile')`
+
+                ${breakpoint("mobile")`
                     padding : 2rem;
                 `}
-            `
-        }else {
+            `;
+        } else {
             return css`
-                ${breakpoint('tablet')`
+                ${breakpoint("tablet")`
                     padding : 2.2rem 3.2rem;
                 `}
-                
-                ${breakpoint('mobile')`
+
+                ${breakpoint("mobile")`
                     padding : 2rem;
                 `}
-            `
+            `;
         }
     }}
-`
+`;

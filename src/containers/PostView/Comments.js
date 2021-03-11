@@ -1,36 +1,34 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import styled from 'styled-components';
-import {useDispatch, useSelector} from "react-redux";
-import {LOAD_COMMENTS_REQUEST, CREATE_COMMENT_REQUEST} from "store/modules/post";
+import React, { useState, useEffect, useCallback } from "react";
+import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { LOAD_COMMENTS_REQUEST, CREATE_COMMENT_REQUEST } from "store/modules/post";
 import CommentEditor from "components/CommentEditor";
 import CommentSingle from "containers/PostView/CommentSingle";
-
 import LTT from "list-to-tree";
-
-import {Divider} from 'antd';
+import { Divider } from "antd";
 import Avatar from "components/Avatar";
 
-
-const Comments = ({postId}) => {
+const Comments = ({ postId }) => {
     const dispatch = useDispatch();
-    const { me : {name, profileImg} } = useSelector(state => state.account);
+    const {
+        me: { name, profileImg }
+    } = useSelector(state => state.account);
     const { comments } = useSelector(state => state.post);
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState("");
     const [tree, setTree] = useState([]);
 
     useEffect(() => {
         dispatch({
-            type : LOAD_COMMENTS_REQUEST,
+            type: LOAD_COMMENTS_REQUEST,
             postId
-        })
+        });
     }, [dispatch, postId]);
-
 
     useEffect(() => {
         // 배열 형태로 전달받은 댓글 리스트를 트리 구조로 변경하여 렌더링한다.
         const ltt = new LTT(comments, {
-            key_id: 'commentId',
-            key_parent: 'parentId'
+            key_id: "commentId",
+            key_parent: "parentId"
         });
 
         const commentTree = ltt.GetTree();
@@ -43,62 +41,62 @@ const Comments = ({postId}) => {
 
     const handleSubmit = useCallback(() => {
         const data = {
-            content : value
-        }
+            content: value
+        };
 
         dispatch({
-            type : CREATE_COMMENT_REQUEST,
+            type: CREATE_COMMENT_REQUEST,
             postId,
             data
-        })
+        });
 
-        setValue('');
+        setValue("");
     }, [dispatch, postId, value]);
 
-
-    const renderComments = (data) => (
+    const renderComments = data =>
         data.map(item => (
-            <CommentSingle key={item.commentId}
-                           postId={postId}
-                           commentId={item.commentId}
-                           writer={item.writer}
-                           content={item.content}
-                           createdDate={item.createdDate}
-                           seq={item.seq}
-                           isWriter={item.isWriter}
+            <CommentSingle
+                key={item.commentId}
+                postId={postId}
+                commentId={item.commentId}
+                writer={item.writer}
+                content={item.content}
+                createdDate={item.createdDate}
+                seq={item.seq}
+                isWriter={item.isWriter}
             >
                 {/** 대댓글이 존재하면 재귀호출 */}
                 {item?.child?.length > 0 && renderComments(item.child)}
             </CommentSingle>
-        ))
-    )
+        ));
 
     return (
         <CommentsWrap>
             <CommentCount>
-                {comments && comments.length} comment{comments.length > 1 && 's'}
+                {comments && comments.length} comment{comments.length > 1 && "s"}
             </CommentCount>
 
-            <Divider style={{margin : 0}}/>
+            <Divider style={{ margin: 0 }} />
 
-            <CommentEditor value={value}
-                           onChange={handleChange}
-                           onSubmit={handleSubmit}
-                           avatar={<Avatar user={{name, profileImg}}/>}/>
+            <CommentEditor
+                value={value}
+                onChange={handleChange}
+                onSubmit={handleSubmit}
+                avatar={<Avatar user={{ name, profileImg }} style={{ marginRight: "10px" }} />}
+            />
 
             {tree && tree.length > 0 && renderComments(tree)}
         </CommentsWrap>
-    )
-}
+    );
+};
 
 export default Comments;
 
-
 const CommentsWrap = styled.div`
-    margin-top : 2rem;
-`
+    margin-top: 2rem;
+`;
 
 const CommentCount = styled.div`
-    margin-bottom : 10px;
-    color : var(--font-color-gray);
-`
+    margin-bottom: 10px;
+    color: var(--font-color-gray);
+`;

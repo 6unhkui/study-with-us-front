@@ -1,15 +1,16 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { Typography, Divider, Input, List } from "antd";
+import RoomOrderSelector from "../components/RoomOrderSelector";
+import CategoryMultiSelector from "../containers/CategoryMultiSelector";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { LOAD_ROOMS_REQUEST } from "../store/modules/room";
 import { useDispatch, useSelector } from "react-redux";
-import { LOAD_MY_ROOMS_REQUEST } from "store/modules/room";
-import Card from "components/RoomCard";
-import RoomOrderSelector from "components/RoomOrderSelector";
-import { Typography, Button, Divider, List, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import CategoryMultiSelector from "containers/CategoryMultiSelector";
+import Card from "../components/RoomCard";
+import { withRouter } from "react-router-dom";
+
 import { useRoomFilter } from "hooks/useRoomFilter";
 import Pagination from "utils/Pagination";
+import useQuery from "hooks/useQuery";
 import breakpoint from "styled-components-breakpoint";
 
 const { Title } = Typography;
@@ -18,31 +19,45 @@ const { Search } = Input;
 const initPagination = new Pagination();
 Object.freeze(initPagination);
 
-const MyStudyRoomPage = props => {
+const SearchPage = props => {
     const dispatch = useDispatch();
-    const { myRooms, hasMoreMyRooms, loadingMyRooms } = useSelector(state => state.room);
+    const query = useQuery();
+    const paramKeyword = query.get("keyword");
+    const paramCategoryId = query.get("categoryId");
+    const { rooms, hasMoreRooms, loadingRooms } = useSelector(state => state.room);
     const [pagination, setPagination] = useState({ ...initPagination });
     const {
         keyword: [keyword, setKeyword],
         orderType: [orderType, setOrderType],
         categoryIds: [categoryIds, setCategoryIds]
-    } = useRoomFilter();
+    } = useRoomFilter({ keyword: paramKeyword, categoryIds: paramCategoryId ? [paramCategoryId] : null });
+    const [title, setTitle] = useState(() => {
+        if (paramKeyword) {
+            return `검색 결과 : ${paramKeyword}`;
+        }
+        if (paramCategoryId) {
+            if (props?.location?.state?.name) return props.location.state.name;
+            else return `카테고리 검색 결과`;
+        }
+        return `스터디방 찾기`;
+    });
 
     useEffect(() => {
-        // 처음 페이지가 렌더링 될 때
         dispatch({
-            type: LOAD_MY_ROOMS_REQUEST,
-            pagination: initPagination
+            type: LOAD_ROOMS_REQUEST,
+            pagination: initPagination,
+            keyword: paramKeyword,
+            categoryIds: paramCategoryId ? [paramCategoryId] : null
         });
-    }, [dispatch]);
+    }, [dispatch, paramCategoryId, paramKeyword, props]);
 
     useEffect(() => {
         function onScroll() {
             if (window.pageYOffset + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
-                if (hasMoreMyRooms && !loadingMyRooms) {
+                if (hasMoreRooms && !loadingRooms) {
                     // 리스트를 요청한다.
                     dispatch({
-                        type: LOAD_MY_ROOMS_REQUEST,
+                        type: LOAD_ROOMS_REQUEST,
                         pagination: Object.assign(pagination, { page: ++pagination.page }),
                         categoryIds,
                         orderType,
@@ -58,13 +73,13 @@ const MyStudyRoomPage = props => {
         return () => {
             window.removeEventListener("scroll", onScroll);
         };
-    }, [categoryIds, dispatch, hasMoreMyRooms, keyword, loadingMyRooms, orderType, pagination]);
+    }, [categoryIds, dispatch, hasMoreRooms, keyword, loadingRooms, orderType, pagination]);
 
     const handleFilterChange = useCallback(
         (key, value) => {
             // 필터를 변경했을 때
             dispatch({
-                type: LOAD_MY_ROOMS_REQUEST,
+                type: LOAD_ROOMS_REQUEST,
                 pagination: initPagination,
                 categoryIds,
                 orderType,
@@ -74,8 +89,9 @@ const MyStudyRoomPage = props => {
 
             // Pagination state를 초기화한다.
             setPagination({ ...initPagination });
+            !paramCategoryId && setTitle("스터디방 찾기");
         },
-        [categoryIds, dispatch, keyword, orderType]
+        [categoryIds, dispatch, keyword, orderType, paramCategoryId]
     );
 
     function changePageNumber(pageNumber) {
@@ -87,23 +103,18 @@ const MyStudyRoomPage = props => {
 
     return (
         <div className="container content-wrap">
-            <TitleWrap>
-                <Title>나의 스터디방</Title>
-                <Link to="/room/create">
-                    <Button type="primary" ghost className="shadow" icon={<PlusOutlined />} size="large">
-                        스터디방 만들기
-                    </Button>
-                </Link>
-            </TitleWrap>
-
+            <Title>{title}</Title>
             <Divider />
-
             <FilterWrap>
                 <RoomOrderSelector onChange={setOrderType} onSelect={orderType => handleFilterChange("orderType", orderType)} />
-                <CategoryMultiSelector
-                    onChange={setCategoryIds}
-                    onSelect={categoryIds => handleFilterChange("categoryIds", categoryIds)}
-                />
+
+                {!paramCategoryId && (
+                    <CategoryMultiSelector
+                        onChange={setCategoryIds}
+                        onSelect={categoryIds => handleFilterChange("categoryIds", categoryIds)}
+                    />
+                )}
+
                 <Search
                     className="search"
                     enterButton="Search"
@@ -116,9 +127,9 @@ const MyStudyRoomPage = props => {
 
             <List
                 grid={{ gutter: 20, xs: 1, sm: 1, md: 2, lg: 2, column: 3 }}
-                dataSource={myRooms}
+                dataSource={rooms}
                 renderItem={item => (
-                    <List.Item key={item.roomId}>
+                    <List.Item>
                         <Card {...item} />
                     </List.Item>
                 )}
@@ -127,15 +138,7 @@ const MyStudyRoomPage = props => {
     );
 };
 
-export default MyStudyRoomPage;
-
-const TitleWrap = styled.div`
-    display: flex;
-
-    h1 {
-        flex: 1;
-    }
-`;
+export default withRouter(SearchPage);
 
 const FilterWrap = styled.div`
     margin-bottom: 1.5rem;

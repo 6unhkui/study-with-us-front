@@ -1,56 +1,63 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import styled from 'styled-components';
-import ReactHtmlParser from 'react-html-parser';
-import Avatar from 'components/Avatar';
-import FileSaver from 'file-saver';
-import {useDispatch, useSelector} from "react-redux";
-import {LOAD_POST_DETAIL_REQUEST, DELETE_POST_REQUEST} from "store/modules/post";
-import {useHistory} from "react-router-dom";
-import {bytesToSize} from "utils/File";
+import React, { useState, useEffect, useCallback } from "react";
+import styled from "styled-components";
+import ReactHtmlParser from "react-html-parser";
+import Avatar from "components/Avatar";
+import FileSaver from "file-saver";
+import { useDispatch, useSelector } from "react-redux";
+import { LOAD_POST_DETAIL_REQUEST, DELETE_POST_REQUEST } from "store/modules/post";
+import { useHistory } from "react-router-dom";
+import { bytesToSize } from "utils/File";
 import CardWrap from "components/CardBox";
 import Comments from "containers/PostView/Comments";
-import loadFile from 'utils/loadFile';
+import loadFile from "utils/loadFile";
 
-import {Divider, Dropdown, Menu, Typography, List, Modal} from 'antd';
-import { EllipsisOutlined, DeleteOutlined,  EditOutlined, PaperClipOutlined} from '@ant-design/icons';
+import { Divider, Dropdown, Menu, Typography, List, Modal } from "antd";
+import { EllipsisOutlined, DeleteOutlined, EditOutlined, PaperClipOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 
-const PostView = (props) => {
+const PostView = props => {
     const postId = props.match.params.id;
     const history = useHistory();
     const dispatch = useDispatch();
-    const { postDetail, postDetail : {writer, isWriter}} = useSelector(state => state.post);
+    const {
+        postDetail,
+        postDetail: { writer, isWriter }
+    } = useSelector(state => state.post);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
     useEffect(() => {
         dispatch({
-            type : LOAD_POST_DETAIL_REQUEST,
-            data : postId
-        })
+            type: LOAD_POST_DETAIL_REQUEST,
+            data: postId
+        });
     }, [dispatch, postId]);
 
     const handleFileDownload = useCallback((identifier, fileName) => {
-        FileSaver.saveAs(loadFile(identifier, 'attachment'), fileName);
-    },[])
+        FileSaver.saveAs(loadFile(identifier, "attachment"), fileName);
+    }, []);
 
     const handleDeletePost = useCallback(() => {
         dispatch({
-            type : DELETE_POST_REQUEST,
-            data : postId,
-            meta : {
-                callbackAction : () =>{
+            type: DELETE_POST_REQUEST,
+            data: postId,
+            meta: {
+                callbackAction: () => {
                     history.push(`/room/${postDetail.roomId}`);
                 }
             }
-        })
-    },[dispatch, history, postDetail.roomId, postId])
+        });
+    }, [dispatch, history, postDetail.roomId, postId]);
 
-
-    const menuItems = (
+    const dropdownMenuItems = (
         <Menu>
-            <Menu.Item key="0" onClick={() => {history.push(`/post/${postId}/edit`)}}>
-                <EditOutlined/> 수정
+            <Menu.Item
+                key="0"
+                onClick={() => {
+                    history.push(`/post/${postId}/edit`);
+                }}
+            >
+                <EditOutlined /> 수정
             </Menu.Item>
             <Menu.Item key="1">
                 <span onClick={setDeleteModalVisible.bind(null, true)}>
@@ -66,98 +73,107 @@ const PostView = (props) => {
                 </Modal>
             </Menu.Item>
         </Menu>
-    )
+    );
 
     return (
-        <CardWrap pageHeader={{title : postDetail?.roomName, backUrl : `/room/${postDetail.roomId}`}}>
+        <CardWrap pageHeader={{ title: postDetail?.roomName, backUrl: `/room/${postDetail.roomId}` }}>
             <Title level={2}>{postDetail.title}</Title>
 
-            {isWriter &&
+            {isWriter && (
                 <MoreBtn>
-                    <Dropdown overlay={menuItems} trigger={['click']}>
-                        <EllipsisOutlined/>
+                    <Dropdown overlay={dropdownMenuItems} trigger={["click"]}>
+                        <EllipsisOutlined />
                     </Dropdown>
                 </MoreBtn>
-            }
+            )}
 
-            {writer && <Avatar user={postDetail.writer} showName={true} subText={postDetail.createdDate}/>}
+            {writer && <Avatar user={postDetail.writer} showName={true} subText={postDetail.createdDate} />}
 
-            <Divider/>
+            <Divider />
 
-            <ContentWrap>
-                {ReactHtmlParser(postDetail.content)}
-            </ContentWrap>
+            <ContentWrap>{ReactHtmlParser(postDetail.content)}</ContentWrap>
 
-            {postDetail?.files?.length > 0 &&
-            <List grid={{gutter: 20, column: 1}}
-                  dataSource={postDetail.files}
-                  style={{marginTop: '3rem'}}
-                  renderItem={item => (
-                      <List.Item key={item.fileId}>
-                          <FileItemWrap>
-                              <PaperClipOutlined/>
-                              <FileName onClick={() => {
-                                  handleFileDownload(item.saveName, item.originName)
-                              }}>
-                                  {item.originName}
-                              </FileName>
-                              <Divider type="vertical"/>
-                              <FileSize>{bytesToSize(item.fileSize)}</FileSize>
-                          </FileItemWrap>
-                      </List.Item>
-                  )}
-            />
-            }
+            {postDetail?.files?.length > 0 && (
+                <List
+                    grid={{ gutter: 20, column: 1 }}
+                    dataSource={postDetail.files}
+                    style={{ marginTop: "3rem" }}
+                    renderItem={item => (
+                        <List.Item key={item.fileId}>
+                            <FileItemWrap>
+                                <PaperClipOutlined />
+                                <FileName
+                                    onClick={() => {
+                                        handleFileDownload(item.saveName, item.originName);
+                                    }}
+                                >
+                                    {item.originName}
+                                </FileName>
+                                <Divider type="vertical" />
+                                <FileSize>{bytesToSize(item.fileSize)}</FileSize>
+                            </FileItemWrap>
+                        </List.Item>
+                    )}
+                />
+            )}
 
-            <Comments postId={postId}/>
-    </CardWrap>
-  )
-}
+            <Comments postId={postId} />
+        </CardWrap>
+    );
+};
 
 export default PostView;
 
-
 const MoreBtn = styled.span`
-  display: inline-block;
-  float: right;
-  font-weight: bold;
-  font-size: 1.4rem;
-`
+    display: inline-block;
+    float: right;
+    font-weight: bold;
+    font-size: 1.4rem;
+`;
 
-const ContentWrap =  styled.div`
-  padding: 1rem 0 3rem 0;
-  line-height : 2rem;
-  
-  img {
-    max-width: 100%;
-    margin : 20px 0;
-  }
-  
-  p {
-    margin : 0;
-  }
-`
+const ContentWrap = styled.div`
+    padding: 1rem 0 3rem 0;
+    line-height: 2rem;
 
-const FileItemWrap = styled.div`
-`
+    img {
+        display: block;
+        max-width: 100%;
+        margin: 20px auto;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    ul,
+    li {
+        list-style: initial;
+    }
+
+    ul {
+        padding-left: 20px;
+    }
+`;
+
+const FileItemWrap = styled.div``;
 
 const FileName = styled.span`
-    margin-left : 6px;
-    cursor : pointer;
-    position : relative;
-    
+    margin-left: 6px;
+    cursor: pointer;
+    position: relative;
+
     &: after {
-        content: '';
+        content: "";
         width: 100%;
         position: absolute;
         left: 0;
         bottom: -4px;
         border-width: 0 0 1px;
         border-style: solid;
-        opacity: .4;
+        opacity: 0.4;
     }
-`
+`;
 
 const FileSize = styled.span`
-    color : var(--font-color-gray);
-`
+    color: var(--font-color-gray);
+`;

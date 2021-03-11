@@ -1,25 +1,44 @@
-import {all, fork, takeEvery, put, call, takeLatest} from 'redux-saga/effects';
+import { all, fork, takeEvery, put, call, takeLatest } from "redux-saga/effects";
 import {
-    LOAD_NEWS_FEED_REQUEST, LOAD_NEWS_FEED_SUCCESS, LOAD_NEWS_FEED_FAILURE,
-    LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE,
-    LOAD_POST_DETAIL_REQUEST, LOAD_POST_DETAIL_SUCCESS, LOAD_POST_DETAIL_FAILURE,
-    LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_SUCCESS, LOAD_COMMENTS_FAILURE,
-    CREATE_POST_REQUEST, CREATE_POST_SUCCESS, CREATE_POST_FAILURE,
-    CREATE_COMMENT_REQUEST, CREATE_COMMENT_SUCCESS, CREATE_COMMENT_FAILURE,
-    DELETE_POST_REQUEST, DELETE_POST_SUCCESS, DELETE_POST_FAILURE,
-    UPDATE_POST_REQUEST, UPDATE_POST_SUCCESS, UPDATE_POST_FAILURE,
-    DELETE_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_FAILURE,
-    UPDATE_COMMENT_REQUEST, UPDATE_COMMENT_SUCCESS, UPDATE_COMMENT_FAILURE
-} from 'store/modules/post';
-import {http} from 'utils/HttpHandler';
-
+    LOAD_NEWS_FEED_REQUEST,
+    LOAD_NEWS_FEED_SUCCESS,
+    LOAD_NEWS_FEED_FAILURE,
+    LOAD_POSTS_REQUEST,
+    LOAD_POSTS_SUCCESS,
+    LOAD_POSTS_FAILURE,
+    LOAD_POST_DETAIL_REQUEST,
+    LOAD_POST_DETAIL_SUCCESS,
+    LOAD_POST_DETAIL_FAILURE,
+    LOAD_COMMENTS_REQUEST,
+    LOAD_COMMENTS_SUCCESS,
+    LOAD_COMMENTS_FAILURE,
+    CREATE_POST_REQUEST,
+    CREATE_POST_SUCCESS,
+    CREATE_POST_FAILURE,
+    CREATE_COMMENT_REQUEST,
+    CREATE_COMMENT_SUCCESS,
+    CREATE_COMMENT_FAILURE,
+    DELETE_POST_REQUEST,
+    DELETE_POST_SUCCESS,
+    DELETE_POST_FAILURE,
+    UPDATE_POST_REQUEST,
+    UPDATE_POST_SUCCESS,
+    UPDATE_POST_FAILURE,
+    DELETE_COMMENT_REQUEST,
+    DELETE_COMMENT_SUCCESS,
+    DELETE_COMMENT_FAILURE,
+    UPDATE_COMMENT_REQUEST,
+    UPDATE_COMMENT_SUCCESS,
+    UPDATE_COMMENT_FAILURE
+} from "store/modules/post";
+import { http } from "utils/HttpHandler";
 
 function loadNewsFeedAPI(pagination, keyword) {
-    return http.get(`/api/v1/posts/new?${makeParamForPosts(pagination, keyword)}`)
+    return http.get(`/api/v1/posts/new?${makeParamForPosts(pagination, keyword)}`);
 }
 
 function loadPostsAPI(roomId, pagination, keyword) {
-    return http.get(`/api/v1/room/${roomId}/posts?${makeParamForPosts(pagination, keyword)}`)
+    return http.get(`/api/v1/room/${roomId}/posts?${makeParamForPosts(pagination, keyword)}`);
 }
 
 function loadPostDetailAPI(postId) {
@@ -31,11 +50,11 @@ function addPostAPI(roomId, data) {
 }
 
 function uploadAttachmentAPI(fileGroupId, fileList) {
-    let param = '';
-    if(fileGroupId) {
+    let param = "";
+    if (fileGroupId) {
         param = `?fileGroupId=${fileGroupId}`;
     }
-    return http.post(`/api/v1/files/attachment${param}`, fileList, {'Content-type': 'multipart/form-data;charset=utf-8'});
+    return http.post(`/api/v1/files/attachment${param}`, fileList, { "Content-type": "multipart/form-data;charset=utf-8" });
 }
 
 // function uploadMoreAttachmentAPI(fileGroupId, fileList) {
@@ -51,7 +70,7 @@ function deletePostAPI(postId) {
 }
 
 function loadCommentsAPI(postId) {
-    return http.get(`/api/v1/post/${postId}/comments`)
+    return http.get(`/api/v1/post/${postId}/comments`);
 }
 
 function addCommentAPI(postId, data) {
@@ -66,261 +85,274 @@ function deleteCommentAPI(commentId) {
     return http.delete(`/api/v1/comment/${commentId}`);
 }
 
-
-
 // 새 글 피드 리스트 /////////////////////////////
-function* loadNewsFeed(action){
+function* loadNewsFeed(action) {
     try {
-        const {data : {data}} = yield call(loadNewsFeedAPI, action.pagination, action.keyword);
+        const {
+            data: {
+                data: { content, first, last, number }
+            }
+        } = yield call(loadNewsFeedAPI, action.pagination, action.keyword);
         yield put({
-            type : LOAD_NEWS_FEED_SUCCESS,
-            data : data.content,
-            first : data.first,
-            last : data.last,
-        })
-    }catch(e) {
+            type: LOAD_NEWS_FEED_SUCCESS,
+            data: content,
+            first,
+            last
+        });
+
+        action.meta && action.meta.callbackAction(number + 1);
+    } catch (e) {
         console.error(e);
         yield put({
-            type : LOAD_NEWS_FEED_FAILURE,
-            error : e
-        })
+            type: LOAD_NEWS_FEED_FAILURE,
+            error: e
+        });
     }
 }
 
 function* watchLoadNewsFeed() {
-    yield takeEvery(LOAD_NEWS_FEED_REQUEST, loadNewsFeed)
+    yield takeEvery(LOAD_NEWS_FEED_REQUEST, loadNewsFeed);
 }
 
-
 // 포스트 리스트 /////////////////////////////
-function* loadPosts(action){
+function* loadPosts(action) {
     try {
-        const {data : {data}} = yield call(loadPostsAPI, action.roomId, action.pagination, action.keyword);
+        const {
+            data: {
+                data: { content, first, last, number }
+            }
+        } = yield call(loadPostsAPI, action.roomId, action.pagination, action.keyword);
         yield put({
-            type : LOAD_POSTS_SUCCESS,
-            data : data.content,
-            first : data.first,
-            last : data.last,
-        })
-    }catch(e) {
+            type: LOAD_POSTS_SUCCESS,
+            data: content,
+            first: first,
+            last: last
+        });
+
+        action.meta && action.meta.callbackAction(number + 1);
+    } catch (e) {
         console.error(e);
         yield put({
-            type : LOAD_POSTS_FAILURE,
-            error : e
-        })
+            type: LOAD_POSTS_FAILURE,
+            error: e
+        });
     }
 }
 
 function* watchLoadPosts() {
-    yield takeEvery(LOAD_POSTS_REQUEST, loadPosts)
+    yield takeEvery(LOAD_POSTS_REQUEST, loadPosts);
 }
 
-
 // 포스트 상세 //////////////////////////////
-function* loadPostDetail(action){
+function* loadPostDetail(action) {
     try {
-        const {data : {data}} = yield call(loadPostDetailAPI, action.data);
+        const {
+            data: { data }
+        } = yield call(loadPostDetailAPI, action.data);
         yield put({
-            type : LOAD_POST_DETAIL_SUCCESS,
+            type: LOAD_POST_DETAIL_SUCCESS,
             data
-        })
-    }catch(e) {
+        });
+    } catch (e) {
         console.error(e);
         yield put({
-            type : LOAD_POST_DETAIL_FAILURE,
-            error : e
-        })
+            type: LOAD_POST_DETAIL_FAILURE,
+            error: e
+        });
     }
 }
 
 function* watchLoadPostDetail() {
-    yield takeEvery(LOAD_POST_DETAIL_REQUEST, loadPostDetail)
+    yield takeEvery(LOAD_POST_DETAIL_REQUEST, loadPostDetail);
 }
 
 // 포스트 작성 ///////////////////////////////////
-function* addPost(action){
+function* addPost(action) {
     try {
-        const {files, post, roomId} = action.data;
+        const { files, post, roomId } = action.data;
 
         // 첨부 파일이 존재하면, 썸네일 이미지를 먼저 업로드 한 후 pk 값을 받아온다.
-        if(files) {
+        if (files) {
             const result = yield call(uploadAttachmentAPI, null, files);
             post.fileGroupId = result.data.data.fileGroupId;
         }
 
-        const {data : {data}} = yield call(addPostAPI, roomId, post);
+        const {
+            data: { data }
+        } = yield call(addPostAPI, roomId, post);
         yield put({
-            type : CREATE_POST_SUCCESS,
+            type: CREATE_POST_SUCCESS,
             data
-        })
+        });
 
         action.meta.callbackAction(data);
-    }catch(e) {
+    } catch (e) {
         console.error(e);
         yield put({
-            type : CREATE_POST_FAILURE,
-            error : e
-        })
+            type: CREATE_POST_FAILURE,
+            error: e
+        });
     }
 }
 
 function* watchAddPost() {
-    yield takeLatest(CREATE_POST_REQUEST, addPost)
+    yield takeLatest(CREATE_POST_REQUEST, addPost);
 }
 
 // 포스트 작성 ///////////////////////////////////
-function* updatePost(action){
+function* updatePost(action) {
     try {
-        const {post, postId, fileGroupId, delFiles, files} = action.data;
-        
-        if(delFiles) {
+        const { post, postId, fileGroupId, delFiles, files } = action.data;
+
+        if (delFiles) {
             post.delFiles = delFiles;
             post.fileGroupId = fileGroupId;
         }
 
-        if(files) {
+        if (files) {
             const result = yield call(uploadAttachmentAPI, fileGroupId, files);
             post.fileGroupId = result.data.data.fileGroupId;
         }
 
-        const {data : {data}} = yield call(updatePostAPI, postId, post);
+        const {
+            data: { data }
+        } = yield call(updatePostAPI, postId, post);
         yield put({
-            type : UPDATE_POST_SUCCESS,
+            type: UPDATE_POST_SUCCESS,
             data
-        })
+        });
 
         action.meta.callbackAction();
-    }catch(e) {
+    } catch (e) {
         console.error(e);
         yield put({
-            type : UPDATE_POST_FAILURE,
-            error : e
-        })
+            type: UPDATE_POST_FAILURE,
+            error: e
+        });
     }
 }
 
 function* watchUpdatePost() {
-    yield takeLatest(UPDATE_POST_REQUEST, updatePost)
+    yield takeLatest(UPDATE_POST_REQUEST, updatePost);
 }
 
-
 // 포스트 삭제 //////////////////////////////
-function* deletePost(action){
+function* deletePost(action) {
     try {
         yield call(deletePostAPI, action.data);
         yield put({
-            type : DELETE_POST_SUCCESS
-        })
+            type: DELETE_POST_SUCCESS
+        });
 
         action.meta.callbackAction();
-    }catch(e) {
+    } catch (e) {
         console.error(e);
         yield put({
-            type : DELETE_POST_FAILURE,
-            error : e
-        })
+            type: DELETE_POST_FAILURE,
+            error: e
+        });
     }
 }
 
 function* watchDeletePost() {
-    yield takeEvery(DELETE_POST_REQUEST, deletePost)
+    yield takeEvery(DELETE_POST_REQUEST, deletePost);
 }
 
-
-
 // 댓글 리스트 /////////////////////////////
-function* loadComments(action){
+function* loadComments(action) {
     try {
-        const {data : {data}} = yield call(loadCommentsAPI, action.postId);
+        const {
+            data: { data }
+        } = yield call(loadCommentsAPI, action.postId);
 
         yield put({
-            type : LOAD_COMMENTS_SUCCESS,
+            type: LOAD_COMMENTS_SUCCESS,
             data
             // first : result.data.data.first,
             // last : result.data.data.last,
-        })
-    }catch(e) {
+        });
+    } catch (e) {
         console.error(e);
         yield put({
-            type : LOAD_COMMENTS_FAILURE,
-            error : e
-        })
+            type: LOAD_COMMENTS_FAILURE,
+            error: e
+        });
     }
 }
 
 function* watchLoadComments() {
-    yield takeEvery(LOAD_COMMENTS_REQUEST, loadComments)
+    yield takeEvery(LOAD_COMMENTS_REQUEST, loadComments);
 }
 
 // 댓글 추가 ///////////////////////////////////
-function* addComment(action){
+function* addComment(action) {
     try {
-        const {data : {data}} = yield call(addCommentAPI, action.postId, action.data);
+        const {
+            data: { data }
+        } = yield call(addCommentAPI, action.postId, action.data);
         yield put({
-            type : CREATE_COMMENT_SUCCESS,
+            type: CREATE_COMMENT_SUCCESS,
             data
-        })
-    }catch(e) {
+        });
+    } catch (e) {
         console.error(e);
         yield put({
-            type : CREATE_COMMENT_FAILURE,
-            error : e
-        })
+            type: CREATE_COMMENT_FAILURE,
+            error: e
+        });
     }
 }
 
 function* watchAddComment() {
-    yield takeLatest(CREATE_COMMENT_REQUEST, addComment)
+    yield takeLatest(CREATE_COMMENT_REQUEST, addComment);
 }
 
 // 댓글 수정 ///////////////////////////////////
-function* updateComment(action){
+function* updateComment(action) {
     try {
         yield call(updateCommentAPI, action.commentId, action.data);
         yield put({
-            type : UPDATE_COMMENT_SUCCESS,
-            data : {
-                commentId : action.commentId,
-                content : action.data.content
+            type: UPDATE_COMMENT_SUCCESS,
+            data: {
+                commentId: action.commentId,
+                content: action.data.content
             }
-        })
-    }catch(e) {
+        });
+    } catch (e) {
         console.error(e);
         yield put({
-            type : UPDATE_COMMENT_FAILURE,
-            error : e
-        })
+            type: UPDATE_COMMENT_FAILURE,
+            error: e
+        });
     }
 }
 
 function* watchUpdateComment() {
-    yield takeLatest(UPDATE_COMMENT_REQUEST, updateComment)
+    yield takeLatest(UPDATE_COMMENT_REQUEST, updateComment);
 }
 
 // 댓글 삭제 //////////////////////////////
-function* deleteComment(action){
+function* deleteComment(action) {
     try {
         yield call(deleteCommentAPI, action.data);
         yield put({
-            type : DELETE_COMMENT_SUCCESS,
-            data : {
-                commentId : action.data
+            type: DELETE_COMMENT_SUCCESS,
+            data: {
+                commentId: action.data
             }
-        })
-    }catch(e) {
+        });
+    } catch (e) {
         console.error(e);
         yield put({
-            type : DELETE_COMMENT_FAILURE,
-            error : e
-        })
+            type: DELETE_COMMENT_FAILURE,
+            error: e
+        });
     }
 }
 
 function* watchDeleteComment() {
-    yield takeEvery(DELETE_COMMENT_REQUEST, deleteComment)
+    yield takeEvery(DELETE_COMMENT_REQUEST, deleteComment);
 }
-
-
 
 export default function* postSaga() {
     yield all([
@@ -333,14 +365,14 @@ export default function* postSaga() {
         fork(watchLoadComments),
         fork(watchAddComment),
         fork(watchUpdateComment),
-        fork(watchDeleteComment),
+        fork(watchDeleteComment)
     ]);
 }
 
-
-
-const makeParamForPosts = (pagination, keyword)  => {
-    let param = Object.entries(pagination).map(e => e.join('=')).join('&');
-    if(keyword) param += `&keyword=${keyword}`;
+const makeParamForPosts = (pagination, keyword) => {
+    let param = Object.entries(pagination)
+        .map(e => e.join("="))
+        .join("&");
+    if (keyword) param += `&keyword=${keyword}`;
     return param;
-}
+};

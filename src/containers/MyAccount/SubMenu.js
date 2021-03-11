@@ -1,120 +1,132 @@
-import React, {useRef, useCallback} from 'react';
-import { useTranslation } from 'react-i18next';
-import { ACCESS_TOKEN } from 'constants/index';
+import React, { useRef, useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import { ACCESS_TOKEN } from "constants/index";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
-import breakpoint from 'styled-components-breakpoint';
-import Avatar from 'components/Avatar';
+import Avatar from "components/Avatar";
 
-import { Menu, Divider, Spin} from 'antd';
-import { CameraOutlined, LoadingOutlined} from '@ant-design/icons';
-import {useDispatch, useSelector} from "react-redux";
-import {UPLOAD_PROFILE_REQUEST, LOG_OUT} from "store/modules/account";
+import { Menu } from "antd";
+import { CameraOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { UPLOAD_PROFILE_REQUEST, LOG_OUT } from "store/modules/account";
+import { SettingOutlined, LoginOutlined } from "@ant-design/icons";
 
-
-const SubMenuWrap = (props) => {
+const SubMenuWrap = props => {
     const { t } = useTranslation();
     const inputRef = useRef(null);
     const dispatch = useDispatch();
     const { name, profileImg } = useSelector(state => state.account.me, []);
     const { isUploadingProfile } = useSelector(state => state.account, []);
 
-    const handleProfileImgOnChange = useCallback(e => {
-        e.preventDefault();
-        const file = e.target.files[0];
-        const data = new FormData();
-        data.append('file', file);
+    const handleProfileImgOnChange = useCallback(
+        e => {
+            e.preventDefault();
+            const file = e.target.files[0];
+            const data = new FormData();
+            data.append("file", file);
 
-        dispatch({
-            type : UPLOAD_PROFILE_REQUEST,
-            file : data
-        })
-    }, [dispatch]);
+            dispatch({
+                type: UPLOAD_PROFILE_REQUEST,
+                file: data
+            });
+        },
+        [dispatch]
+    );
 
     const handleLogout = useCallback(() => {
         dispatch({
-            type : LOG_OUT,
+            type: LOG_OUT,
             meta: {
-                callbackAction : () => {
+                callbackAction: () => {
                     localStorage.removeItem(ACCESS_TOKEN);
                     props.history.push("/");
                 }
             }
-        })
+        });
     }, [dispatch, props.history]);
 
-    
     const items = [
-        // <Link to={`${props.match.path}/studyroom`}>나의 스터디방 관리</Link>,
-        // <Link to={`${props.match.path}/studyroom`}>스터디 기록</Link>,
-        <Link to={`${props.match.path}/setting`}>{t('mypage.editAccountSettings.title')}</Link>,
-        <div onClick={handleLogout}>로그아웃</div>
-    ]
+        {
+            component: <Link to={`${props.match.path}/setting`}>{t("mypage.editAccountSettings.title")}</Link>,
+            icon: <SettingOutlined />
+        },
+        {
+            component: <span onClick={handleLogout}>{t("auth.logout")}</span>,
+            icon: <LoginOutlined />
+        }
+    ];
 
     return (
-        <Menu style={{padding : '3rem 0', height : '100%'}} defaultSelectedKeys={['0']}>
+        <div style={{ textAlign: "center", marginTop: "10px" }}>
             <UserWrap>
                 <div className="avatar-wrap">
-                    <div className="file-attachment" onClick={() => {inputRef.current.click()}}>
-                        <CameraOutlined style={{color : "#fff", fontSize : "1.2rem"}} />
-                        <input type='file' 
-                               accept="image/*"
-                               onChange={handleProfileImgOnChange}
-                               style = {{display : 'none'}}
-                               ref={inputRef}/>
-                     </div>
-                     <Avatar user={{name, profileImg}} size={100} style={{fontSize : '2.4rem'}} loading={isUploadingProfile}/>
+                    <ProfileUploadWrap>
+                        <div
+                            className="file-upload"
+                            onClick={() => {
+                                inputRef.current.click();
+                            }}
+                        >
+                            <CameraOutlined style={{ color: "#fff", fontSize: "1.2rem" }} />
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleProfileImgOnChange}
+                                style={{ display: "none" }}
+                                ref={inputRef}
+                            />
+                        </div>
+                    </ProfileUploadWrap>
+                    <Avatar user={{ name, profileImg }} size={100} style={{ fontSize: "2.4rem" }} loading={isUploadingProfile} />
                 </div>
 
-                 <h1>{t('mypage.title', { name: name})}</h1>
+                <h1>{t("mypage.title", { name: name })}</h1>
             </UserWrap>
-            
-            <Divider/>
-            
-            {items.map((v, i) => (
-                <Menu.Item key={i}>{v}</Menu.Item>
-            ))}
-        </Menu>
-    )
-}
+            <Menu defaultSelectedKeys={["0"]} mode="horizontal" style={{ textAlign: "center", border: "0" }}>
+                {items.map((item, i) => (
+                    <Menu.Item key={i} icon={item.icon}>
+                        {item.component}
+                    </Menu.Item>
+                ))}
+            </Menu>
+        </div>
+    );
+};
 
 export default withRouter(SubMenuWrap);
 
+const ProfileUploadWrap = styled.div`
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99;
+    text-align: center;
+    margin: 0 auto;
+
+    &:hover {
+        .file-upload {
+            display: block;
+        }
+    }
+
+    .file-upload {
+        display: none;
+        width: 100%;
+        cursor: pointer;
+        background-color: #00000050;
+    }
+`;
 
 const UserWrap = styled.div`
-    padding: 0 16px;
-
-    .avatar-wrap {
-        &:hover {
-            .file-attachment {
-                display : block;
-            }
-        }
-
-        .file-attachment {
-            display: none;
-            cursor : pointer;
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background-color: #00000050;
-            z-index: 99;
-            text-align: center;
-            line-height : 100px;
-        }
-    }
-
+    margin-top: 20px;
     h1 {
-        font-size : var(--font-medium);
-        margin : 1rem 0;
-        line-height : 2rem;
+        font-size: var(--font-large);
+        margin: 1.2rem 0;
+        line-height: 2.6rem;
     }
-
-    ${breakpoint('tablet')`
-        .avatar-wrap {
-
-        }
-    `} 
-`
+`;
