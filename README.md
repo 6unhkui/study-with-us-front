@@ -5,7 +5,7 @@
 ![메인](https://user-images.githubusercontent.com/41765537/110615240-905e0f80-81d6-11eb-843f-60de4cbf6937.gif)
 <br/>
 
-Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 공부하는 분야의 정보를 공유하고, 함께 의지를 다지기 위해 만든 커뮤니티 사이트입니다.<br/>
+Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 정보를 공유하고, 함께 의지를 다지기 위해 만든 커뮤니티 사이트입니다.<br/><br/>
 주요 기능은 아래와 같습니다.
 
 -   회원가입, 로그인 & 소셜 로그인
@@ -22,7 +22,7 @@ Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 공부
 
 ## 💻 Dev Environment
 
--   OS : Mac OS, Linux CentOS 7
+-   OS : Mac OS, CentOS 7
 -   Tool : Visual Studio Code, Git
 
 ## 🔧 Tech Stack
