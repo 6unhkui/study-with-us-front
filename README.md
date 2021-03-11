@@ -118,9 +118,9 @@ Custom Hooks를 모아둔 디렉토리입니다.
 
 페이지 컴포넌트를 모아둔 디렉토리로, 순수 컴포넌트와 컨테이너 컴포넌트를 조합해 페이지 별로 화면을 만듭니다.
 
-#### `src/routes`
+<!-- #### `src/routes`
 
-#### `src/store/modules` `src/store/sagas`
+#### `src/store/modules` `src/store/sagas` -->
 
 #### `src/utils`
 
