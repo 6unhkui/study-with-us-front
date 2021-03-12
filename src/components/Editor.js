@@ -1,88 +1,75 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { http } from "utils/HttpHandler";
-import { EditorState, convertToRaw, ContentState } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import draftToHtml from "draftjs-to-html";
-import htmlToDraft from "html-to-draftjs";
-import loadFile from "utils/loadFile";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import loadFile from "utils/LoadFile";
 
-const TextEditor = ({ value = "", onChange }) => {
-    const [editorState, setEditorState] = useState(() => {
-        const contentBlock = htmlToDraft(value);
-        if (contentBlock) {
-            const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-            return EditorState.createWithContent(contentState);
-        } else return EditorState.createEmpty();
-    });
+ClassicEditor.defaultConfig = {
+    toolbar: [
+        "heading",
+        "|",
+        "alignment",
+        "|",
+        "bold",
+        "italic",
+        "|",
+        "link",
+        "|",
+        "uploadImage",
+        "blockQuote",
+        "|",
+        "undo",
+        "redo"
+    ]
+};
 
-    const imageUploadCallback = file => {
-        return new Promise((resolve, reject) => {
+class UploadAdapter {
+    constructor(loader) {
+        this.loader = loader;
+    }
+
+    async upload() {
+        return this.loader.file.then(file => {
             const formData = new FormData();
             formData.append("file", file);
 
-            http.post("/api/v1/files/editor", formData, {
-                "Content-type": "multipart/form-data;charset=utf-8"
-            })
-                .then(({ data: { data } }) => {
-                    resolve({ data: { link: loadFile(data.saveName, "editor") } });
+            return http
+                .post("/api/v1/files/editor", formData, {
+                    "Content-type": "multipart/form-data;charset=utf-8"
                 })
-                .catch(err => {
-                    reject("Upload failed");
-                });
+                .then(({ data: { data } }) => ({ default: loadFile(data.saveName, "editor") }))
+                .catch(() => Promise.reject("Upload failed"));
         });
-    };
+    }
 
-    const toolbar = {
-        options: ["inline", "fontSize", "textAlign", "list", "colorPicker", "link", "image", "history"],
-        list: { inDropdown: true },
-        textAlign: { inDropdown: true },
-        link: { inDropdown: true },
-        history: { inDropdown: false },
-        image: {
-            urlEnabled: true,
-            uploadEnabled: true,
-            alignmentEnabled: false,
-            uploadCallback: imageUploadCallback,
-            previewImage: true,
-            inputAccept: "image/gif,image/jpeg,image/jpg,image/png,image/svg",
-            alt: { present: false, mandatory: false },
-            defaultSize: {
-                height: "auto",
-                width: "auto"
-            }
-        }
-    };
+    abort() {
+        return Promise.reject();
+    }
+}
 
+const Editor = ({ value = "", onChange }) => {
     return (
         <EditorWrap>
-            <Editor
-                toolbar={toolbar}
-                editorState={editorState}
-                localization={{
-                    locale: "ko"
+            <CKEditor
+                editor={ClassicEditor}
+                data={value}
+                onReady={editor => {
+                    editor.plugins.get("FileRepository").createUploadAdapter = loader => new UploadAdapter(loader);
                 }}
-                placeholder="내용을 작성해주세요."
-                onEditorStateChange={state => {
-                    setEditorState(state);
-                    onChange(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+                onChange={(event, editor) => {
+                    const data = editor.getData();
+                    onChange(data);
                 }}
             />
         </EditorWrap>
     );
 };
 
-export default TextEditor;
+export default Editor;
 
 const EditorWrap = styled.div`
-    border: 1px solid var(--border-gray);
-    .DraftEditor-root {
-        padding: 0 1rem 1rem 1rem;
-        height: 300px;
-    }
-
-    .public-DraftStyleDefault-block {
-        margin: 0.5rem 0;
+    .ck-editor__main > .ck-editor__editable {
+        height: 400px;
     }
 `;

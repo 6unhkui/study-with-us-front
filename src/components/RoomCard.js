@@ -4,9 +4,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Card, Typography, Divider } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-
 import Avatar from "components/Avatar";
-import loadFile from "utils/loadFile";
+import loadFile from "utils/LoadFile";
 
 const { Paragraph } = Typography;
 
