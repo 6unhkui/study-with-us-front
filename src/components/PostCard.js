@@ -38,7 +38,7 @@ const PostCard = ({
                 )}
 
                 <AvatarWrap>
-                    <Avatar user={writer} showName={true} subText={createdDate} />
+                    <Avatar user={writer} showName subText={createdDate} />
                 </AvatarWrap>
 
                 {thumbnail && thumbnailSection}
@@ -89,7 +89,16 @@ PostCard.propTypes = {
 };
 
 PostCard.defaultProps = {
-    showRoomName: false
+    content: "",
+    writer: {
+        name: "user",
+        profileImg: ""
+    },
+    createdDate: new Date().toLocaleDateString(),
+    thumbnail: "",
+    commentCount: 0,
+    showRoomName: false,
+    roomName: ""
 };
 
 const RoomNameWrap = styled.div`

@@ -3,7 +3,6 @@ import { routerReducer } from "react-router-redux";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { createWhitelistFilter } from "redux-persist-transform-filter";
-
 import account from "./account";
 import category from "./category";
 import room from "./room";

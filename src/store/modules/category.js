@@ -10,8 +10,8 @@ export const LOAD_CATEGORIES_REQUEST = "LOAD_CATEGORIES_REQUEST";
 export const LOAD_CATEGORIES_SUCCESS = "LOAD_CATEGORIES_SUCCESS";
 export const LOAD_CATEGORIES_FAILURE = "LOAD_CATEGORIES_FAILURE";
 
-const category = (state = initialState, action) => {
-    return produce(state, draft => {
+const category = (state = initialState, action) =>
+    produce(state, draft => {
         switch (action.type) {
             case LOAD_CATEGORIES_REQUEST: {
                 draft.categories = [];
@@ -32,6 +32,5 @@ const category = (state = initialState, action) => {
             }
         }
     });
-};
 
 export default category;

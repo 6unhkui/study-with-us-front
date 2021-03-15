@@ -1,7 +1,7 @@
 import { SERVER_URI } from "constants/index";
 import EmptyThumbnail from "assets/image/empty-thumbnail.png";
 
-export default function (fileName, type) {
+export default function loadFile(fileName, type) {
     if (!fileName || fileName.length === 0) {
         return `${EmptyThumbnail}`;
     }

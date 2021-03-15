@@ -10,7 +10,7 @@ import { REMEMBER_ME } from "constants/index";
 const LoginForm = props => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const [isRememberMe, setIsRememberMe] = useState(() => (window.localStorage.getItem(REMEMBER_ME) ? true : false));
+    const [isRememberMe, setIsRememberMe] = useState(() => !!window.localStorage.getItem(REMEMBER_ME));
     const { isLoggedIn, isLoggingIn, logInErrorReason } = useSelector(state => state.account);
 
     const validateMessages = {
@@ -41,7 +41,7 @@ const LoginForm = props => {
                 }
             });
         },
-        [dispatch, props.history, props.location.state, saveRememberMe]
+        [dispatch, saveRememberMe]
     );
 
     return (
@@ -96,9 +96,9 @@ const LoginForm = props => {
                     </Checkbox>
                 </RememberMe>
 
-                {/*<ForgotPassword>*/}
-                {/*    <Link to="/forgot-password">{t('auth.forgotPassword')}</Link>*/}
-                {/*</ForgotPassword>*/}
+                {/* <ForgotPassword> */}
+                {/*    <Link to="/forgot-password">{t('auth.forgotPassword')}</Link> */}
+                {/* </ForgotPassword> */}
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit" className="shadow" block loading={isLoggingIn}>

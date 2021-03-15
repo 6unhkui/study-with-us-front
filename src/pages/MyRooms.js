@@ -11,6 +11,7 @@ import CategoryMultiSelector from "containers/CategoryMultiSelector";
 import { useRoomFilter } from "hooks/useRoomFilter";
 import Pagination from "utils/Pagination";
 import breakpoint from "styled-components-breakpoint";
+import infiniteScroll from "utils/InfiniteScroll";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -18,7 +19,7 @@ const { Search } = Input;
 const initPagination = new Pagination();
 Object.freeze(initPagination);
 
-const MyStudyRoomPage = props => {
+const MyStudyRoomPage = () => {
     const dispatch = useDispatch();
     const { myRooms, hasMoreMyRooms, loadingMyRooms } = useSelector(state => state.room);
     const [pagination, setPagination] = useState({ ...initPagination });
@@ -36,29 +37,35 @@ const MyStudyRoomPage = props => {
         });
     }, [dispatch]);
 
-    useEffect(() => {
-        function onScroll() {
-            if (window.pageYOffset + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
-                if (hasMoreMyRooms && !loadingMyRooms) {
-                    // 리스트를 요청한다.
-                    dispatch({
-                        type: LOAD_MY_ROOMS_REQUEST,
-                        pagination: Object.assign(pagination, { page: ++pagination.page }),
-                        categoryIds,
-                        orderType,
-                        keyword,
-                        meta: {
-                            callbackAction: changePageNumber
-                        }
-                    });
+    function changePageNumber(pageNumber) {
+        setPagination(state => ({
+            ...state,
+            page: pageNumber
+        }));
+    }
+
+    const onScroll = infiniteScroll.bind(null, () => {
+        if (hasMoreMyRooms && !loadingMyRooms) {
+            // 리스트를 요청한다.
+            dispatch({
+                type: LOAD_MY_ROOMS_REQUEST,
+                pagination: Object.assign(pagination, { page: pagination.page + 1 }),
+                categoryIds,
+                orderType,
+                keyword,
+                meta: {
+                    callbackAction: changePageNumber
                 }
-            }
+            });
         }
+    });
+
+    useEffect(() => {
         window.addEventListener("scroll", onScroll);
         return () => {
             window.removeEventListener("scroll", onScroll);
         };
-    }, [categoryIds, dispatch, hasMoreMyRooms, keyword, loadingMyRooms, orderType, pagination]);
+    }, [hasMoreMyRooms, loadingMyRooms, onScroll]);
 
     const handleFilterChange = useCallback(
         (key, value) => {
@@ -78,13 +85,6 @@ const MyStudyRoomPage = props => {
         [categoryIds, dispatch, keyword, orderType]
     );
 
-    function changePageNumber(pageNumber) {
-        setPagination(pagination => ({
-            ...pagination,
-            page: pageNumber
-        }));
-    }
-
     return (
         <div className="container content-wrap">
             <TitleWrap>
@@ -99,16 +99,13 @@ const MyStudyRoomPage = props => {
             <Divider />
 
             <FilterWrap>
-                <RoomOrderSelector onChange={setOrderType} onSelect={orderType => handleFilterChange("orderType", orderType)} />
-                <CategoryMultiSelector
-                    onChange={setCategoryIds}
-                    onSelect={categoryIds => handleFilterChange("categoryIds", categoryIds)}
-                />
+                <RoomOrderSelector onChange={setOrderType} onSelect={value => handleFilterChange("orderType", value)} />
+                <CategoryMultiSelector onChange={setCategoryIds} onSelect={value => handleFilterChange("categoryIds", value)} />
                 <Search
                     className="search"
                     enterButton="Search"
                     placeholder="검색어를 입력하세요."
-                    onSearch={keyword => handleFilterChange("keyword", keyword)}
+                    onSearch={value => handleFilterChange("keyword", value)}
                     onChange={e => setKeyword(e.target.value)}
                     value={keyword}
                 />

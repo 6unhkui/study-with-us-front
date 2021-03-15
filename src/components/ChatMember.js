@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { List } from "antd";
-import MemberRow from "./MemberRow";
 import LayerPopup from "components/LayerPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { LOAD_CURRENT_CHAT_MEMBERS_REQUEST } from "store/modules/chat";
+import MemberRow from "./MemberRow";
 
 const ChatMember = ({ setLayerOpen, roomId }) => {
     const dispatch = useDispatch();

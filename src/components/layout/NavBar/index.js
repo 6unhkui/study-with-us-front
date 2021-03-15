@@ -26,7 +26,7 @@ const NavBar = props => {
                 }
             }
         });
-    }, [dispatch, props.history]);
+    }, []);
 
     const items = [
         { path: "/user/rooms", name: t("navbar.myStudyRooms") },
@@ -34,7 +34,7 @@ const NavBar = props => {
         { path: "/search", name: t("navbar.searchStudyRoom") }
     ];
 
-    const checkLogin = localStorage.getItem("accessToken") ? true : false;
+    const checkLogin = !!localStorage.getItem("accessToken");
 
     const renderLogInOutBtn = () =>
         checkLogin ? (
@@ -47,19 +47,19 @@ const NavBar = props => {
             </Link>
         );
 
-    const renderAccountInfo = (onClick = () => {}) => {
-        if (checkLogin) {
-            return (
-                <span className="loginout-wrap" onClick={onClick}>
-                    <Link to="/account">
-                        <div className="user-info" style={{ display: "inline-block" }}>
-                            <Avatar user={{ name, profileImg }} showName={true} />
-                        </div>
-                    </Link>
-                    <Divider type="vertical" />
-                </span>
-            );
-        }
+    const renderAccountInfo = (handleClick = () => {}) => {
+        if (!checkLogin) return <></>;
+
+        return (
+            <span className="loginout-wrap" onClick={handleClick} aria-hidden>
+                <Link to="/account">
+                    <div className="user-info" style={{ display: "inline-block" }}>
+                        <Avatar user={{ name, profileImg }} showName />
+                    </div>
+                </Link>
+                <Divider type="vertical" />
+            </span>
+        );
     };
 
     return (
@@ -71,10 +71,10 @@ const NavBar = props => {
             </span>
             <div className="gnb-wrap">
                 <ul>
-                    {items.map((v, i) => (
-                        <li key={i}>
-                            <NavLink to={v.path} activeClassName="active">
-                                {v.name}
+                    {items.map(item => (
+                        <li key={item.name}>
+                            <NavLink to={item.path} activeClassName="active">
+                                {item.name}
                             </NavLink>
                         </li>
                     ))}

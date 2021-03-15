@@ -7,7 +7,7 @@ import { CREATE_POST_REQUEST } from "store/modules/post";
 import CardWrap from "components/CardBox";
 
 const CreatePost = props => {
-    const roomId = props.match.params.id;
+    const roomId = props?.match.params.id;
     const history = useHistory();
     const dispatch = useDispatch();
     const { roomDetail } = useSelector(state => state.room);

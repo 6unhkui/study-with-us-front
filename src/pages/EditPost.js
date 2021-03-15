@@ -5,7 +5,7 @@ import { LOAD_POST_DETAIL_REQUEST, UPDATE_POST_REQUEST } from "../store/modules/
 import CardWrap from "../components/CardBox";
 
 const EditPost = props => {
-    const postId = props.match.params.id;
+    const postId = props?.match.params.id;
     const dispatch = useDispatch();
     const { postDetail, isCreatingPost } = useSelector(state => state.post);
     const [initialValue, setInitialValue] = useState({});
@@ -16,7 +16,7 @@ const EditPost = props => {
             type: LOAD_POST_DETAIL_REQUEST,
             data: postId
         });
-    }, [postId]);
+    }, [dispatch, postId]);
 
     useEffect(() => {
         setInitialValue({
@@ -62,14 +62,12 @@ const EditPost = props => {
                         return acc;
                     }, new FormData());
                 }
-            } else {
-                // 첨부파일이 존재하지 않을 경우
-                if (fileList.length > 0) {
-                    data.files = fileList.reduce((acc, file) => {
-                        acc.append("files", file);
-                        return acc;
-                    }, new FormData());
-                }
+            } else if (fileList.length > 0) {
+                // 이미 등로한 첨부파일이 존재하지 않고, 새로 등록한 첨부 파일이 존재할 경우
+                data.files = fileList.reduce((acc, file) => {
+                    acc.append("files", file);
+                    return acc;
+                }, new FormData());
             }
 
             dispatch({
@@ -82,7 +80,7 @@ const EditPost = props => {
                 }
             });
         },
-        [dispatch, initialValue.fileList, postDetail.fileGroupId, postId, props.history]
+        [dispatch, initialValue.fileList, postDetail.fileGroupId, postId, props?.history]
     );
 
     return (

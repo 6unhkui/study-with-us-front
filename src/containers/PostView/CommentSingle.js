@@ -25,7 +25,7 @@ const CommentSingle = ({ postId, commentId, writer, content, createdDate, seq, c
     const handleDeleteComment = useCallback(() => {
         if (children) {
             message.error("답변 댓글이 존재할 경우 삭제할 수 없습니다.");
-            return false;
+            return;
         }
 
         dispatch({
@@ -83,16 +83,26 @@ const CommentSingle = ({ postId, commentId, writer, content, createdDate, seq, c
     }, [showReplyInput]);
 
     const editInput = (
-        <CommentEditor value={editValue} onChange={handleEditChange} onSubmit={handleEditSubmit} submitText={"수정"} />
+        <CommentEditor value={editValue} onChange={handleEditChange} onSubmit={handleEditSubmit} submitText="수정" />
     );
 
     return (
         <Comment
             key={commentId}
             actions={[
-                <span onClick={onReplyClick}>댓글 달기</span>,
-                hasEditPermission && <span onClick={onEditClick}>수정</span>,
-                hasEditPermission && <span onClick={handleDeleteComment}>삭제</span>
+                <span onClick={onReplyClick} aria-hidden>
+                    댓글 달기
+                </span>,
+                hasEditPermission && (
+                    <span onClick={onEditClick} aria-hidden>
+                        수정
+                    </span>
+                ),
+                hasEditPermission && (
+                    <span onClick={handleDeleteComment} aria-hidden>
+                        삭제
+                    </span>
+                )
             ]}
             author={writer.name}
             avatar={<Avatar user={{ name: writer.name, profileImg: writer.profileImg }} style={{ marginRight: "10px" }} />}

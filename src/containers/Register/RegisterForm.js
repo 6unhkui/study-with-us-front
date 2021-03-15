@@ -35,7 +35,7 @@ export default function RegisterForm(props) {
                     }
                 ]);
 
-                return false;
+                return;
             }
 
             const data = {
@@ -62,17 +62,6 @@ export default function RegisterForm(props) {
         setDuplicateCheckCompleted(false);
         const email = form.getFieldValue("email") ? form.getFieldValue("email").trim() : "";
 
-        // 이메일 필드에 데이터가 존재하고, 에러가 발생하지 않았다면
-        if (!duplicateCheckCompleted && email.length > 0 && form.getFieldError("email").length === 0) {
-            dispatch({
-                type: CHECK_DUPLICATED_ACCOUNT_REQUEST,
-                data: email,
-                meta: {
-                    callbackAction: callback
-                }
-            });
-        }
-
         function callback(result) {
             console.log(result);
             if (!result) {
@@ -85,6 +74,17 @@ export default function RegisterForm(props) {
                     }
                 ]);
             }
+        }
+
+        // 이메일 필드에 데이터가 존재하고, 에러가 발생하지 않았다면
+        if (!duplicateCheckCompleted && email.length > 0 && form.getFieldError("email").length === 0) {
+            dispatch({
+                type: CHECK_DUPLICATED_ACCOUNT_REQUEST,
+                data: email,
+                meta: {
+                    callbackAction: callback
+                }
+            });
         }
     }, [dispatch, duplicateCheckCompleted, form, t]);
 
@@ -175,7 +175,8 @@ export default function RegisterForm(props) {
                     valuePropName="checked"
                     rules={[
                         {
-                            validator: (_, value) => (value ? Promise.resolve() : Promise.reject("Should accept agreement"))
+                            validator: (_, value) =>
+                                value ? Promise.resolve() : Promise.reject(new Error("Should accept agreement"))
                         }
                     ]}
                 >

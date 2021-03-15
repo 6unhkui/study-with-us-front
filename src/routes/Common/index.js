@@ -1,33 +1,23 @@
 import React from "react";
 import { Route } from "react-router-dom";
-
 import Auth from "hoc/auth";
-
 import NotFound from "pages/NotFound";
-
 import Main from "pages/Main";
 import LoginPage from "pages/Login";
 import OAuth2RedirectHandler from "pages/OAuth2RedirectHandler";
 import Register from "pages/Register";
 import ForgotPassword from "pages/ForgotPassword";
-
 import MyAccount from "pages/MyAccount";
-
 import MyRooms from "pages/MyRooms";
 import CreateStudyRoom from "pages/CreateRoom";
-
 import RoomDetail from "pages/RoomDetail";
 import CreatePost from "pages/CreatePost";
 import Chatting from "pages/Chatting";
 import RoomSetting from "pages/RoomSetting";
-
 import PostView from "pages/PostView";
 import EditPost from "pages/EditPost";
-
 import NewsFeed from "pages/NewsFeed";
-
 import SearchRoom from "pages/SearchRoom";
-import RoomsByCategory from "pages/RoomsByCategory";
 
 export default [
     <Route path="/" exact component={Auth(Main, null)} />,
@@ -53,7 +43,6 @@ export default [
     <Route path="/feed" component={Auth(NewsFeed, true)} />,
 
     <Route path="/search" exact component={Auth(SearchRoom, null)} />,
-    <Route path="/search/category/:id" component={Auth(RoomsByCategory, null)} />,
 
     <Route component={Auth(NotFound)} />
 ];

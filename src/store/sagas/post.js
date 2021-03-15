@@ -31,14 +31,14 @@ import {
     UPDATE_COMMENT_SUCCESS,
     UPDATE_COMMENT_FAILURE
 } from "store/modules/post";
-import { http } from "utils/HttpHandler";
+import { http, makeParameter } from "utils/HttpHandler";
 
 function loadNewsFeedAPI(pagination, keyword) {
-    return http.get(`/api/v1/posts/new?${makeParamForPosts(pagination, keyword)}`);
+    return http.get(`/api/v1/posts/new?${makeParameter({ ...pagination, keyword })}`);
 }
 
 function loadPostsAPI(roomId, pagination, keyword) {
-    return http.get(`/api/v1/room/${roomId}/posts?${makeParamForPosts(pagination, keyword)}`);
+    return http.get(`/api/v1/room/${roomId}/posts?${makeParameter({ ...pagination, keyword })}`);
 }
 
 function loadPostDetailAPI(postId) {
@@ -100,7 +100,7 @@ function* loadNewsFeed(action) {
             last
         });
 
-        action.meta && action.meta.callbackAction(number + 1);
+        if (action.meta) action.meta.callbackAction(number + 1);
     } catch (e) {
         console.error(e);
         yield put({
@@ -125,11 +125,11 @@ function* loadPosts(action) {
         yield put({
             type: LOAD_POSTS_SUCCESS,
             data: content,
-            first: first,
-            last: last
+            first,
+            last
         });
 
-        action.meta && action.meta.callbackAction(number + 1);
+        if (action.meta) action.meta.callbackAction(number + 1);
     } catch (e) {
         console.error(e);
         yield put({
@@ -368,11 +368,3 @@ export default function* postSaga() {
         fork(watchDeleteComment)
     ]);
 }
-
-const makeParamForPosts = (pagination, keyword) => {
-    let param = Object.entries(pagination)
-        .map(e => e.join("="))
-        .join("&");
-    if (keyword) param += `&keyword=${keyword}`;
-    return param;
-};

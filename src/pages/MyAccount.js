@@ -4,20 +4,18 @@ import { Card } from "antd";
 import SubMenu from "containers/MyAccount/SubMenu";
 import { MyPageRouter } from "routes";
 
-const MyAccountPage = ({ match }) => {
-    return (
-        <div className="bg-gray">
-            <div className="container content-wrap">
-                <Card>
-                    <SubMenu />
-                </Card>
-                <Card>
-                    <ContainerWrap>{MyPageRouter(match.path)}</ContainerWrap>
-                </Card>
-            </div>
+const MyAccountPage = ({ match }) => (
+    <div className="bg-gray">
+        <div className="container content-wrap">
+            <Card>
+                <SubMenu />
+            </Card>
+            <Card>
+                <ContainerWrap>{MyPageRouter(match.path)}</ContainerWrap>
+            </Card>
         </div>
-    );
-};
+    </div>
+);
 
 export default MyAccountPage;
 

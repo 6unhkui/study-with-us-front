@@ -39,7 +39,7 @@ class UploadAdapter {
                     "Content-type": "multipart/form-data;charset=utf-8"
                 })
                 .then(({ data: { data } }) => ({ default: loadFile(data.saveName, "editor") }))
-                .catch(() => Promise.reject("Upload failed"));
+                .catch(() => Promise.reject(new Error("Upload failed")));
         });
     }
 
@@ -48,23 +48,21 @@ class UploadAdapter {
     }
 }
 
-const Editor = ({ value = "", onChange }) => {
-    return (
-        <EditorWrap>
-            <CKEditor
-                editor={ClassicEditor}
-                data={value}
-                onReady={editor => {
-                    editor.plugins.get("FileRepository").createUploadAdapter = loader => new UploadAdapter(loader);
-                }}
-                onChange={(event, editor) => {
-                    const data = editor.getData();
-                    onChange(data);
-                }}
-            />
-        </EditorWrap>
-    );
-};
+const Editor = ({ value = "", onChange }) => (
+    <EditorWrap>
+        <CKEditor
+            editor={ClassicEditor}
+            data={value}
+            onReady={editor => {
+                editor.plugins.get("FileRepository").createUploadAdapter = loader => new UploadAdapter(loader);
+            }}
+            onChange={(event, editor) => {
+                const data = editor.getData();
+                onChange(data);
+            }}
+        />
+    </EditorWrap>
+);
 
 export default Editor;
 

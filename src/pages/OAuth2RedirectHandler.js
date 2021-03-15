@@ -30,19 +30,18 @@ const OAuth2RedirectHandler = props => {
                 }}
             />
         );
-    } else {
-        return (
-            <Redirect
-                to={{
-                    pathname: "/login",
-                    state: {
-                        from: props.location,
-                        error: error ? error : ""
-                    }
-                }}
-            />
-        );
     }
+    return (
+        <Redirect
+            to={{
+                pathname: "/login",
+                state: {
+                    from: props?.location,
+                    error: error || ""
+                }
+            }}
+        />
+    );
 };
 
 export default withRouter(OAuth2RedirectHandler);

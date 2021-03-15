@@ -16,8 +16,8 @@ const useForm = (callback, validate) => {
     // 사용자의 input 값을 가져와 values에 저장
     const handleChange = event => {
         event.persist();
-        setValues(values => ({
-            ...values,
+        setValues(state => ({
+            ...state,
             [event.target.name]: event.target.value
         }));
     };

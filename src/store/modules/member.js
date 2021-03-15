@@ -46,8 +46,8 @@ export const CHANGE_MANAGER_REQUEST = "CHANGE_MANAGER_REQUEST";
 export const CHANGE_MANAGER_SUCCESS = "CHANGE_MANAGER_SUCCESS";
 export const CHANGE_MANAGER_FAILURE = "CHANGE_MANAGER_FAILURE";
 
-const member = (state = initialState, action) => {
-    return produce(state, draft => {
+const member = (state = initialState, action) =>
+    produce(state, draft => {
         switch (action.type) {
             // 멤버 리스트
             case LOAD_MEMBERS_REQUEST: {
@@ -95,7 +95,7 @@ const member = (state = initialState, action) => {
             }
             case DELETE_MEMBER_SUCCESS: {
                 draft.isDeletingMember = false;
-                const findIndex = draft.members.findIndex(member => member.memberId === action.memberId);
+                const findIndex = draft.members.findIndex(mem => mem.memberId === action.memberId);
                 draft.members.splice(findIndex, 1);
                 break;
             }
@@ -157,6 +157,5 @@ const member = (state = initialState, action) => {
             }
         }
     });
-};
 
 export default member;

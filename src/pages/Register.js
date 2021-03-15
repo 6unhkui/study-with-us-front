@@ -11,7 +11,7 @@ export default function RegisterPage() {
     const [user, setUser] = useState({ name: "" });
 
     return (
-        <CardWrap title={t("auth.createAccount")} size={"small"}>
+        <CardWrap title={t("auth.createAccount")} size="small">
             {isSuccess ? <Success user={user} /> : <RegisterForm setIsSuccess={setIsSuccess} setUser={setUser} />}
         </CardWrap>
     );

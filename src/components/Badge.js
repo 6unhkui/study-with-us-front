@@ -9,6 +9,10 @@ Badge.propTypes = {
     type: PropTypes.string
 };
 
+Badge.defaultProps = {
+    type: "primary"
+};
+
 export default Badge;
 
 const BadgeWrap = styled.span`

@@ -2,29 +2,27 @@ import React from "react";
 import breakpoint from "styled-components-breakpoint";
 import { Carousel } from "antd";
 import Banner1 from "assets/image/banner-1.png";
-import Banner1_700w from "assets/image/banner-1-700w.png";
+import Banner1width700w from "assets/image/banner-1-700w.png";
 import Banner2 from "assets/image/banner-2.png";
-import Banner2_700w from "assets/image/banner-2-700w.png";
+import Banner2width700w from "assets/image/banner-2-700w.png";
 import styled from "styled-components";
 
 const banners = [
-    { images: [Banner1, Banner1_700w], backgroundColor: "#fffcf2" },
-    { images: [Banner2, Banner2_700w], backgroundColor: "#fffaf5" }
+    { images: [Banner1, Banner1width700w], backgroundColor: "#fffcf2" },
+    { images: [Banner2, Banner2width700w], backgroundColor: "#fffaf5" }
 ];
 
-const BannerSlide = () => {
-    return (
-        <CarouselWrap>
-            <Carousel autoplay>
-                {banners.map((banner, i) => (
-                    <BannerImage background={banner.backgroundColor} key={i} images={banner.images}>
-                        <img alt="banner" src={banner.images[0]} />
-                    </BannerImage>
-                ))}
-            </Carousel>
-        </CarouselWrap>
-    );
-};
+const BannerSlide = () => (
+    <CarouselWrap>
+        <Carousel autoplay>
+            {banners.map((banner, i) => (
+                <BannerImage background={banner.backgroundColor} key={i} images={banner.images}>
+                    <img alt="banner" src={banner.images[0]} />
+                </BannerImage>
+            ))}
+        </Carousel>
+    </CarouselWrap>
+);
 
 export default BannerSlide;
 

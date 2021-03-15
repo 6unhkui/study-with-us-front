@@ -33,8 +33,8 @@ const Sidebar = props => {
                 <LoginOutlined />
                 스터디방 가입하기
             </Button>
-            <Modal title={name} visible={joinModalVisible} onOk={props.join} onCancel={setJoinModalVisible.bind(null, false)}>
-                {<p>{name} 스터디방에 가입 하시겠습니까?</p>}
+            <Modal title={name} visible={joinModalVisible} onOk={props?.join} onCancel={setJoinModalVisible.bind(null, false)}>
+                <p>{name} 스터디방에 가입 하시겠습니까?</p>
             </Modal>
         </>
     );
@@ -57,14 +57,14 @@ const Sidebar = props => {
 
                     <SectionWrap>
                         <SectionTitle>Manager</SectionTitle>
-                        <Avatar user={manager} showName={true} />
+                        <Avatar user={manager} showName />
                     </SectionWrap>
 
                     <SectionWrap>
                         <SectionTitle>Member</SectionTitle>
                         <span>
                             <UserOutlined style={{ marginRight: "8px" }} />
-                            {joinCount + (unlimited ? "" : " / " + maxCount) + " member" + (joinCount > 1 ? "s" : "")}
+                            {`${joinCount + (unlimited ? "" : ` / ${maxCount}`)} member${joinCount > 1 ? "s" : ""}`}
                         </span>
                     </SectionWrap>
 

@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 import { bytesToSize } from "utils/File";
 import CardWrap from "components/CardBox";
 import Comments from "containers/PostView/Comments";
-import loadFile from "utils/loadFile";
+import loadFile from "utils/LoadFile";
 
 import { Divider, Dropdown, Menu, Typography, List, Modal } from "antd";
 import { EllipsisOutlined, DeleteOutlined, EditOutlined, PaperClipOutlined } from "@ant-design/icons";
@@ -17,7 +17,7 @@ import { EllipsisOutlined, DeleteOutlined, EditOutlined, PaperClipOutlined } fro
 const { Title } = Typography;
 
 const PostView = props => {
-    const postId = props.match.params.id;
+    const postId = props?.match.params.id;
     const history = useHistory();
     const dispatch = useDispatch();
     const {
@@ -60,7 +60,7 @@ const PostView = props => {
                 <EditOutlined /> 수정
             </Menu.Item>
             <Menu.Item key="1">
-                <span onClick={setDeleteModalVisible.bind(null, true)}>
+                <span onClick={setDeleteModalVisible.bind(null, true)} aria-hidden>
                     <DeleteOutlined /> 삭제
                 </span>
                 <Modal
@@ -69,7 +69,7 @@ const PostView = props => {
                     onOk={handleDeletePost}
                     onCancel={setDeleteModalVisible.bind(null, false)}
                 >
-                    {<p>{postDetail.title} 포스트를 정말 삭제 하시겠습니까?</p>}
+                    <p>{postDetail.title} 포스트를 정말 삭제 하시겠습니까?</p>
                 </Modal>
             </Menu.Item>
         </Menu>
@@ -87,7 +87,7 @@ const PostView = props => {
                 </MoreBtn>
             )}
 
-            {writer && <Avatar user={postDetail.writer} showName={true} subText={postDetail.createdDate} />}
+            {writer && <Avatar user={postDetail.writer} showName subText={postDetail.createdDate} />}
 
             <Divider />
 
@@ -138,7 +138,23 @@ const ContentWrap = styled.div`
     img {
         display: block;
         max-width: 100%;
-        margin: 20px auto;
+        margin: 0 auto;
+    }
+
+    figure.image {
+        text-align: center;
+
+        figcaption {
+            font-size: 0.8rem;
+            color: gray;
+        }
+    }
+
+    blockquote {
+        border-left: 4px solid lightgray;
+        padding-left: 14px;
+        font-style: italic;
+        color: gray;
     }
 
     p {
@@ -162,7 +178,7 @@ const FileName = styled.span`
     cursor: pointer;
     position: relative;
 
-    &: after {
+    &::after {
         content: "";
         width: 100%;
         position: absolute;

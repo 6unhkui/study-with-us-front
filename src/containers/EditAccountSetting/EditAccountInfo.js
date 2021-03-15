@@ -45,7 +45,7 @@ const EditAccountInfo = ({ me }) => {
             validateMessages={validateMessages}
         >
             <Form.Item label={t("auth.email")} name="email">
-                <Input placeholder={t("auth.email")} disabled={true} />
+                <Input placeholder={t("auth.email")} disabled />
             </Form.Item>
 
             <Form.Item

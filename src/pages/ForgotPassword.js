@@ -11,7 +11,7 @@ export default function ForgotPasswordPage() {
     };
 
     return (
-        <CardWrap title={t("auth.resetPassword")} size={"small"}>
+        <CardWrap title={t("auth.resetPassword")} size="small">
             <div className="sub-text">{t("auth.enterEmailToResetPassword")}</div>
             <Form
                 name="normal_login"

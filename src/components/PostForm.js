@@ -12,13 +12,13 @@ const PostForm = ({ initialValue, onSubmit, submitText, submitLoading }) => {
     const uploadConfig = {
         fileList,
         beforeUpload: file => {
-            setFileList(fileList => [...fileList, file]);
+            setFileList(state => [...state, file]);
             return false;
         },
         onRemove: file => {
-            setFileList(fileList => {
-                const delFileIndex = fileList.indexOf(file);
-                return fileList.filter((file, i) => i !== delFileIndex);
+            setFileList(state => {
+                const delFileIndex = state.indexOf(file);
+                return state.filter((_, i) => i !== delFileIndex);
             });
         }
     };
@@ -73,10 +73,10 @@ const PostForm = ({ initialValue, onSubmit, submitText, submitLoading }) => {
 export default PostForm;
 
 PostForm.propTypes = {
-    formData: PropTypes.shape({
+    initialValue: PropTypes.shape({
         title: PropTypes.string,
         content: PropTypes.string,
-        fileList: PropTypes.array
+        fileList: PropTypes.arrayOf
     }),
     submitText: PropTypes.string,
     onSubmit: PropTypes.func,
@@ -84,7 +84,7 @@ PostForm.propTypes = {
 };
 
 PostForm.defaultProps = {
-    formData: {
+    initialValue: {
         title: "",
         content: "",
         fileList: []

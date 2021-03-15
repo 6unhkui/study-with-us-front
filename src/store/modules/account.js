@@ -73,8 +73,8 @@ export const DELETE_ACCOUNT_REQUEST = "DELETE_ACCOUNT_REQUEST";
 export const DELETE_ACCOUNT_SUCCESS = "DELETE_ACCOUNT_SUCCESS";
 export const DELETE_ACCOUNT_FAILURE = "DELETE_ACCOUNT_FAILURE";
 
-const account = (state = initialState, action) => {
-    return produce(state, draft => {
+const account = (state = initialState, action) =>
+    produce(state, draft => {
         switch (action.type) {
             // 회원 가입 //////////////////////////////
             case REGISTER_REQUEST: {
@@ -234,6 +234,5 @@ const account = (state = initialState, action) => {
             }
         }
     });
-};
 
 export default account;

@@ -4,13 +4,14 @@ import { LOAD_NEWS_FEED_REQUEST } from "store/modules/post";
 import PostCard from "components/PostCard";
 import Pagination from "utils/Pagination";
 import { List, Typography } from "antd";
+import infiniteScroll from "utils/InfiniteScroll";
 
 const { Title } = Typography;
 
 const initPagination = new Pagination();
 Object.freeze(initPagination);
 
-const NewsFeed = props => {
+const NewsFeed = () => {
     const dispatch = useDispatch();
     const { newsFeed, loadingNewsFeed, hasMoreNewsFeed } = useSelector(state => state.post);
     const [pagination, setPagination] = useState({ ...initPagination });
@@ -22,33 +23,32 @@ const NewsFeed = props => {
         });
     }, [dispatch]);
 
-    useEffect(() => {
-        function onScroll() {
-            if (window.pageYOffset + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
-                if (hasMoreNewsFeed && !loadingNewsFeed) {
-                    // 리스트를 요청한다.
-                    dispatch({
-                        type: LOAD_NEWS_FEED_REQUEST,
-                        pagination: Object.assign(pagination, { page: ++pagination.page }),
-                        meta: {
-                            callbackAction: changePageNumber
-                        }
-                    });
+    function changePageNumber(pageNumber) {
+        setPagination(state => ({
+            ...state,
+            page: pageNumber
+        }));
+    }
+
+    const onScroll = infiniteScroll.bind(null, () => {
+        if (hasMoreNewsFeed && !loadingNewsFeed) {
+            // 리스트를 요청한다.
+            dispatch({
+                type: LOAD_NEWS_FEED_REQUEST,
+                pagination: Object.assign(pagination, { page: pagination.page + 1 }),
+                meta: {
+                    callbackAction: changePageNumber
                 }
-            }
+            });
         }
+    });
+
+    useEffect(() => {
         window.addEventListener("scroll", onScroll);
         return () => {
             window.removeEventListener("scroll", onScroll);
         };
-    }, [dispatch, hasMoreNewsFeed, loadingNewsFeed, pagination]);
-
-    function changePageNumber(pageNumber) {
-        setPagination(pagination => ({
-            ...pagination,
-            page: pageNumber
-        }));
-    }
+    }, [hasMoreNewsFeed, loadingNewsFeed, onScroll]);
 
     return (
         <div className="container content-wrap">
@@ -59,7 +59,7 @@ const NewsFeed = props => {
                 dataSource={newsFeed}
                 renderItem={item => (
                     <List.Item>
-                        <PostCard {...item} showRoomName={true} />
+                        <PostCard {...item} showRoomName />
                     </List.Item>
                 )}
             />

@@ -15,7 +15,7 @@ import useToggle from "hooks/useToggle";
 import CategorySelectLayer from "containers/CategorySelectLayer";
 import { Button, Descriptions, Modal, Input, InputNumber, Switch, message } from "antd";
 import { CameraOutlined } from "@ant-design/icons";
-import loadFile from "utils/loadFile";
+import loadFile from "utils/LoadFile";
 
 const { TextArea } = Input;
 
@@ -41,6 +41,7 @@ const RoomInfo = ({ roomId }) => {
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [changeManagerModalVisible, setChangeManagerModalVisible] = useState(false);
     const [changeCategoryModalVisible, setChangeCategoryModalVisible] = useState(false);
+    const [formValues, setFormValues] = useState({});
     const [modifyMode, toggleModifyMode] = useToggle(() => {
         setFormValues({
             name,
@@ -49,7 +50,6 @@ const RoomInfo = ({ roomId }) => {
             unlimited
         });
     });
-    const [formValues, setFormValues] = useState({});
 
     useEffect(() => {
         dispatch({
@@ -60,7 +60,7 @@ const RoomInfo = ({ roomId }) => {
 
     const handleDeleteRoom = useCallback(() => {
         if (!isManager) {
-            return false;
+            return;
         }
 
         dispatch({
@@ -125,20 +125,23 @@ const RoomInfo = ({ roomId }) => {
         [dispatch, roomId]
     );
 
-    const handleEditFormChange = useCallback((name, value) => {
+    const handleEditFormChange = useCallback((key, value) => {
         setFormValues(values => ({
             ...values,
-            [name]: value
+            [key]: value
         }));
     }, []);
 
     const handleEditFormSubmit = useCallback(() => {
-        for (const value of Object.values(formValues)) {
+        const isError = Object.values(formValues).some(value => {
             if (typeof value === "string" && value.trim().length === 0) {
                 message.error("입력 폼을 모두 채워주세요.");
-                return;
+                return true;
             }
-        }
+            return false;
+        });
+
+        if (isError) return;
 
         dispatch({
             type: EDIT_ROOM_REQUEST,
@@ -224,13 +227,14 @@ const RoomInfo = ({ roomId }) => {
             </Descriptions.Item>
 
             <Descriptions.Item label="썸네일 이미지" span={3}>
-                <ProfileWrap width={"300px"} height={"130px"}>
+                <ProfileWrap width="300px" height="130px">
                     {isManager && (
                         <div
                             className="file-attachment"
                             onClick={() => {
                                 inputRef.current.click();
                             }}
+                            aria-hidden
                         >
                             <CameraOutlined style={{ color: "#fff", fontSize: "1.2rem" }} />
                             <input
@@ -256,7 +260,7 @@ const RoomInfo = ({ roomId }) => {
             </Descriptions.Item>
 
             <Descriptions.Item label="멤버수" span={3}>
-                {joinCount + (unlimited ? "" : " / " + maxCount)}
+                {joinCount + (unlimited ? "" : ` / ${maxCount}`)}
                 {modifyMode && (
                     <MaxMemberCountWrap>
                         <div className="label">인원수 제한</div>

@@ -2,35 +2,32 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import breakpoint from "styled-components-breakpoint";
-
 import Loading from "components/Loading";
 import { Divider, Typography } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 
-export default function LayerPopup({ title, size, setLayerOpen, children, loading }) {
-    return (
-        <LayerWrap>
-            <Layer size={size}>
-                <Title level={3} className="title">
-                    {title}
-                </Title>
-                <span className="close" onClick={setLayerOpen.bind(null, false)}>
-                    <CloseOutlined size={40} />
-                </span>
-                <Divider style={{ margin: "0" }} />
-                <Content>{loading ? <Loading /> : children}</Content>
-            </Layer>
-            <LayerDim onClick={setLayerOpen.bind(null, false)} />
-        </LayerWrap>
-    );
-}
+const LayerPopup = ({ title, size, setLayerOpen, children, loading }) => (
+    <LayerWrap>
+        <Layer size={size}>
+            <Title level={3} className="title">
+                {title}
+            </Title>
+            <span className="close" onClick={setLayerOpen.bind(null, false)} aria-hidden>
+                <CloseOutlined size={40} />
+            </span>
+            <Divider style={{ margin: "0" }} />
+            <Content>{loading ? <Loading /> : children}</Content>
+        </Layer>
+        <LayerDim onClick={setLayerOpen.bind(null, false)} />
+    </LayerWrap>
+);
 
 LayerPopup.propTypes = {
     title: PropTypes.string,
     size: PropTypes.string,
-    setLayerOpen: PropTypes.func.isRequired,
+    setLayerOpen: PropTypes.func,
     children: PropTypes.node,
     loading: PropTypes.bool
 };
@@ -44,6 +41,8 @@ LayerPopup.defaultProps = {
     children: <div>content</div>,
     loading: false
 };
+
+export default LayerPopup;
 
 // Style - s /////////////////////////////
 const LayerWrap = styled.div`

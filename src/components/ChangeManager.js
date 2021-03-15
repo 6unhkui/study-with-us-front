@@ -1,12 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, List, Radio } from "antd";
-
 import LayerPopup from "components/LayerPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { LOAD_MEMBERS_REQUEST } from "store/modules/member";
 import Avatar from "components/Avatar";
 import styled from "styled-components";
-
 import Pagination from "utils/Pagination";
 
 const initPagination = new Pagination();
@@ -29,7 +27,7 @@ const ChangeManager = ({ setLayerOpen, roomId, onSubmit }) => {
     const handleLoadMore = useCallback(() => {
         setPagination({
             ...pagination,
-            page: ++pagination.page
+            page: pagination.page + 1
         });
     }, [pagination]);
 
@@ -67,7 +65,7 @@ const ChangeManager = ({ setLayerOpen, roomId, onSubmit }) => {
                             }}
                             value={item.memberId}
                         >
-                            <Avatar user={{ name: item.name, profileImg: item.profileImg }} showName={true} />
+                            <Avatar user={{ name: item.name, profileImg: item.profileImg }} showName />
                         </Radio>
                     )}
                 />

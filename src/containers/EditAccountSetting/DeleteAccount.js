@@ -23,7 +23,7 @@ const DeleteAccount = props => {
                 }
             });
         }
-    }, [checked, dispatch, props.history]);
+    }, [checked, dispatch]);
 
     return (
         <>

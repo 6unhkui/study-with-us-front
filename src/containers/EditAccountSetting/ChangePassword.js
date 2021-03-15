@@ -96,7 +96,7 @@ const ChangePassword = () => {
                                     return Promise.resolve();
                                 }
 
-                                return Promise.reject(t("validate.confirmPassowrd"));
+                                return Promise.reject(t("validate.confirmPassword"));
                             }
                         })
                     ]}

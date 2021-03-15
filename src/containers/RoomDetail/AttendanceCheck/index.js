@@ -23,7 +23,7 @@ const countdownToTomorrow = () => {
 };
 
 const Index = props => {
-    const roomId = props.match.params.id;
+    const roomId = props?.match.params.id;
     const dispatch = useDispatch();
     const { loadingMembersAttendance, membersAttendance, isRegisteredToday } = useSelector(state => state.attendance);
     const [registerLayerOpen, setRegisterLayerOpen] = useState(false);
@@ -44,7 +44,7 @@ const Index = props => {
                     출석 체크
                 </Title>
                 <Divider type="vertical" />
-                <Countdown date={countdownToTomorrow()} daysInHours={true} />
+                <Countdown date={countdownToTomorrow()} daysInHours />
             </TitleWrap>
 
             {!isRegisteredToday && (
@@ -72,7 +72,7 @@ const Index = props => {
                         <List.Item key={i}>
                             <div className="card-wrap">
                                 <AvatarWrap>
-                                    <Avatar user={{ ...item }} showName={true} />
+                                    <Avatar user={{ ...item }} showName />
                                 </AvatarWrap>
                                 <Divider style={{ margin: 0 }} />
                                 <MemoWrap>

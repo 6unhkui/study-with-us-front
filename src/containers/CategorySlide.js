@@ -35,7 +35,7 @@ const CategorySlide = () => {
 
     return (
         <SlideWrap>
-            <Carousel infinite={true} autoPlay autoPlaySpeed={4000} responsive={responsive}>
+            <Carousel infinite autoPlay autoPlaySpeed={4000} responsive={responsive}>
                 {categories.map(category => (
                     <ItemWrap
                         onClick={() => {
@@ -44,8 +44,6 @@ const CategorySlide = () => {
                                 search: `?categoryId=${category.categoryId}`,
                                 state: { name: category.name }
                             });
-
-                            // history.push(`/search/category/${category.categoryId}`, { name : category.name })
                         }}
                         key={category.categoryId}
                     >

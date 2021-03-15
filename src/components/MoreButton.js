@@ -2,15 +2,13 @@ import React from "react";
 import { Button } from "antd";
 import styled from "styled-components";
 
-const MoreButton = ({ onClick }) => {
-    return (
-        <MoreBtnWrap>
-            <Button ghost type="primary" onClick={onClick}>
-                load more
-            </Button>
-        </MoreBtnWrap>
-    );
-};
+const MoreButton = ({ onClick }) => (
+    <MoreBtnWrap>
+        <Button ghost type="primary" onClick={onClick}>
+            load more
+        </Button>
+    </MoreBtnWrap>
+);
 
 export default MoreButton;
 

@@ -1,17 +1,13 @@
 import React, { useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { ACCESS_TOKEN } from "constants/index";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
-import { withRouter } from "react-router-dom";
-
 import Avatar from "components/Avatar";
-
 import { Menu } from "antd";
-import { CameraOutlined } from "@ant-design/icons";
+import { CameraOutlined, SettingOutlined, LoginOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { UPLOAD_PROFILE_REQUEST, LOG_OUT } from "store/modules/account";
-import { SettingOutlined, LoginOutlined } from "@ant-design/icons";
 
 const SubMenuWrap = props => {
     const { t } = useTranslation();
@@ -45,15 +41,19 @@ const SubMenuWrap = props => {
                 }
             }
         });
-    }, [dispatch, props.history]);
+    }, []);
 
     const items = [
         {
-            component: <Link to={`${props.match.path}/setting`}>{t("mypage.editAccountSettings.title")}</Link>,
+            component: <Link to={`${props?.match.path}/setting`}>{t("mypage.editAccountSettings.title")}</Link>,
             icon: <SettingOutlined />
         },
         {
-            component: <span onClick={handleLogout}>{t("auth.logout")}</span>,
+            component: (
+                <span onClick={handleLogout} aria-hidden>
+                    {t("auth.logout")}
+                </span>
+            ),
             icon: <LoginOutlined />
         }
     ];
@@ -68,6 +68,7 @@ const SubMenuWrap = props => {
                             onClick={() => {
                                 inputRef.current.click();
                             }}
+                            aria-hidden
                         >
                             <CameraOutlined style={{ color: "#fff", fontSize: "1.2rem" }} />
                             <input
@@ -82,7 +83,7 @@ const SubMenuWrap = props => {
                     <Avatar user={{ name, profileImg }} size={100} style={{ fontSize: "2.4rem" }} loading={isUploadingProfile} />
                 </div>
 
-                <h1>{t("mypage.title", { name: name })}</h1>
+                <h1>{t("mypage.title", { name })}</h1>
             </UserWrap>
             <Menu defaultSelectedKeys={["0"]} mode="horizontal" style={{ textAlign: "center", border: "0" }}>
                 {items.map((item, i) => (

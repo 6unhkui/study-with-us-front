@@ -25,7 +25,7 @@ const MyInfo = ({ roomId }) => {
     const handleWithdrawal = useCallback(() => {
         if (isManager) {
             message.error("매니저는 탈퇴할 수 없습니다. 매니저를 위임하거나, 스터디방을 폐쇄해주세요.");
-            return false;
+            return;
         }
 
         dispatch({
@@ -60,7 +60,7 @@ const MyInfo = ({ roomId }) => {
                     onOk={handleWithdrawal}
                     onCancel={setWithdrawalModalVisible.bind(null, false)}
                 >
-                    {<p>{name} 스터디방에 정말 탈퇴하시겠습니까?</p>}
+                    <p>{name} 스터디방에 정말 탈퇴하시겠습니까?</p>
                 </Modal>
             </Descriptions.Item>
         </Descriptions>

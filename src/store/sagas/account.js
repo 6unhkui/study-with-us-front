@@ -56,7 +56,7 @@ function editAccountAPI(data) {
     return http.put("/api/v1/account", data);
 }
 
-function deleteAccountAPI(data) {
+function deleteAccountAPI() {
     return http.delete("/api/v1/account");
 }
 

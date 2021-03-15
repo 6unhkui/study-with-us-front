@@ -15,7 +15,7 @@ export default function Avater({ size, style, showName, subText, user, loading }
                 src={profileImg}
                 style={{
                     border: "1px solid var(--border-gray)",
-                    backgroundColor: !profileImg && name && stringToColor(name),
+                    backgroundColor: !profileImg && name ? stringToColor(name) : "initial",
                     ...style
                 }}
                 alt="referrerPolicy='no-referrer'"
@@ -35,7 +35,7 @@ export default function Avater({ size, style, showName, subText, user, loading }
 
 Avatar.propTypes = {
     size: PropTypes.number,
-    style: PropTypes.object,
+    style: PropTypes.shape({}),
     showName: PropTypes.bool,
     user: PropTypes.shape({
         name: PropTypes.string.isRequired,

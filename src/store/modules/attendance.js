@@ -25,8 +25,8 @@ export const REGISTER_ATTENDANCE_REQUEST = "REGISTER_ATTENDANCE_REQUEST";
 export const REGISTER_ATTENDANCE_SUCCESS = "REGISTER_ATTENDANCE_SUCCESS";
 export const REGISTER_ATTENDANCE_FAILURE = "REGISTER_ATTENDANCE_FAILURE";
 
-const member = (state = initialState, action) => {
-    return produce(state, draft => {
+const member = (state = initialState, action) =>
+    produce(state, draft => {
         switch (action.type) {
             case LOAD_MEMBERS_STATISTIC_REQUEST: {
                 draft.loadingMembersStatistics = true;
@@ -83,6 +83,5 @@ const member = (state = initialState, action) => {
             }
         }
     });
-};
 
 export default member;

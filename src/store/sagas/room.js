@@ -37,7 +37,7 @@ import {
     LOAD_ROOMS_SUCCESS,
     LOAD_ROOMS_FAILURE
 } from "store/modules/room";
-import { http } from "utils/HttpHandler";
+import { http, makeParameter } from "utils/HttpHandler";
 
 function uploadCoverImageAPI(file, fileGroupId) {
     return http.post(`/api/v1/files/cover${fileGroupId ? `?fileGroupId=${fileGroupId}` : ""}`, file, {
@@ -51,11 +51,11 @@ function createRoomAPI(data) {
 
 function loadRoomsAPI(pagination, orderType, categoryIds, keyword) {
     console.log(categoryIds);
-    return http.get(`/api/v1/rooms?${makeParamForRooms(pagination, orderType, categoryIds, keyword)}`);
+    return http.get(`/api/v1/rooms?${makeParameter({ ...pagination, orderType, categoryIds, keyword })}`);
 }
 
 function loadUserRoomsAPI(pagination, orderType, categoryIds, keyword) {
-    return http.get(`/api/v1/user/rooms?${makeParamForRooms(pagination, orderType, categoryIds, keyword)}`);
+    return http.get(`/api/v1/user/rooms?${makeParameter({ ...pagination, orderType, categoryIds, keyword })}`);
 }
 
 function loadRoomDetailAPI(roomId) {
@@ -92,7 +92,7 @@ function* createRoom(action) {
             room.fileGroupId = result.data.data.fileGroupId;
         }
 
-        let result = yield call(createRoomAPI, room);
+        const result = yield call(createRoomAPI, room);
         yield put({
             type: CREATE_ROOM_SUCCESS,
             data: result.data.data
@@ -127,7 +127,7 @@ function* loadMyRooms(action) {
             last
         });
 
-        action.meta && action.meta.callbackAction(number + 1);
+        if (action.meta) action.meta.callbackAction(number + 1);
     } catch (e) {
         console.error(e);
         yield put({
@@ -144,7 +144,7 @@ function* watchLoadMyRooms() {
 // 가입 인원이 많은 스터디방 리스트 ///////////////////////////////////
 function* loadPopularRooms(action) {
     try {
-        let result = yield call(loadRoomsAPI, action.pagination, action.orderType, null);
+        const result = yield call(loadRoomsAPI, action.pagination, action.orderType, null);
         yield put({
             type: LOAD_POPULAR_ROOMS_SUCCESS,
             data: result.data.data.content
@@ -165,7 +165,7 @@ function* watchLoadPopularRooms() {
 // 최근 생성된 스터디방 리스트 ///////////////////////////////////
 function* loadRecentlyCreatedRooms(action) {
     try {
-        let result = yield call(loadRoomsAPI, action.pagination, action.orderType, null);
+        const result = yield call(loadRoomsAPI, action.pagination, action.orderType, null);
         yield put({
             type: LOAD_RECENTLY_CREATED_ROOMS_SUCCESS,
             data: result.data.data.content
@@ -198,7 +198,7 @@ function* loadRoomsByCategory(action) {
             last
         });
 
-        action.meta && action.meta.callbackAction(number + 1);
+        if (action.meta) action.meta.callbackAction(number + 1);
     } catch (e) {
         console.error(e);
         yield put({
@@ -227,7 +227,7 @@ function* loadRooms(action) {
             last
         });
 
-        action.meta && action.meta.callbackAction(number + 1);
+        if (action.meta) action.meta.callbackAction(number + 1);
     } catch (e) {
         console.error(e);
         yield put({
@@ -244,7 +244,7 @@ function* watchLoadRooms() {
 // 스터디방 뷰
 function* loadRoomDetail(action) {
     try {
-        let result = yield call(loadRoomDetailAPI, action.data);
+        const result = yield call(loadRoomDetailAPI, action.data);
         console.log(result);
         yield put({
             type: LOAD_ROOM_DETAIL_SUCCESS,
@@ -404,13 +404,3 @@ export default function* roomSaga() {
         fork(watchLoadRooms)
     ]);
 }
-
-const makeParamForRooms = (pagination, orderType, categoryIds, keyword) => {
-    let param = Object.entries(pagination)
-        .map(e => e.join("="))
-        .join("&");
-    if (orderType) param += `&orderType=${orderType}`;
-    if (categoryIds && categoryIds.length > 0) param += `&categoryIds=${categoryIds.join(",")}`;
-    if (keyword) param += `&keyword=${keyword}`;
-    return param;
-};

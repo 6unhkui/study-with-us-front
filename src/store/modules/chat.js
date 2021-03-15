@@ -18,8 +18,8 @@ export const LOAD_CURRENT_CHAT_MEMBERS_FAILURE = "LOAD_CURRENT_CHAT_MEMBERS_FAIL
 
 export const ADD_CHAT_MESSAGE = "ADD_CHAT_MESSAGE";
 
-const member = (state = initialState, action) => {
-    return produce(state, draft => {
+const member = (state = initialState, action) =>
+    produce(state, draft => {
         switch (action.type) {
             case LOAD_CURRENT_CHAT_MEMBERS_REQUEST: {
                 draft.loadingChatMembers = true;
@@ -56,6 +56,5 @@ const member = (state = initialState, action) => {
             }
         }
     });
-};
 
 export default member;

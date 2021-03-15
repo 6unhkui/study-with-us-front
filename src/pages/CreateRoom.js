@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { withRouter } from "react-router-dom";
-import CardWrap from "../components/CardBox";
 import { Button, Form, Input, InputNumber, Radio, Switch } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { LOAD_CATEGORIES_REQUEST } from "../store/modules/category";
-import { CREATE_ROOM_REQUEST } from "../store/modules/room";
 import styled from "styled-components";
+import { LOAD_CATEGORIES_REQUEST } from "store/modules/category";
+import { CREATE_ROOM_REQUEST } from "store/modules/room";
+import CardWrap from "../components/CardBox";
 
 const CreateStudyRoomPage = props => {
     const { t } = useTranslation();
@@ -60,13 +60,13 @@ const CreateStudyRoomPage = props => {
                 }
             });
         },
-        [dispatch, file, maxCount, maxCountLimit, props.history]
+        [dispatch, file, maxCount, maxCountLimit]
     );
 
-    function getBase64(file) {
+    function getBase64(imageFile) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(imageFile);
             reader.onload = () => resolve(reader.result);
             reader.onerror = error => reject(error);
         });
@@ -74,16 +74,16 @@ const CreateStudyRoomPage = props => {
 
     const handleCoverImageOnChange = async e => {
         e.preventDefault();
-        const file = e.target.files[0];
-        if (file) {
-            setFile(file);
-            const preview = await getBase64(file);
+        const imageFile = e.target.files[0];
+        if (imageFile) {
+            setFile(imageFile);
+            const preview = await getBase64(imageFile);
             setPreviewImage(preview);
         }
     };
 
     return (
-        <CardWrap title={"스터디방 만들기"} size={"small"}>
+        <CardWrap title="스터디방 만들기" size="small">
             <Form
                 form={form}
                 name="create"
@@ -152,6 +152,7 @@ const CreateStudyRoomPage = props => {
                             onClick={() => {
                                 inputRef.current.click();
                             }}
+                            aria-hidden
                         >
                             {previewImage ? <img src={previewImage} style={{ width: "100%" }} alt="preview" /> : <PlusOutlined />}
                             <input

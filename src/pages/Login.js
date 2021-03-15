@@ -10,7 +10,7 @@ const Login = props => {
     const { t } = useTranslation();
 
     return (
-        <CardWrap title={t("auth.login")} size={"small"}>
+        <CardWrap title={t("auth.login")} size="small">
             <LoginForm {...props} />
 
             <RegisterWrap>

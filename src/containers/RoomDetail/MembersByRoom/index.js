@@ -5,6 +5,7 @@ import { LOAD_MEMBERS_REQUEST } from "store/modules/member";
 import MemberRow from "components/MemberRow";
 import Pagination from "utils/Pagination";
 import { Input, List } from "antd";
+import infiniteScroll from "utils/InfiniteScroll";
 
 const { Search } = Input;
 
@@ -12,7 +13,7 @@ const initPagination = new Pagination();
 Object.freeze(initPagination);
 
 const Index = props => {
-    const roomId = props.match.params.id;
+    const roomId = props?.match.params.id;
     const dispatch = useDispatch();
     const { members, loadingMembers, hasMoreMembers } = useSelector(state => state.member);
     const [keyword, setKeyword] = useState("");
@@ -26,28 +27,34 @@ const Index = props => {
         });
     }, [dispatch, roomId]);
 
-    useEffect(() => {
-        function onScroll() {
-            if (window.pageYOffset + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
-                if (hasMoreMembers && !loadingMembers) {
-                    // 리스트를 요청한다.
-                    dispatch({
-                        type: LOAD_MEMBERS_REQUEST,
-                        roomId,
-                        pagination: Object.assign(pagination, { page: ++pagination.page }),
-                        keyword,
-                        meta: {
-                            callbackAction: changePageNumber
-                        }
-                    });
+    function changePageNumber(pageNumber) {
+        setPagination(state => ({
+            ...state,
+            page: pageNumber
+        }));
+    }
+
+    const onScroll = infiniteScroll.bind(null, () => {
+        if (hasMoreMembers && !loadingMembers) {
+            // 리스트를 요청한다.
+            dispatch({
+                type: LOAD_MEMBERS_REQUEST,
+                roomId,
+                pagination: Object.assign(pagination, { page: pagination.page + 1 }),
+                keyword,
+                meta: {
+                    callbackAction: changePageNumber
                 }
-            }
+            });
         }
+    });
+
+    useEffect(() => {
         window.addEventListener("scroll", onScroll);
         return () => {
             window.removeEventListener("scroll", onScroll);
         };
-    }, [dispatch, hasMoreMembers, keyword, loadingMembers, pagination, roomId]);
+    }, [hasMoreMembers, loadingMembers, onScroll]);
 
     const handleChangeKeyword = useCallback(e => {
         setKeyword(e.target.value);
@@ -64,13 +71,6 @@ const Index = props => {
         // Pagination state를 초기화한다.
         setPagination({ ...initPagination });
     }, [dispatch, keyword, roomId]);
-
-    function changePageNumber(pageNumber) {
-        setPagination(pagination => ({
-            ...pagination,
-            page: pageNumber
-        }));
-    }
 
     return (
         <ContentWrap>

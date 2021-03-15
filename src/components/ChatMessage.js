@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Avater from "./Avatar";
 import { timeForToday } from "utils/Date";
+import Avater from "./Avatar";
 
 const ChatMessage = ({ sender, message, isSelfMessage, timestamp, type }) => {
     if (type !== "TALK") {
@@ -17,20 +17,19 @@ const ChatMessage = ({ sender, message, isSelfMessage, timestamp, type }) => {
                 </MyBubbleWrap>
             </ChatMessageWrap>
         );
-    } else {
-        return (
-            <ChatMessageWrap>
-                <Avater user={sender} showName={false} />
-                <BubbleWrap>
-                    <div style={{ flex: "1" }}>
-                        <NameWrap>{sender.name}</NameWrap>
-                        <Bubble>{message}</Bubble>
-                    </div>
-                    <DateWrap>{timeForToday(timestamp)}</DateWrap>
-                </BubbleWrap>
-            </ChatMessageWrap>
-        );
     }
+    return (
+        <ChatMessageWrap>
+            <Avater user={sender} showName={false} />
+            <BubbleWrap>
+                <div style={{ flex: "1" }}>
+                    <NameWrap>{sender.name}</NameWrap>
+                    <Bubble>{message}</Bubble>
+                </div>
+                <DateWrap>{timeForToday(timestamp)}</DateWrap>
+            </BubbleWrap>
+        </ChatMessageWrap>
+    );
 };
 
 export default ChatMessage;

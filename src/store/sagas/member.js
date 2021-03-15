@@ -20,10 +20,10 @@ import {
     CHANGE_MANAGER_FAILURE
 } from "store/modules/member";
 import { DECREMENT_MEMBER_COUNT, DEPOSE_MANAGER } from "store/modules/room";
-import { http } from "utils/HttpHandler";
+import { http, makeParameter } from "utils/HttpHandler";
 
 function loadMembersAPI(roomId, pagination, keyword) {
-    return http.get(`/api/v1/room/${roomId}/members?${makeParamForMembers(pagination, keyword)}`);
+    return http.get(`/api/v1/room/${roomId}/members?${makeParameter({ ...pagination, keyword })}`);
 }
 
 function loadMemberDetailAPI(memberId) {
@@ -60,7 +60,7 @@ function* loadMembers(action) {
             last
         });
 
-        action.meta && action.meta.callbackAction(number + 1);
+        if (action.meta) action.meta.callbackAction(number + 1);
     } catch (e) {
         console.error(e);
         yield put({
@@ -201,11 +201,3 @@ export default function* memberSaga() {
         fork(watchChangeManager)
     ]);
 }
-
-const makeParamForMembers = (pagination, keyword) => {
-    let param = Object.entries(pagination)
-        .map(e => e.join("="))
-        .join("&");
-    if (keyword) param += `&keyword=${keyword}`;
-    return param;
-};

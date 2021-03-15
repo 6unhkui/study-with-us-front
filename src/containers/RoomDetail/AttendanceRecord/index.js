@@ -12,7 +12,7 @@ const { RangePicker } = DatePicker;
 
 const AttendanceCheck = props => {
     const dispatch = useDispatch();
-    const roomId = props.match.params.id;
+    const roomId = props?.match.params.id;
     const { MembersStatistics } = useSelector(state => state.attendance);
     const [startDate, setStartDate] = useState(moment().startOf("month"));
     const [endDate, setEndDate] = useState(moment().endOf("month"));
@@ -62,8 +62,8 @@ const AttendanceCheck = props => {
         },
         colors: ["var(--primary-color)"],
         series: [
-            {
-                name: "Count",
+            { 
+                name: "Count", 
                 colorByPoint: true,
                 data: MembersStatistics.map(v => ({
                     name: v.name,
@@ -94,7 +94,7 @@ const AttendanceCheck = props => {
                         Today: [moment(), moment()],
                         "This Month": [moment().startOf("month"), moment().endOf("month")]
                     }}
-                    format={"YYYY.MM.DD"}
+                    format="YYYY.MM.DD"
                     defaultValue={[startDate, endDate]}
                     onChange={handleChangeDate}
                 />

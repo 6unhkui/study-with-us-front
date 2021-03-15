@@ -75,8 +75,8 @@ const Main = () => {
                 <CategorySlide />
 
                 <Divider />
-                {recommendRooms.map((section, i) => (
-                    <div style={{ marginTop: "4rem" }} key={i}>
+                {recommendRooms.map(section => (
+                    <div style={{ marginTop: "4rem" }} key={section.title}>
                         <Title level={3} style={{ marginBottom: "1rem" }}>
                             {section.title}
                         </Title>

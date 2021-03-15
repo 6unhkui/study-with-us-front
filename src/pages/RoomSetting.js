@@ -6,7 +6,7 @@ import MyInfo from "containers/RoomSetting/MyInfo";
 import RoomInfo from "containers/RoomSetting/RoomInfo";
 
 const SettingRoom = props => {
-    const roomId = props.match.params.id;
+    const roomId = props?.match.params.id;
     const {
         roomDetail: { name }
     } = useSelector(state => state.room);

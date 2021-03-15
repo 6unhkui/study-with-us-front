@@ -26,7 +26,7 @@ function* loadMessageHistory(action) {
         // let arr = data.map(v => JSON.parse(v));
         yield put({
             type: LOAD_MESSAGE_HISTORY_SUCCESS,
-            data: data
+            data
         });
     } catch (e) {
         console.error(e);

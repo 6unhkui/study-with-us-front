@@ -2,29 +2,28 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { Button, Input, Row, Col, Comment } from "antd";
+
 const { TextArea } = Input;
 
 const minHeight = "70px";
 
-const CommentEditor = ({ avatar, onChange, value, onSubmit, submitText }) => {
-    return (
-        <Comment
-            avatar={avatar}
-            content={
-                <Row gutter={10}>
-                    <Col span={21}>
-                        <TextArea style={{ minHeight }} value={value} onChange={onChange} />
-                    </Col>
-                    <Col span={3}>
-                        <Button htmlType="submit" onClick={onSubmit} type="primary" style={{ minWidth: "100%", minHeight }}>
-                            {submitText}
-                        </Button>
-                    </Col>
-                </Row>
-            }
-        />
-    );
-};
+const CommentEditor = ({ avatar, onChange, value, onSubmit, submitText }) => (
+    <Comment
+        avatar={avatar}
+        content={
+            <Row gutter={10}>
+                <Col span={21}>
+                    <TextArea style={{ minHeight }} value={value} onChange={onChange} />
+                </Col>
+                <Col span={3}>
+                    <Button htmlType="submit" onClick={onSubmit} type="primary" style={{ minWidth: "100%", minHeight }}>
+                        {submitText}
+                    </Button>
+                </Col>
+            </Row>
+        }
+    />
+);
 
 CommentEditor.propTypes = {
     avatar: PropTypes.node,
@@ -35,6 +34,8 @@ CommentEditor.propTypes = {
 };
 
 CommentEditor.defaultProps = {
+    avatar: <></>,
+    value : "",
     onSubmit: () => {
         console.error("submit function is not defined");
     },

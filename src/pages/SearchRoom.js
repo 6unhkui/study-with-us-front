@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Typography, Divider, Input, List } from "antd";
-import RoomOrderSelector from "../components/RoomOrderSelector";
-import CategoryMultiSelector from "../containers/CategoryMultiSelector";
 import styled from "styled-components";
-import { LOAD_ROOMS_REQUEST } from "../store/modules/room";
 import { useDispatch, useSelector } from "react-redux";
-import Card from "../components/RoomCard";
 import { withRouter } from "react-router-dom";
-
 import { useRoomFilter } from "hooks/useRoomFilter";
 import Pagination from "utils/Pagination";
 import useQuery from "hooks/useQuery";
 import breakpoint from "styled-components-breakpoint";
+import infiniteScroll from "utils/InfiniteScroll";
+import Card from "components/RoomCard";
+import { LOAD_ROOMS_REQUEST } from "store/modules/room";
+import CategoryMultiSelector from "containers/CategoryMultiSelector";
+import RoomOrderSelector from "components/RoomOrderSelector";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -37,7 +37,7 @@ const SearchPage = props => {
         }
         if (paramCategoryId) {
             if (props?.location?.state?.name) return props.location.state.name;
-            else return `카테고리 검색 결과`;
+            return `카테고리 검색 결과`;
         }
         return `스터디방 찾기`;
     });
@@ -49,31 +49,37 @@ const SearchPage = props => {
             keyword: paramKeyword,
             categoryIds: paramCategoryId ? [paramCategoryId] : null
         });
-    }, [dispatch, paramCategoryId, paramKeyword, props]);
+    }, [dispatch, paramCategoryId, paramKeyword]);
+
+    function changePageNumber(pageNumber) {
+        setPagination(state => ({
+            ...state,
+            page: pageNumber
+        }));
+    }
+
+    const onScroll = infiniteScroll.bind(null, () => {
+        if (hasMoreRooms && !loadingRooms) {
+            // 리스트를 요청한다.
+            dispatch({
+                type: LOAD_ROOMS_REQUEST,
+                pagination: Object.assign(pagination, { page: pagination.page + 1 }),
+                categoryIds,
+                orderType,
+                keyword,
+                meta: {
+                    callbackAction: changePageNumber
+                }
+            });
+        }
+    });
 
     useEffect(() => {
-        function onScroll() {
-            if (window.pageYOffset + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
-                if (hasMoreRooms && !loadingRooms) {
-                    // 리스트를 요청한다.
-                    dispatch({
-                        type: LOAD_ROOMS_REQUEST,
-                        pagination: Object.assign(pagination, { page: ++pagination.page }),
-                        categoryIds,
-                        orderType,
-                        keyword,
-                        meta: {
-                            callbackAction: changePageNumber
-                        }
-                    });
-                }
-            }
-        }
         window.addEventListener("scroll", onScroll);
         return () => {
             window.removeEventListener("scroll", onScroll);
         };
-    }, [categoryIds, dispatch, hasMoreRooms, keyword, loadingRooms, orderType, pagination]);
+    }, [hasMoreRooms, loadingRooms, onScroll]);
 
     const handleFilterChange = useCallback(
         (key, value) => {
@@ -89,29 +95,23 @@ const SearchPage = props => {
 
             // Pagination state를 초기화한다.
             setPagination({ ...initPagination });
-            !paramCategoryId && setTitle("스터디방 찾기");
-        },
-        [categoryIds, dispatch, keyword, orderType, paramCategoryId]
-    );
 
-    function changePageNumber(pageNumber) {
-        setPagination(pagination => ({
-            ...pagination,
-            page: pageNumber
-        }));
-    }
+            if (!paramCategoryId) setTitle("스터디방 찾기");
+        },
+        [dispatch, categoryIds, keyword, orderType, paramCategoryId]
+    );
 
     return (
         <div className="container content-wrap">
             <Title>{title}</Title>
             <Divider />
             <FilterWrap>
-                <RoomOrderSelector onChange={setOrderType} onSelect={orderType => handleFilterChange("orderType", orderType)} />
+                <RoomOrderSelector onChange={setOrderType} onSelect={value => handleFilterChange("orderType", value)} />
 
                 {!paramCategoryId && (
                     <CategoryMultiSelector
                         onChange={setCategoryIds}
-                        onSelect={categoryIds => handleFilterChange("categoryIds", categoryIds)}
+                        onSelect={value => handleFilterChange("categoryIds", value)}
                     />
                 )}
 
@@ -119,7 +119,7 @@ const SearchPage = props => {
                     className="search"
                     enterButton="Search"
                     placeholder="검색어를 입력하세요."
-                    onSearch={keyword => handleFilterChange("keyword", keyword)}
+                    onSearch={value => handleFilterChange("keyword", value)}
                     onChange={e => setKeyword(e.target.value)}
                     value={keyword}
                 />

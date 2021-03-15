@@ -15,7 +15,7 @@ import Loading from "components/Loading";
 import { useTabs } from "hooks/useTabs";
 import { Redirect } from "react-router-dom";
 import { Row, Col, Card, message } from "antd";
-import loadFile from "utils/loadFile";
+import loadFile from "utils/LoadFile";
 
 class TabItem {
     constructor(tab, content) {
@@ -25,7 +25,7 @@ class TabItem {
 }
 
 const RoomDetailPage = props => {
-    const roomId = props.match.params.id;
+    const roomId = props?.match.params.id;
     const dispatch = useDispatch();
     const {
         loadingRoomDetail,
@@ -54,7 +54,7 @@ const RoomDetailPage = props => {
     const handleJoin = useCallback(() => {
         if (!unlimited && joinCount === maxCount) {
             message.error("인원수 초과로 더이상 가입 할 수 없는 스터디방입니다.");
-            return false;
+            return;
         }
 
         dispatch({
@@ -71,36 +71,33 @@ const RoomDetailPage = props => {
     }
     if (loadingRoomDetail) {
         return <Loading />;
-    } else {
-        return (
-            <div className="bg-gray">
-                <CoverWrap className="bg-gray">
-                    <img src={loadFile(coverImage, "cover")} alt="cover_image" className={coverImage && "cover"} />
-                </CoverWrap>
-
-                <div className="container">
-                    <ContentWrap>
-                        <Row gutter={[16, 26]}>
-                            <Col xs={24} md={8} lg={7}>
-                                <Sidebar id={roomId} location={props.location} room={roomDetail} join={handleJoin} />
-                            </Col>
-                            <Col xs={24} md={16} lg={17}>
-                                <Card
-                                    tabList={tabItems.map((item, i) => {
-                                        return { ...item, key: i };
-                                    })}
-                                    defaultActiveTabKey={0}
-                                    onTabChange={key => changeItem(key)}
-                                >
-                                    {isMember ? currentItem.content : <AccessMemberOnly />}
-                                </Card>
-                            </Col>
-                        </Row>
-                    </ContentWrap>
-                </div>
-            </div>
-        );
     }
+    return (
+        <div className="bg-gray">
+            <CoverWrap className="bg-gray">
+                <img src={loadFile(coverImage, "cover")} alt="cover_image" className={coverImage && "cover"} />
+            </CoverWrap>
+
+            <div className="container">
+                <ContentWrap>
+                    <Row gutter={[16, 26]}>
+                        <Col xs={24} md={8} lg={7}>
+                            <Sidebar id={roomId} location={props?.location} room={roomDetail} join={handleJoin} />
+                        </Col>
+                        <Col xs={24} md={16} lg={17}>
+                            <Card
+                                tabList={tabItems.map((item, i) => ({ ...item, key: i }))}
+                                defaultActiveTabKey={0}
+                                onTabChange={key => changeItem(key)}
+                            >
+                                {isMember ? currentItem.content : <AccessMemberOnly />}
+                            </Card>
+                        </Col>
+                    </Row>
+                </ContentWrap>
+            </div>
+        </div>
+    );
 };
 
 export default RoomDetailPage;

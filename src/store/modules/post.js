@@ -78,8 +78,8 @@ export const UPDATE_COMMENT_REQUEST = "UPDATE_COMMENT_REQUEST";
 export const UPDATE_COMMENT_SUCCESS = "UPDATE_COMMENT_SUCCESS";
 export const UPDATE_COMMENT_FAILURE = "UPDATE_COMMENT_FAILURE";
 
-const post = (state = initialState, action) => {
-    return produce(state, draft => {
+const post = (state = initialState, action) =>
+    produce(state, draft => {
         switch (action.type) {
             // 새글 피드 리스트 ////////////////////////////
             case LOAD_NEWS_FEED_REQUEST: {
@@ -272,6 +272,5 @@ const post = (state = initialState, action) => {
             }
         }
     });
-};
 
 export default post;

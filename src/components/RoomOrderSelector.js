@@ -2,7 +2,6 @@ import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { Button, Radio } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-
 import LayerPopup from "components/LayerPopup";
 
 const orderTypes = [
@@ -69,11 +68,15 @@ const RoomOrderSelect = ({ onSelect, onChange }) => {
 export default RoomOrderSelect;
 
 RoomOrderSelect.propTypes = {
-    onSubmit: PropTypes.func.isRequired
+    onChange: PropTypes.func,
+    onSelect: PropTypes.func
 };
 
 RoomOrderSelect.defaultProps = {
-    onSubmit: val => {
-        console.error("submit function is not defined");
+    onChange: () => {
+        console.error("onChange function is not defined");
+    },
+    onSelect: () => {
+        console.error("onSelect function is not defined");
     }
 };

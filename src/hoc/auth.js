@@ -15,24 +15,18 @@ export default (SpecialComponent, option, adminRoute = null) => {
                     />
                 );
             }
-        } else {
-            if (option === false) {
-                return (
-                    <Redirect
-                        to={{
-                            pathname: "/",
-                            state: { from: props.location }
-                        }}
-                    />
-                );
-            }
+        } else if (option === false) {
+            return (
+                <Redirect
+                    to={{
+                        pathname: "/",
+                        state: { from: props.location }
+                    }}
+                />
+            );
         }
 
-        return (
-            <main>
-                <SpecialComponent {...props} />
-            </main>
-        );
+        return <SpecialComponent {...props} />;
     };
 
     return AuthenticateCheck;

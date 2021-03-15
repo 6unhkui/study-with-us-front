@@ -95,7 +95,7 @@ const MemberDetailDrawer = ({ memberId, visible, onClose }) => {
                 <Descriptions
                     title={
                         <>
-                            <Avatar user={{ name, profileImg }} showName={true} />
+                            <Avatar user={{ name, profileImg }} showName />
                             <Badge text={role} type={role === "MANAGER" ? "primary" : "default"} />
                         </>
                     }

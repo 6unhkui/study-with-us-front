@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import SockJsClient from "react-stomp";
 import styled from "styled-components";
-import CardWrap from "../components/CardBox";
+import CardWrap from "components/CardBox";
 import { SERVER_URI } from "constants/index";
 import { header } from "utils/HttpHandler";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import ChatMessage from "components/ChatMessage";
 import ChatMember from "components/ChatMember";
 import { Input, Badge, Button } from "antd";
 import { UserOutlined, SendOutlined } from "@ant-design/icons";
+
 const { Search } = Input;
 
 const sendType = {
@@ -19,7 +20,7 @@ const sendType = {
 };
 
 const Chatting = props => {
-    const roomId = props.match.params.id;
+    const roomId = props?.match.params.id;
     const dispatch = useDispatch();
     const $websocket = useRef(null);
     const $messageList = useRef(null);
@@ -39,23 +40,23 @@ const Chatting = props => {
             type: LOAD_MESSAGE_HISTORY_REQUEST,
             data: roomId
         });
-    }, [roomId]);
+    }, [dispatch, roomId]);
 
     useEffect(() => {
         const lastMessage = chatMessages[chatMessages.length - 1];
         setMemberCount(count => (lastMessage?.memberCount ? lastMessage.memberCount : count));
     }, [chatMessages, memberCount]);
 
-    useEffect(() => {
-        scrollToBottom();
-    }, [chatMessages]);
-
-    const scrollToBottom = () => {
+    function scrollToBottom() {
         $messageList.current.scrollIntoView({
             block: "end",
             behavior: "smooth"
         });
-    };
+    }
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [chatMessages]);
 
     const handleLayerOpen = useCallback(isOpen => {
         setChatMemberLayerOpen(isOpen);
@@ -64,17 +65,17 @@ const Chatting = props => {
     const sendMessage = useCallback(
         (message, type = sendType.talk) => {
             try {
-                if (message.length > 0) {
-                    const send = {
-                        roomId,
-                        type,
-                        sender: { ...me },
-                        message
-                    };
-                    $websocket.current.sendMessage(`/pub/chat/message`, JSON.stringify(send));
-                    setInputMessage("");
-                    return true;
-                }
+                if (!message.length) return false;
+
+                const send = {
+                    roomId,
+                    type,
+                    sender: { ...me },
+                    message
+                };
+                $websocket.current.sendMessage(`/pub/chat/message`, JSON.stringify(send));
+                setInputMessage("");
+                return true;
             } catch (e) {
                 return false;
             }
@@ -103,7 +104,7 @@ const Chatting = props => {
                     extra: clientConnected ? (
                         <Button onClick={handleLayerOpen.bind(null, true)}>
                             <UserOutlined />
-                            {memberCount + "명 참여중"}
+                            {`${memberCount}명 참여중`}
                         </Button>
                     ) : (
                         <Badge status="error" text="Disconnected" />
@@ -119,7 +120,7 @@ const Chatting = props => {
                     onConnect={setClientConnected.bind(null, true)}
                     onDisconnect={setClientConnected.bind(null, false)}
                     ref={$websocket}
-                    debug={true}
+                    debug
                 />
 
                 <ChatMessageWrap>

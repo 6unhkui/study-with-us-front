@@ -9,51 +9,49 @@ import loadFile from "utils/LoadFile";
 
 const { Paragraph } = Typography;
 
-const RoomCard = ({ roomId, category, coverImage, name, description, manager, joinCount, maxCount }) => {
-    return (
-        <Link to={`/room/${roomId}`}>
-            <CardWrap>
-                <Badge>{category}</Badge>
-                <Card
-                    className="light-primary-border"
-                    cover={
-                        <div className="cover">
-                            <img alt="cover" src={loadFile(coverImage, "cover")} />
+const RoomCard = ({ roomId, category, coverImage, name, description, manager, joinCount, maxCount }) => (
+    <Link to={`/room/${roomId}`}>
+        <CardWrap>
+            <Badge>{category}</Badge>
+            <Card
+                className="light-primary-border"
+                cover={
+                    <div className="cover">
+                        <img alt="cover" src={loadFile(coverImage, "cover")} />
+                    </div>
+                }
+            >
+                <CardMetaWrap>
+                    <div className="main">
+                        <div className="name">
+                            <Paragraph ellipsis>{name}</Paragraph>
                         </div>
-                    }
-                >
-                    <CardMetaWrap>
-                        <div className="main">
-                            <div className="name">
-                                <Paragraph ellipsis>{name}</Paragraph>
-                            </div>
-                            <div className="description">
-                                <Paragraph ellipsis>{description}</Paragraph>
-                            </div>
+                        <div className="description">
+                            <Paragraph ellipsis>{description}</Paragraph>
                         </div>
+                    </div>
 
-                        <div className="meta-data">
-                            <Divider />
-                            <ManagerWrap>
-                                {manager && <Avatar user={manager} size={22} style={{ fontSize: "11px" }} showName={true} />}
-                            </ManagerWrap>
+                    <div className="meta-data">
+                        <Divider />
+                        <ManagerWrap>
+                            {manager && <Avatar user={manager} size={22} style={{ fontSize: "11px" }} showName />}
+                        </ManagerWrap>
 
-                            <JoinCountWrap>
-                                <UserOutlined />
-                                <span className="join-count">{joinCount + (maxCount === 0 ? "" : `${"/" + maxCount}`)}</span>
-                            </JoinCountWrap>
-                        </div>
-                    </CardMetaWrap>
-                </Card>
-            </CardWrap>
-        </Link>
-    );
-};
+                        <JoinCountWrap>
+                            <UserOutlined />
+                            <span className="join-count">{joinCount + (maxCount === 0 ? "" : `${`/${maxCount}`}`)}</span>
+                        </JoinCountWrap>
+                    </div>
+                </CardMetaWrap>
+            </Card>
+        </CardWrap>
+    </Link>
+);
 
 export default RoomCard;
 
 RoomCard.propTypes = {
-    id: PropTypes.number,
+    roomId: PropTypes.number,
     category: PropTypes.string,
     coverImage: PropTypes.string,
     name: PropTypes.string,
@@ -64,6 +62,20 @@ RoomCard.propTypes = {
     }),
     joinCount: PropTypes.number,
     maxCount: PropTypes.number
+};
+
+RoomCard.defaultProps = {
+    roomId: 0,
+    category: "",
+    coverImage: "",
+    name: "",
+    description: "",
+    manager: {
+        name: "",
+        profileImg: ""
+    },
+    joinCount: 0,
+    maxCount: 0
 };
 
 const Badge = styled.span`

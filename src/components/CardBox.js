@@ -1,9 +1,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import breakpoint from "styled-components-breakpoint";
-
 import { PageHeader, Typography } from "antd";
 import { useHistory } from "react-router-dom";
+
 const { Title } = Typography;
 
 const CardBox = ({ title, size, pageHeader, children, style }) => {
@@ -59,16 +59,15 @@ const CardWrap = styled.div`
                     padding : 2rem;
                 `}
             `;
-        } else {
-            return css`
-                ${breakpoint("tablet")`
+        }
+        return css`
+            ${breakpoint("tablet")`
                     padding : 2.2rem 3.2rem;
                 `}
 
-                ${breakpoint("mobile")`
+            ${breakpoint("mobile")`
                     padding : 2rem;
                 `}
-            `;
-        }
+        `;
     }}
 `;

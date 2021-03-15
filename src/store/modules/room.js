@@ -106,8 +106,8 @@ export const DECREMENT_MEMBER_COUNT = "DECREMENT_MEMBER_COUNT";
 
 export const DEPOSE_MANAGER = "DEPOSE_MANAGER";
 
-const room = (state = initialState, action) => {
-    return produce(state, draft => {
+const room = (state = initialState, action) =>
+    produce(state, draft => {
         switch (action.type) {
             // 스터디방 생성 ///////////////////////////////
             case CREATE_ROOM_REQUEST: {
@@ -334,7 +334,7 @@ const room = (state = initialState, action) => {
 
             // 멤버수 감소
             case DECREMENT_MEMBER_COUNT: {
-                draft.roomDetail.joinCount = --draft.roomDetail.joinCount;
+                draft.roomDetail.joinCount -= draft.roomDetail.joinCount;
                 break;
             }
 
@@ -349,6 +349,5 @@ const room = (state = initialState, action) => {
             }
         }
     });
-};
 
 export default room;
