@@ -19,13 +19,14 @@ Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 정보
 -   스터디룸 찾기
 -   마이페이지
 -   다국어 지원 (영어, 한국어)
-
+<br/>
 <!-- 자세한 기능 설명과 구현 내용은 [기술 블로그]()에 포스팅 해두었습니다. -->
 
 ## 💻 Dev Environment
 
 -   OS : Mac OS, CentOS 7
 -   Tool : Visual Studio Code, Git
+    <br/>
 
 ## 🔧 Tech Stack
 
@@ -35,8 +36,9 @@ Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 정보
 -   Less, css-in-js (styled-components)
 -   UI Library : Ant Design UI
 -   Web Server : Nginx
+    <br/>
 
-## 🗂 Directory Structure
+## 🗂 Folder Structure
 
 ```
 .
@@ -61,7 +63,8 @@ Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 정보
 │   ├── routes
 │   ├── store
 │   │   ├── modules
-│   │   └── sagas
+│   │   ├── sagas
+│   │   └── index.js
 │   ├── utils
 │   ├── App.js
 │   ├── i18n.js
@@ -80,7 +83,7 @@ Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 정보
 
 #### `public/locales`
 
-다국어 json 파일을 모아둔 디렉토리입니다. 다국어는 한국어, 영어를 지원합니다.
+다국어 JSON 파일을 모아둔 디렉토리입니다. 다국어는 한국어, 영어를 지원합니다.
 
 #### `src/assets/css/*`
 
@@ -106,11 +109,15 @@ Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 정보
 
 #### `src/containers`
 
-Redux Store에서 관리되는 state를 사용하고, action을 dispatch 하여 앱의 상태를 제어하는 컴포넌트(Smart Component)들을 모아둔 디렉토리입니다.
+Redux Store에서 관리되는 state를 사용하고, action을 dispatch 하여 앱의 상태를 제어하는 스마트 컴포넌트(Smart Component)들을 모아둔 디렉토리입니다.
 
 #### `src/hoc`
 
-HOC(High Order Component)를 모아둔 디렉토리입니다. 컴포넌트를 렌더링 하기 전 인증
+HOC(High Order Component)를 모아둔 디렉토리입니다.<br/>
+
+##### `auth.js`
+
+인증된 사용자만 접근 할 수 있는 Page 컴포넌트를 감싸는 HOC로, 인증되지 않은 (사용자 브라우저의 Local Storage에 JWT가 존재하지 않는) 사용자가 접근할 경우 로그인 페이지로 Redirect 하도록 처리하였습니다.
 
 #### `src/hooks`
 
@@ -118,11 +125,22 @@ Custom Hooks를 모아둔 디렉토리입니다.
 
 #### `src/pages`
 
-페이지 컴포넌트를 모아둔 디렉토리로, 순수 컴포넌트와 컨테이너 컴포넌트를 조합해 페이지 별로 화면을 만듭니다.
+페이지 컴포넌트를 모아둔 디렉토리로, 순수 컴포넌트와 컨테이너 컴포넌트를 조합해 페이지 별로 화면을 구성합니다.
 
-<!-- #### `src/routes`
+#### `src/routes`
 
-#### `src/store/modules` `src/store/sagas` -->
+페이지 라우팅에 필요한 Route 컴포넌트를 모아둔 디렉토리입니다.
+
+#### `src/store/*`
+
+##### `modules`
+
+Ducks 패턴으로 Action Type, Reducer를 하나의 파일로 관리합니다.
+
+##### `sagas`
+
+비동기 통신을 위한 Redux Middleware로 Redux-Saga를 사용하고 있습니다.<br/>
+saga 파일을 모아둔 디렉토리입니다.
 
 #### `src/utils`
 
@@ -139,7 +157,7 @@ HTTP 통신에 axios 라이브러리를 사용하고 있습니다. axios 인스�
 
 #### `.eslintrc`
 
-코드 품질과 포맷팅을 위해 ESLint를 사용합니다. 그에 대한 설정 파일로, airbnb 코딩 컨벤션을 따릅니다.
+코드 품질과 포맷팅을 위해 ESLint를 사용합니다.<br/>그에 대한 설정 파일로, airbnb 코딩 컨벤션을 따릅니다.
 
 #### `.prettierrc`
 
@@ -151,7 +169,7 @@ js 파일 내에서 모듈을 import 할 때 사용하는 절대 경로를 src �
 
 #### `craco.config.js`
 
-craco 라이브러리는 CRA 프로젝트를 eject 하지 않고 Webpack 설정을 오버라이딩 하는 방식으로 변경하도록 도와주는 패키지입니다. `craco.config.js`는 이를 위한 설정 파일입니다.<br/>
+craco 라이브러리는 CRA 프로젝트를 eject 하지 않고 Webpack 설정을 오버라이딩 하는 방식으로 변경하도록 도와주는 패키지입니다.<br/>`craco.config.js`는 이를 위한 설정 파일입니다.<br/>
 
 1. UI 라이브러리로 사용한 Ant Design의 Less 변수를 변경하기 위해 `craco-antd`을 사용하였습니다.
 2. 번들링 된 결과물에 남아있는 콘솔 로그를 제거하기 위해 Babel 플러그인인 `transform-remove-console`을 사용하였습니다. 이 플러그인은 운영 환경에서만 적용되도록 하였습니다.
