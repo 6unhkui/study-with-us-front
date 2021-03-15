@@ -1,5 +1,3 @@
-> !!!!!!!!!! 작성중 !!!!!!!!!!
-
 # 📚 Study With Us - Frontend
 
 ## 🔍 Overview
@@ -26,7 +24,7 @@ Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 정보
 
 -   OS : Mac OS, CentOS 7
 -   Tool : Visual Studio Code, Git
-    <br/>
+    <br/><br/>
 
 ## 🔧 Tech Stack
 
@@ -36,7 +34,7 @@ Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 정보
 -   Less, css-in-js (styled-components)
 -   UI Library : Ant Design UI
 -   Web Server : Nginx
-    <br/>
+    <br/><br/>
 
 ## 🗂 Folder Structure
 
