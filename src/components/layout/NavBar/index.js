@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useMemo } from "react";
 import { Link, NavLink, withRouter } from "react-router-dom";
 import Logo from "assets/image/logo.png";
 import { Button, Divider, Drawer, List } from "antd";
@@ -36,16 +36,19 @@ const NavBar = props => {
 
     const checkLogin = !!localStorage.getItem("accessToken");
 
-    const renderLogInOutBtn = () =>
-        checkLogin ? (
-            <Button type="primary" ghost onClick={handleLogout}>
-                {t("auth.logout")}
-            </Button>
-        ) : (
-            <Link to="/login">
-                <Button type="primary">{t("auth.login")}</Button>
-            </Link>
-        );
+    const renderLogInOutBtn = useMemo(
+        () =>
+            checkLogin ? (
+                <Button type="primary" ghost onClick={handleLogout}>
+                    {t("auth.logout")}
+                </Button>
+            ) : (
+                <Link to="/login">
+                    <Button type="primary">{t("auth.login")}</Button>
+                </Link>
+            ),
+        [checkLogin]
+    );
 
     const renderAccountInfo = (handleClick = () => {}) => {
         if (!checkLogin) return <></>;
@@ -84,7 +87,7 @@ const NavBar = props => {
             <div className="user-wrap">
                 {renderAccountInfo()}
                 <LanguageSeleoctor />
-                {renderLogInOutBtn()}
+                {renderLogInOutBtn}
             </div>
 
             <div className="sidebar-wrap">
