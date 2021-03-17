@@ -36,6 +36,7 @@ yarn-error.log*
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff
+.idea
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
@@ -57,6 +58,7 @@ yarn-error.log*
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
+.idea
 
 # Gradle and Maven with auto-import
 # When using Gradle or Maven with auto-import, you should exclude module files,
@@ -133,3 +135,6 @@ fabric.properties
 # CodeStream plugin
 # https://plugins.jetbrains.com/plugin/12206-codestream
 .idea/codestream.xml
+
+
+.vscode
