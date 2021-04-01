@@ -1,23 +1,24 @@
-import React from "react";
+import React, { lazy } from "react";
 import { Route } from "react-router-dom";
 import Auth from "hoc/auth";
-import NotFound from "pages/NotFound";
-import Main from "pages/Main";
-import LoginPage from "pages/Login";
-import OAuth2RedirectHandler from "pages/OAuth2RedirectHandler";
-import Register from "pages/Register";
-import ForgotPassword from "pages/ForgotPassword";
-import MyAccount from "pages/MyAccount";
-import MyRooms from "pages/MyRooms";
-import CreateStudyRoom from "pages/CreateRoom";
-import RoomDetail from "pages/RoomDetail";
-import CreatePost from "pages/CreatePost";
-import Chatting from "pages/Chatting";
-import RoomSetting from "pages/RoomSetting";
-import PostView from "pages/PostView";
-import EditPost from "pages/EditPost";
-import NewsFeed from "pages/NewsFeed";
-import SearchRoom from "pages/SearchRoom";
+
+const NotFound = lazy(() => import("pages/NotFound"));
+const Main = lazy(() => import("pages/Main"));
+const LoginPage = lazy(() => import("pages/Login"));
+const OAuth2RedirectHandler = lazy(() => import("pages/OAuth2RedirectHandler"));
+const Register = lazy(() => import("pages/Register"));
+const ForgotPassword = lazy(() => import("pages/ForgotPassword"));
+const MyAccount = lazy(() => import("pages/MyAccount"));
+const MyRooms = lazy(() => import("pages/MyRooms"));
+const CreateStudyRoom = lazy(() => import("pages/CreateRoom"));
+const RoomDetail = lazy(() => import("pages/RoomDetail"));
+const CreatePost = lazy(() => import("pages/CreatePost"));
+const Chatting = lazy(() => import("pages/Chatting"));
+const RoomSetting = lazy(() => import("pages/RoomSetting"));
+const PostView = lazy(() => import("pages/PostView"));
+const EditPost = lazy(() => import("pages/EditPost"));
+const NewsFeed = lazy(() => import("pages/NewsFeed"));
+const SearchRoom = lazy(() => import("pages/SearchRoom"));
 
 export default [
     <Route path="/" exact component={Auth(Main, null)} />,

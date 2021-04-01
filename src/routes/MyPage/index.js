@@ -1,9 +1,6 @@
-import React from "react";
+import React, { lazy } from "react";
 import { Route } from "react-router-dom";
 
-import EditAccountSetting from "pages/EditAccountSetting";
+const EditAccountSetting = lazy(() => import("pages/EditAccountSetting"));
 
-export default () => [
-    // <Route path={`${path}/setting`} component={EditAccountSetting} />
-    <Route component={EditAccountSetting} />
-];
+export default () => [<Route component={EditAccountSetting} />];
