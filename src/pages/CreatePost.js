@@ -5,6 +5,7 @@ import CreateForm from "components/PostForm";
 import { useDispatch, useSelector } from "react-redux";
 import { CREATE_POST_REQUEST } from "store/modules/post";
 import CardWrap from "components/CardBox";
+import SEO from "components/SEO";
 
 const CreatePost = props => {
     const roomId = props?.match.params.id;
@@ -46,6 +47,7 @@ const CreatePost = props => {
 
     return (
         <CardWrap>
+            <SEO title="게시글 작성" />
             <PageHeader
                 onBack={() => history.push(`/room/${roomDetail.roomId}`)}
                 title={roomDetail && roomDetail.name}

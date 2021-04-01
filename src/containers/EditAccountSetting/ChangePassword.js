@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Input, Button, Alert, message } from "antd";
-import { PasswordRegex } from "utils/Form/FormValidation";
+import { passwordRegExp } from "utils/regularExpression";
 import { useDispatch, useSelector } from "react-redux";
 import { CHANGE_PASSWORD_REQUEST } from "store/modules/account";
 
@@ -73,7 +73,11 @@ const ChangePassword = () => {
                             required: true
                         },
                         {
-                            pattern: PasswordRegex
+                            pattern: passwordRegExp
+                        },
+                        {
+                            type: "string",
+                            max: 50
                         }
                     ]}
                     hasFeedback

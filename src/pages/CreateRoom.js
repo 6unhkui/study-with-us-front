@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { LOAD_CATEGORIES_REQUEST } from "store/modules/category";
 import { CREATE_ROOM_REQUEST } from "store/modules/room";
+import SEO from "components/SEO";
 import CardWrap from "../components/CardBox";
 
 const CreateStudyRoomPage = props => {
@@ -84,6 +85,7 @@ const CreateStudyRoomPage = props => {
 
     return (
         <CardWrap title="스터디방 만들기" size="small">
+            <SEO title="스터디방 만들기" />
             <Form
                 form={form}
                 name="create"
@@ -108,7 +110,17 @@ const CreateStudyRoomPage = props => {
                     )}
                 </Form.Item>
 
-                <Form.Item name="name" label="Name" rules={[{ required: true, whitespace: true }]}>
+                <Form.Item
+                    name="name"
+                    label="Name"
+                    rules={[
+                        { required: true, whitespace: true },
+                        {
+                            type: "string",
+                            max: 50
+                        }
+                    ]}
+                >
                     <Input allowClear />
                 </Form.Item>
 

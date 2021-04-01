@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LOAD_MEMBERS_REQUEST } from "store/modules/member";
 import Avatar from "components/Avatar";
 import styled from "styled-components";
-import Pagination from "utils/Pagination";
+import Pagination from "utils/pagination";
 
 const initPagination = new Pagination();
 Object.freeze(initPagination);

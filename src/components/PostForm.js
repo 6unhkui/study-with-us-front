@@ -39,7 +39,9 @@ const PostForm = ({ initialValue, onSubmit, submitText, submitLoading }) => {
                 rules={[
                     {
                         required: true,
-                        whitespace: true
+                        whitespace: true,
+                        type: "string",
+                        max: 100
                     }
                 ]}
             >

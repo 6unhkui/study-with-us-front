@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LOAD_MEMBERS_ATTENDANCE_TODAY_REQUEST } from "store/modules/attendance";
 import styled from "styled-components";
 import RegisterAttendance from "containers/RoomDetail/AttendanceCheck/RegisterAttendance";
-import { stringToColor } from "utils/ColorGenerator";
+import { stringToColor } from "utils/colorGenerator";
 import { Typography, List, Divider, Button, Alert, Tooltip, Avatar as AntAvatar } from "antd";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import Countdown from "react-countdown";

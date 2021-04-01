@@ -10,7 +10,7 @@ import {
     REGISTER_ATTENDANCE_SUCCESS,
     REGISTER_ATTENDANCE_FAILURE
 } from "store/modules/attendance";
-import { http } from "utils/HttpHandler";
+import { http } from "utils/httpHandler";
 
 function loadMembersStatisticAPI(roomId, startDate, endDate) {
     return http.get(`/api/v1/room/${roomId}/attendance/members?startDate=${startDate}&endDate=${endDate}`);

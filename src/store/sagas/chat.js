@@ -7,7 +7,7 @@ import {
     LOAD_CURRENT_CHAT_MEMBERS_SUCCESS,
     LOAD_CURRENT_CHAT_MEMBERS_FAILURE
 } from "store/modules/chat";
-import { http } from "utils/HttpHandler";
+import { http } from "utils/httpHandler";
 
 function loadMessageHistoryAPI(roomId) {
     return http.get(`/api/v1/chat/${roomId}/history`);

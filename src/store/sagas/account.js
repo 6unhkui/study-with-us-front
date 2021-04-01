@@ -26,7 +26,7 @@ import {
     DELETE_ACCOUNT_FAILURE
 } from "store/modules/account";
 import { ACCESS_TOKEN } from "constants/index";
-import { http } from "utils/HttpHandler";
+import { http } from "utils/httpHandler";
 
 function registerAPI(data) {
     return http.post(`/api/v1/auth/register`, data);

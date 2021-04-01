@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { LOAD_MEMBERS_REQUEST } from "store/modules/member";
 import MemberRow from "components/MemberRow";
-import Pagination from "utils/Pagination";
+import Pagination from "utils/pagination";
 import { Input, List } from "antd";
-import infiniteScroll from "utils/InfiniteScroll";
+import infiniteScroll from "utils/infiniteScroll";
 
 const { Search } = Input;
 

@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LOAD_NEWS_FEED_REQUEST } from "store/modules/post";
 import PostCard from "components/PostCard";
-import Pagination from "utils/Pagination";
+import Pagination from "utils/pagination";
 import { List, Typography } from "antd";
-import infiniteScroll from "utils/InfiniteScroll";
+import infiniteScroll from "utils/infiniteScroll";
+import SEO from "components/SEO";
 
 const { Title } = Typography;
 
@@ -52,6 +53,7 @@ const NewsFeed = () => {
 
     return (
         <div className="container content-wrap">
+            <SEO title="새글 피드" />
             <Title>새글 피드</Title>
             <List
                 grid={{ gutter: 20, column: 1 }}

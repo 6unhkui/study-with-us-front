@@ -7,6 +7,7 @@ import EditAccountInfo from "containers/EditAccountSetting/EditAccountInfo";
 import ChangePassword from "containers/EditAccountSetting/ChangePassword";
 import DeleteAccount from "containers/EditAccountSetting/DeleteAccount";
 import { Typography, Badge, Tabs } from "antd";
+import SEO from "components/SEO";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -29,6 +30,7 @@ const EditAccountSetting = props => {
 
     return (
         <>
+            <SEO title={t("mypage.editAccountSettings.title")} />
             <Title>{t("mypage.editAccountSettings.title")}</Title>
 
             {isSocialAccount && (

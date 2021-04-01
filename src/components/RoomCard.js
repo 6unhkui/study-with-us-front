@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Card, Typography, Divider } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import Avatar from "components/Avatar";
-import loadFile from "utils/LoadFile";
+import loadFile from "utils/loadFile";
 
 const { Paragraph } = Typography;
 
@@ -94,6 +94,10 @@ const Badge = styled.span`
 const CardWrap = styled.div`
     .ant-card {
         cursor: pointer;
+    }
+
+    .ant-card-bordered {
+        border: 1px solid var(--border-gray);
     }
 
     .cover {

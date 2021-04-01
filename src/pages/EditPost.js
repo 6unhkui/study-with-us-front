@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import PostForm from "components/PostForm";
 import { useDispatch, useSelector } from "react-redux";
+import SEO from "components/SEO";
 import { LOAD_POST_DETAIL_REQUEST, UPDATE_POST_REQUEST } from "../store/modules/post";
 import CardWrap from "../components/CardBox";
 
@@ -85,6 +86,7 @@ const EditPost = props => {
 
     return (
         <CardWrap pageHeader={{ title: postDetail && postDetail.roomName, backUrl: `/post/${postId}` }}>
+            <SEO title="게시글 수정" />
             {!loading && (
                 <PostForm
                     initialValue={initialValue}

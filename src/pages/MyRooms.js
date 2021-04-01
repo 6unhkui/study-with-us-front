@@ -9,9 +9,10 @@ import { Typography, Button, Divider, List, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import CategoryMultiSelector from "containers/CategoryMultiSelector";
 import { useRoomFilter } from "hooks/useRoomFilter";
-import Pagination from "utils/Pagination";
+import Pagination from "utils/pagination";
 import breakpoint from "styled-components-breakpoint";
-import infiniteScroll from "utils/InfiniteScroll";
+import infiniteScroll from "utils/infiniteScroll";
+import SEO from "components/SEO";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -87,6 +88,7 @@ const MyStudyRoomPage = () => {
 
     return (
         <div className="container content-wrap">
+            <SEO title="나의 스터디방" />
             <TitleWrap>
                 <Title>나의 스터디방</Title>
                 <Link to="/room/create">

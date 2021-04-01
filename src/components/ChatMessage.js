@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { timeForToday } from "utils/Date";
+import { timeForToday } from "utils/date";
 import Avater from "./Avatar";
 
 const ChatMessage = ({ sender, message, isSelfMessage, timestamp, type }) => {
@@ -72,6 +72,7 @@ const MyBubbleWrap = styled.div`
 `;
 
 const BubbleWrap = styled.div`
+    margin-left: 10px;
     display: inline-block;
     position: relative;
     top: -4px;

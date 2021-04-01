@@ -4,14 +4,15 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { useRoomFilter } from "hooks/useRoomFilter";
-import Pagination from "utils/Pagination";
+import Pagination from "utils/pagination";
 import useQuery from "hooks/useQuery";
 import breakpoint from "styled-components-breakpoint";
-import infiniteScroll from "utils/InfiniteScroll";
+import infiniteScroll from "utils/infiniteScroll";
 import Card from "components/RoomCard";
 import { LOAD_ROOMS_REQUEST } from "store/modules/room";
 import CategoryMultiSelector from "containers/CategoryMultiSelector";
 import RoomOrderSelector from "components/RoomOrderSelector";
+import SEO from "components/SEO";
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -103,6 +104,7 @@ const SearchPage = props => {
 
     return (
         <div className="container content-wrap">
+            <SEO title="스터디방 찾기" />
             <Title>{title}</Title>
             <Divider />
             <FilterWrap>

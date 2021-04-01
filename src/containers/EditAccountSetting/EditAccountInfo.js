@@ -53,8 +53,8 @@ const EditAccountInfo = ({ me }) => {
                 label={t("auth.name")}
                 rules={[
                     {
-                        required: true,
-                        whitespace: true
+                        type: "string",
+                        max: 20
                     }
                 ]}
             >

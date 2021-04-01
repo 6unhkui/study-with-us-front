@@ -3,9 +3,11 @@ import styled from "styled-components";
 import { Card } from "antd";
 import SubMenu from "containers/MyAccount/SubMenu";
 import { MyPageRouter } from "routes";
+import SEO from "components/SEO";
 
 const MyAccountPage = ({ match }) => (
     <div className="bg-gray">
+        <SEO title="나의 계정" />
         <div className="container content-wrap">
             <Card>
                 <SubMenu />

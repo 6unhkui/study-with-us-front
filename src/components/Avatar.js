@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { stringToColor } from "utils/ColorGenerator";
+import { stringToColor } from "utils/colorGenerator";
 import { Avatar } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 

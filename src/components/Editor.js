@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { http } from "utils/HttpHandler";
+import { http } from "utils/httpHandler";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import loadFile from "utils/LoadFile";
+import loadFile from "utils/loadFile";
 
 ClassicEditor.defaultConfig = {
     toolbar: [

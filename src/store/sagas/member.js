@@ -20,7 +20,7 @@ import {
     CHANGE_MANAGER_FAILURE
 } from "store/modules/member";
 import { DECREMENT_MEMBER_COUNT, DEPOSE_MANAGER } from "store/modules/room";
-import { http, makeParameter } from "utils/HttpHandler";
+import { http, makeParameter } from "utils/httpHandler";
 
 function loadMembersAPI(roomId, pagination, keyword) {
     return http.get(`/api/v1/room/${roomId}/members?${makeParameter({ ...pagination, keyword })}`);

@@ -37,7 +37,7 @@ import {
     LOAD_ROOMS_SUCCESS,
     LOAD_ROOMS_FAILURE
 } from "store/modules/room";
-import { http, makeParameter } from "utils/HttpHandler";
+import { http, makeParameter } from "utils/httpHandler";
 
 function uploadCoverImageAPI(file, fileGroupId) {
     return http.post(`/api/v1/files/cover${fileGroupId ? `?fileGroupId=${fileGroupId}` : ""}`, file, {

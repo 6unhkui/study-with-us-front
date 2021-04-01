@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { CHECK_DUPLICATED_ACCOUNT_REQUEST, REGISTER_REQUEST } from "store/modules/account";
-import { PasswordRegex } from "utils/Form/FormValidation";
+import { passwordRegExp } from "utils/regularExpression";
 
 import { Form, Input, Row, Col, Checkbox, Button } from "antd";
 
@@ -63,7 +63,6 @@ export default function RegisterForm(props) {
         const email = form.getFieldValue("email") ? form.getFieldValue("email").trim() : "";
 
         function callback(result) {
-            console.log(result);
             if (!result) {
                 setDuplicateCheckCompleted(true);
             } else {
@@ -111,6 +110,9 @@ export default function RegisterForm(props) {
                         },
                         {
                             required: true
+                        },
+                        {
+                            max: 50
                         }
                     ]}
                 >
@@ -125,6 +127,10 @@ export default function RegisterForm(props) {
                         {
                             required: true,
                             whitespace: true
+                        },
+                        {
+                            type: "string",
+                            max: 20
                         }
                     ]}
                 >
@@ -139,7 +145,11 @@ export default function RegisterForm(props) {
                             required: true
                         },
                         {
-                            pattern: PasswordRegex
+                            pattern: passwordRegExp
+                        },
+                        {
+                            type: "string",
+                            max: 50
                         }
                     ]}
                     hasFeedback

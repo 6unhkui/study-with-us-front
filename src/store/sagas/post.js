@@ -31,7 +31,7 @@ import {
     UPDATE_COMMENT_SUCCESS,
     UPDATE_COMMENT_FAILURE
 } from "store/modules/post";
-import { http, makeParameter } from "utils/HttpHandler";
+import { http, makeParameter } from "utils/httpHandler";
 
 function loadNewsFeedAPI(pagination, keyword) {
     return http.get(`/api/v1/posts/new?${makeParameter({ ...pagination, keyword })}`);

@@ -15,7 +15,7 @@ import useToggle from "hooks/useToggle";
 import CategorySelectLayer from "containers/CategorySelectLayer";
 import { Button, Descriptions, Modal, Input, InputNumber, Switch, message } from "antd";
 import { CameraOutlined } from "@ant-design/icons";
-import loadFile from "utils/LoadFile";
+import loadFile from "utils/loadFile";
 
 const { TextArea } = Input;
 

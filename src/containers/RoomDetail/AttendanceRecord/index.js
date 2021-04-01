@@ -4,7 +4,7 @@ import ReactHighcharts from "react-highcharts";
 import moment from "moment";
 import styled from "styled-components";
 import { LOAD_MEMBERS_STATISTIC_REQUEST } from "store/modules/attendance";
-import { stringToColor } from "utils/ColorGenerator";
+import { stringToColor } from "utils/colorGenerator";
 import { DatePicker, Typography } from "antd";
 
 const { Title } = Typography;
@@ -62,8 +62,8 @@ const AttendanceCheck = props => {
         },
         colors: ["var(--primary-color)"],
         series: [
-            { 
-                name: "Count", 
+            {
+                name: "Count",
                 colorByPoint: true,
                 data: MembersStatistics.map(v => ({
                     name: v.name,

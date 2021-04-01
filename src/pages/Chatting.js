@@ -3,13 +3,14 @@ import SockJsClient from "react-stomp";
 import styled from "styled-components";
 import CardWrap from "components/CardBox";
 import { SERVER_URI } from "constants/index";
-import { header } from "utils/HttpHandler";
+import { header } from "utils/httpHandler";
 import { useDispatch, useSelector } from "react-redux";
 import { LOAD_MESSAGE_HISTORY_REQUEST, ADD_CHAT_MESSAGE } from "store/modules/chat";
 import ChatMessage from "components/ChatMessage";
 import ChatMember from "components/ChatMember";
 import { Input, Badge, Button } from "antd";
 import { UserOutlined, SendOutlined } from "@ant-design/icons";
+import SEO from "components/SEO";
 
 const { Search } = Input;
 
@@ -95,6 +96,7 @@ const Chatting = props => {
 
     return (
         <>
+            <SEO title="채팅" />
             {chatMemberLayerOpen && <ChatMember setLayerOpen={handleLayerOpen} roomId={roomId} />}
 
             <CardWrap
@@ -125,7 +127,7 @@ const Chatting = props => {
 
                 <ChatMessageWrap>
                     {chatMessages.map((message, i) => (
-                        <ChatMessage key={i} isSelfMessage={accountId === message.sender.accountId} {...message} />
+                        <ChatMessage key={i} isSelfMessage={accountId === message.sender?.accountId} {...message} />
                     ))}
                     <span ref={$messageList} />
                 </ChatMessageWrap>

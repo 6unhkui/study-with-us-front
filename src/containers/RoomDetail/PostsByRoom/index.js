@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { LOAD_POSTS_REQUEST } from "store/modules/post";
 import PostCard from "components/PostCard";
-import Pagination from "utils/Pagination";
-import infiniteScroll from "utils/InfiniteScroll";
+import Pagination from "utils/pagination";
+import infiniteScroll from "utils/infiniteScroll";
 
 import { Input, List } from "antd";
 

@@ -15,7 +15,8 @@ import Loading from "components/Loading";
 import { useTabs } from "hooks/useTabs";
 import { Redirect } from "react-router-dom";
 import { Row, Col, Card, message } from "antd";
-import loadFile from "utils/LoadFile";
+import loadFile from "utils/loadFile";
+import SEO from "components/SEO";
 
 class TabItem {
     constructor(tab, content) {
@@ -32,8 +33,9 @@ const RoomDetailPage = props => {
         loadRoomDetailError,
         roomDetail,
         joinedRoom,
-        roomDetail: { coverImage, isMember, unlimited, joinCount, maxCount }
+        roomDetail: { name, description, coverImage, isMember, unlimited, joinCount, maxCount }
     } = useSelector(state => state.room);
+    const coverImageUrl = loadFile(coverImage, "cover");
 
     const tabItems = [
         new TabItem("출석 체크", <AttendanceCheck {...props} />),
@@ -74,8 +76,9 @@ const RoomDetailPage = props => {
     }
     return (
         <div className="bg-gray">
+            <SEO title={name} image={{ url: coverImageUrl }} description={description} />
             <CoverWrap className="bg-gray">
-                <img src={loadFile(coverImage, "cover")} alt="cover_image" className={coverImage && "cover"} />
+                <img src={coverImageUrl} alt="cover_image" className={coverImage && "cover"} />
             </CoverWrap>
 
             <div className="container">

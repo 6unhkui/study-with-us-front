@@ -9,7 +9,8 @@ import Card from "components/RoomCard";
 import { Divider, List, Typography } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { BannerSlide, NowStartBanner } from "containers/Main";
-import Pagination from "utils/Pagination";
+import Pagination from "utils/pagination";
+import SEO from "components/SEO";
 
 const { Title } = Typography;
 
@@ -55,6 +56,7 @@ const Main = () => {
 
     return (
         <>
+            <SEO />
             <BannerSlide />
             <div className="container" style={{ marginTop: "3rem" }}>
                 <SearchWrap>
@@ -102,7 +104,7 @@ export default Main;
 
 const SearchWrap = styled.div`
     margin-top: 3rem;
-    border: 2px solid var(--border-gray);
+    border: 1px solid var(--border-gray);
     overflow: hidden;
     height: 3.4rem;
     margin: 0 auto 1rem auto;

@@ -6,13 +6,15 @@ import FileSaver from "file-saver";
 import { useDispatch, useSelector } from "react-redux";
 import { LOAD_POST_DETAIL_REQUEST, DELETE_POST_REQUEST } from "store/modules/post";
 import { useHistory } from "react-router-dom";
-import { bytesToSize } from "utils/File";
+import { bytesToSize } from "utils/file";
 import CardWrap from "components/CardBox";
 import Comments from "containers/PostView/Comments";
-import loadFile from "utils/LoadFile";
+import loadFile from "utils/loadFile";
 
 import { Divider, Dropdown, Menu, Typography, List, Modal } from "antd";
 import { EllipsisOutlined, DeleteOutlined, EditOutlined, PaperClipOutlined } from "@ant-design/icons";
+import SEO from "components/SEO";
+import { htmlTagRegExp } from "utils/regularExpression";
 
 const { Title } = Typography;
 
@@ -77,6 +79,7 @@ const PostView = props => {
 
     return (
         <CardWrap pageHeader={{ title: postDetail?.roomName, backUrl: `/room/${postDetail.roomId}` }}>
+            <SEO title={postDetail?.roomName} description={postDetail?.content?.replace(htmlTagRegExp, "").slice(0, 50)} />
             <Title level={2}>{postDetail.title}</Title>
 
             {isWriter && (

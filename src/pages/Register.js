@@ -4,6 +4,7 @@ import RegisterForm from "containers/Register/RegisterForm";
 import Success from "containers/Register/Success";
 
 import CardWrap from "components/CardBox";
+import SEO from "components/SEO";
 
 export default function RegisterPage() {
     const { t } = useTranslation();
@@ -11,8 +12,11 @@ export default function RegisterPage() {
     const [user, setUser] = useState({ name: "" });
 
     return (
-        <CardWrap title={t("auth.createAccount")} size="small">
-            {isSuccess ? <Success user={user} /> : <RegisterForm setIsSuccess={setIsSuccess} setUser={setUser} />}
-        </CardWrap>
+        <>
+            <SEO title="Register" />
+            <CardWrap title={t("auth.createAccount")} size="small">
+                {isSuccess ? <Success user={user} /> : <RegisterForm setIsSuccess={setIsSuccess} setUser={setUser} />}
+            </CardWrap>
+        </>
     );
 }

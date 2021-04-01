@@ -33,6 +33,7 @@
         "react/no-array-index-key": "warn",
         "no-unused-vars": "warn",
         "camelcase": ["error", { "ignoreImports": true, "ignoreDestructuring": true, "properties": "never" }],
-        "class-methods-use-this": "off"
+        "class-methods-use-this": "off",
+        "no-underscore-dangle": "off"
     }
 }
