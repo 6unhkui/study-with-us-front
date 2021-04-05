@@ -20,13 +20,13 @@ const SocialLogin = () => {
     return (
         <SocialLoginWrap>
             <Divider plain>Log In With</Divider>
-            {OAUTH_PROVIDER.map((provider, i) => (
-                <ButtonWrap key={i}>
+            <ButtonWrap>
+                {OAUTH_PROVIDER.map((provider, i) => (
                     <Button onClick={socialLoginHandler.bind(null, provider)} className={`social ${provider.toLowerCase()}`}>
                         <img src={socialLogo[provider]} alt={provider} /> {provider}
                     </Button>
-                </ButtonWrap>
-            ))}
+                ))}
+            </ButtonWrap>
         </SocialLoginWrap>
     );
 };
@@ -38,12 +38,12 @@ const SocialLoginWrap = styled.div`
     text-align: center;
 `;
 
-const ButtonWrap = styled.span`
-    &:not(:first-child) {
-        margin-right: 0.4rem;
-    }
-
+const ButtonWrap = styled.div`
     Button.social {
+        &:not(:first-child) {
+            margin-left: 0.4rem;
+        }
+
         &.google {
             &:hover {
                 color: var(--social-google);

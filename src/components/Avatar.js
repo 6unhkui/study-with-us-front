@@ -18,7 +18,7 @@ export default function Avater({ size, style, showName, subText, user, loading }
                     backgroundColor: !profileImg && name ? stringToColor(name) : "initial",
                     ...style
                 }}
-                alt="referrerPolicy='no-referrer'"
+                alt={name}
                 className={subText && "include-subtext"}
             >
                 {loading ? <LoadingOutlined spin /> : name.charAt(0).toLocaleUpperCase()}

@@ -17,7 +17,7 @@ const BannerSlide = () => (
         <Carousel autoplay>
             {banners.map((banner, i) => (
                 <BannerImage background={banner.backgroundColor} key={i} images={banner.images}>
-                    <img alt="banner" src={banner.images[0]} />
+                    <img alt="banner" src={banner.images[0]} width={1194} height={400} />
                 </BannerImage>
             ))}
         </Carousel>
@@ -32,15 +32,17 @@ const BannerImage = styled.div`
     img {
         margin: 0 auto;
         width: 100%;
+        object-fit: cover;
+
         content: url(${props => props.images[1]});
 
         ${breakpoint("tablet")`
-        content: url(${props => props.images[0]});
-    `}
+            content: url(${props => props.images[0]});
+        `}
 
         ${breakpoint("desktop")`
-        width: initial;
-    `}
+            width: initial;
+        `}
     }
 `;
 

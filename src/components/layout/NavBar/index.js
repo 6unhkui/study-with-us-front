@@ -69,7 +69,7 @@ const NavBar = props => {
         <nav className="header-wrap">
             <span className="logo-wrap">
                 <Link to="/">
-                    <img src={Logo} className="logo" alt="logo" />
+                    <img src={Logo} className="logo" alt="logo" width={144} height={30} />
                 </Link>
             </span>
             <div className="gnb-wrap">

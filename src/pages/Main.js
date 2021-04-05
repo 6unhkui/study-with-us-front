@@ -8,9 +8,10 @@ import CategorySlide from "containers/CategorySlide";
 import Card from "components/RoomCard";
 import { Divider, List, Typography } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { BannerSlide, NowStartBanner } from "containers/Main";
+import { BannerSlide, StartNowBanner } from "containers/Main";
 import Pagination from "utils/pagination";
 import SEO from "components/SEO";
+import { useTranslation } from "react-i18next";
 
 const { Title } = Typography;
 
@@ -18,6 +19,7 @@ const initPagination = new Pagination(1, 3, "ASC");
 Object.freeze(initPagination);
 
 const Main = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const history = useHistory();
     const { popularRooms, recentlyCreatedRooms } = useSelector(state => state.room);
@@ -38,8 +40,8 @@ const Main = () => {
     }, [dispatch]);
 
     const recommendRooms = [
-        { title: "지금, 인기 스터디방", data: popularRooms },
-        { title: "신규 스터디방", data: recentlyCreatedRooms }
+        { title: t("main.popularRooms"), data: popularRooms },
+        { title: t("main.recentlyCreatedRooms"), data: recentlyCreatedRooms }
     ];
 
     const handleChangeSearchValue = useCallback(e => {
@@ -62,7 +64,7 @@ const Main = () => {
                 <SearchWrap>
                     <input
                         type="text"
-                        placeholder="무엇을 공부하시나요?"
+                        placeholder={t("main.searchInput")}
                         onChange={handleChangeSearchValue}
                         onKeyDown={e => {
                             if (e.key === "Enter") {
@@ -77,8 +79,8 @@ const Main = () => {
                 <CategorySlide />
 
                 <Divider />
-                {recommendRooms.map(section => (
-                    <div style={{ marginTop: "4rem" }} key={section.title}>
+                {recommendRooms.map((section, i) => (
+                    <div style={{ marginTop: "4rem" }} key={i}>
                         <Title level={3} style={{ marginBottom: "1rem" }}>
                             {section.title}
                         </Title>
@@ -86,7 +88,7 @@ const Main = () => {
                             grid={{ gutter: 20, xs: 1, sm: 1, md: 2, lg: 2, column: 3 }}
                             dataSource={section.data}
                             renderItem={item => (
-                                <List.Item>
+                                <List.Item key={item.roomId}>
                                     <Card {...item} />
                                 </List.Item>
                             )}
@@ -95,7 +97,7 @@ const Main = () => {
                 ))}
             </div>
 
-            <NowStartBanner />
+            <StartNowBanner />
         </>
     );
 };

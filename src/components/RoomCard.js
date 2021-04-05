@@ -17,7 +17,7 @@ const RoomCard = ({ roomId, category, coverImage, name, description, manager, jo
                 className="light-primary-border"
                 cover={
                     <div className="cover">
-                        <img alt="cover" src={loadFile(coverImage, "cover")} />
+                        <img alt="cover" src={loadFile(coverImage, "cover")} width={585} height={180} />
                     </div>
                 }
             >

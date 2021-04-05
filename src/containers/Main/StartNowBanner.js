@@ -4,8 +4,10 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { RightOutlined } from "@ant-design/icons";
 import breakpoint from "styled-components-breakpoint";
+import { useTranslation } from "react-i18next";
 
-const NowStartBanner = () => {
+const StartNowBanner = () => {
+    const { t } = useTranslation();
     const history = useHistory();
 
     const handleButtonClick = useCallback(() => {
@@ -17,20 +19,16 @@ const NowStartBanner = () => {
     return (
         <SubBanner>
             <div className="container content">
-                <div className="title">
-                    지금 스터디방을 만들어,
-                    <br />
-                    성장을 함께할 메이트를 모집해보세요!
-                </div>
+                <div className="title">{t("main.startNow")}</div>
                 <Button type="primary" onClick={handleButtonClick}>
-                    지금 스터디방 만들기 <RightOutlined />
+                    {t("main.startBtn")} <RightOutlined />
                 </Button>
             </div>
         </SubBanner>
     );
 };
 
-export default NowStartBanner;
+export default StartNowBanner;
 
 const SubBanner = styled.div`
     margin-top: 4rem;

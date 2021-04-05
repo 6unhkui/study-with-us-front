@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Avatar from "components/Avatar";
 import { Typography, Divider } from "antd";
 import { CommentOutlined, PaperClipOutlined } from "@ant-design/icons";
+import { htmlTagRegExp } from "utils/regularExpression";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -21,6 +22,7 @@ const PostCard = ({
     showRoomName,
     roomName
 }) => {
+    const extractTextFromContent = content?.replace(htmlTagRegExp, "").trim();
     const thumbnailSection = (
         <ThumbnailWrap>
             <img alt="thumbnail" src={thumbnail} />
@@ -50,9 +52,9 @@ const PostCard = ({
                         </Title>
                     </Paragraph>
 
-                    {content && content.replace(/(<([^>]+)>)/gi, "").trim().length > 0 && (
+                    {extractTextFromContent && extractTextFromContent.length > 0 && (
                         <Paragraph ellipsis={{ rows: 3 }} style={{ margin: 0 }}>
-                            <Text type="secondary">{ReactHtmlParser(content.replace(/(<([^>]+)>)/gi, "").trim())}</Text>
+                            <Text type="secondary">{ReactHtmlParser(extractTextFromContent)}</Text>
                         </Paragraph>
                     )}
                 </ContentWrap>

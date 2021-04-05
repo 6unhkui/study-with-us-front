@@ -11,18 +11,16 @@ const Login = props => {
     const { t } = useTranslation();
 
     return (
-        <>
+        <CardWrap title={t("auth.login")} size="small">
             <SEO title="Login" />
-            <CardWrap title={t("auth.login")} size="small">
-                <LoginForm {...props} />
+            <LoginForm {...props} />
 
-                <RegisterWrap>
-                    <Link to="/register">{t("auth.createAccount")}</Link>
-                </RegisterWrap>
+            <RegisterWrap>
+                <Link to="/register">{t("auth.createAccount")}</Link>
+            </RegisterWrap>
 
-                <SocialLogin />
-            </CardWrap>
-        </>
+            <SocialLogin />
+        </CardWrap>
     );
 };
 

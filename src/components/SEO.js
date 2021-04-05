@@ -4,8 +4,8 @@ import { Helmet } from "react-helmet";
 import { SITE_META } from "constants/index";
 
 const locales = {
-    en: "en_US",
-    ko: "ko_KR"
+    en: "en",
+    ko: "ko"
 };
 
 export default function SEO({ title, description, locale, canonical, image, type }) {

@@ -6,7 +6,14 @@
     "navbar": {
         "myStudyRooms": "나의 스터디방",
         "newsFeed": "새글 피드",
-        "searchStudyRoom": "스터디룸 찾기"
+        "searchStudyRoom": "검색"
+    },
+    "main": {
+        "searchInput": "무엇을 공부하고 있나요?",
+        "popularRooms": "지금, 인기 스터디방",
+        "recentlyCreatedRooms": "신규 스터디방",
+        "startNow": "지금 스터디방을 만들어,\n성장을 함께할 메이트를 모집해보세요!",
+        "startBtn": "시작하기"
     },
     "auth": {
         "login": "로그인",

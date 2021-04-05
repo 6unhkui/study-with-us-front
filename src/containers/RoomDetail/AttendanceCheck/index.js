@@ -68,8 +68,8 @@ const Index = props => {
                     loading={loadingMembersAttendance}
                     grid={{ gutter: 10, xs: 1, sm: 2, md: 2, lg: 3 }}
                     dataSource={membersAttendance && membersAttendance.filter(v => v.attendance)}
-                    renderItem={(item, i) => (
-                        <List.Item key={i}>
+                    renderItem={item => (
+                        <List.Item key={item.memberId}>
                             <div className="card-wrap">
                                 <AvatarWrap>
                                     <Avatar user={{ ...item }} showName />

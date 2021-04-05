@@ -1,3 +1,4 @@
+import "./assets/css/index.less";
 import React, { Suspense } from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { BackTop } from "antd";
@@ -6,7 +7,6 @@ import { CommonRouter } from "routes";
 import { enableES5 } from "immer";
 import { NavBar, Footer } from "./components/layout";
 
-import "./assets/css/index.less";
 import "./i18n";
 
 enableES5();

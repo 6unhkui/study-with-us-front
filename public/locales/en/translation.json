@@ -6,7 +6,14 @@
     "navbar": {
         "myStudyRooms": "My Study Rooms",
         "newsFeed": "News Feed",
-        "searchStudyRoom": "Search Study Room"
+        "searchStudyRoom": "Search"
+    },
+    "main": {
+        "searchInput": "What do you learn?",
+        "popularRooms": "Popular Study Rooms",
+        "recentlyCreatedRooms": "Recently Created Study Rooms",
+        "startNow": "Let's make a study room now.\nAnd recruit a mate to share your growth!",
+        "startBtn": "Getting Started"
     },
     "auth": {
         "login": "Log In",
