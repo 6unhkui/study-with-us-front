@@ -21,7 +21,12 @@ Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 정보
 <!-- 자세한 기능 설명과 구현 내용은 [기술 블로그]()에 포스팅 해두었습니다. -->
 
 ## 🔧 Tech Stack
-Javascript, React, React Router, React i18n, Less, styled-components, Redux & Redux Saga, Ckeditor5, react-highcharts, craco, Ant Design UI
+- Javascript
+- React
+- Less, styled-components
+- Redux & Redux Saga
+- React Router, React i18n, Ckeditor5, React Highcharts, craco
+- UI Library : Ant Design UI
 - Web Server : Nginx
     <br/><br/>
 
