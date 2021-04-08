@@ -140,7 +140,7 @@ saga 파일을 모아둔 디렉토리입니다.
 
 ##### `httpHandler.js`
 
-HTTP 통신에 axios 라이브러리를 사용하고 있습니다. axios 인스턴스를 생성하여 API Server URL을 baseURL로 설정하고, 이 인스턴스를 프로젝트 전반에서 사용하도록 하였습니다.<br/>
+비동기 HTTP 통신을 위한 라이브러리로 axios를 사용하고 있습니다. axios 인스턴스를 생성하여 API Server URL을 baseURL로 설정하고, 이 인스턴스를 프로젝트 전반에서 사용하도록 하였습니다.<br/>
 또한 인스턴스에 인터셉터를 추가해 Request 시 요청을 가로채 header에 JWT를 넣어주고, Response를 가로채 응답 코드가 401(Unauthorized)일 경우 로그인 페이지로 redirect 하도록 구현하였습니다. 401 코드 값은 만료된 토큰이 전달 됐을 때 반환되는 상태 코드 값입니다.
 
 #### `.env` `.env.production`
