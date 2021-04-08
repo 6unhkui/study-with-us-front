@@ -20,20 +20,9 @@ Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 정보
 <br/>
 <!-- 자세한 기능 설명과 구현 내용은 [기술 블로그]()에 포스팅 해두었습니다. -->
 
-## 💻 Dev Environment
-
--   OS : Mac OS, CentOS 7
--   Tool : Visual Studio Code, Git
-    <br/><br/>
-
 ## 🔧 Tech Stack
-
--   HTML5, CSS3, Javascript (ES6+)
--   React
--   Redux, Redux Saga
--   Less, css-in-js (styled-components)
--   UI Library : Ant Design UI
--   Web Server : Nginx
+Javascript, React, React Router, React i18n, Less, styled-components, Redux & Redux Saga, Ckeditor5, react-highcharts, craco, Ant Design UI
+- Web Server : Nginx
     <br/><br/>
 
 ## 🗂 Folder Structure
