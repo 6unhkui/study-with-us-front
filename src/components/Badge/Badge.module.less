@@ -1,0 +1,20 @@
+@import "src/styles/common.module.less";
+
+.badge {
+    width: fit-content;
+    border-radius: 4px;
+    padding: 0.3em 0.5em;
+    font-size: 0.8em;
+    font-weight: 600;
+    letter-spacing: 1px;
+
+    &.primary {
+        background-color: @primary-color;
+        color: #fff;
+    }
+
+    &.secondary {
+        background-color: @bg-color-gray;
+        color: @primary-color;
+    }
+}

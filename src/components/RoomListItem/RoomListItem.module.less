@@ -1,0 +1,74 @@
+@import "src/styles/common.module.less";
+
+@box-padding: 16px;
+
+.container {
+    cursor: pointer;
+    position: relative;
+    // border: 1px solid @border-color-gray;
+    box-shadow: rgba(78, 78, 78, 0.1) 0px 1px 0px 0px;
+    border: 1px solid #eaeaea;
+    border-radius: @border-radius-base;
+
+    .transitionOpacityOnHover;
+}
+
+.categoryBadge {
+    position: absolute;
+    top: @box-padding;
+    left: @box-padding;
+    font-size: 1rem;
+}
+
+.coverImage {
+    height: 180px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: @border-radius-base @border-radius-base 0 0;
+    }
+}
+
+.content {
+    padding: @box-padding @box-padding;
+}
+
+.name {
+    font-size: 1rem;
+    margin-bottom: 4px;
+    .ellipsis;
+}
+
+.description {
+    color: @font-color-gray;
+    .ellipsis;
+}
+
+.memberArea {
+    color: @font-color-black;
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+
+    .managerName {
+        margin-left: 6px;
+    }
+}
+
+.memberCountWrapper {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+
+    .memberCount {
+        margin-left: 6px;
+        letter-spacing: 1px;
+        font-size: 0.8rem;
+    }
+}

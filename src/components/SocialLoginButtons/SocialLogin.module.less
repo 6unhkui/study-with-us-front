@@ -1,0 +1,33 @@
+@import "src/styles/common.module.less";
+
+.wrapper {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: auto auto;
+    column-gap: 10px;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    .transitionOpacityOnHover;
+
+    // &:not(:last-child) {
+    //     margin-right: 10px;
+    // }
+
+    &.google {
+        border: 1px solid @social-google;
+        color: @social-google;
+    }
+
+    &.naver {
+        border: 1px solid @social-naver;
+        color: @social-naver;
+    }
+}
+
+.icon {
+    width: 1rem;
+    margin-right: 6px;
+}

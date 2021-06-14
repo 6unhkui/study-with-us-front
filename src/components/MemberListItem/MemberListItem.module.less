@@ -1,0 +1,38 @@
+@import "src/styles/common.module.less";
+
+.memberArea {
+    width: 100%;
+    padding: 6px 10px;
+    display: grid;
+    column-gap: 10px;
+    grid-template-columns: auto auto 1fr auto;
+    align-items: center;
+    grid-template-areas:
+        "avatar name role btn"
+        "avatar email email btn";
+
+    .avatar {
+        grid-area: avatar;
+    }
+
+    .name {
+        position: relative;
+        grid-area: name;
+        font-weight: 500;
+        top: 2px;
+    }
+
+    .role {
+        grid-area: role;
+    }
+
+    .email {
+        grid-area: email;
+        color: @font-color-gray;
+    }
+
+    .btn {
+        grid-area: btn;
+        color: @font-color-gray;
+    }
+}

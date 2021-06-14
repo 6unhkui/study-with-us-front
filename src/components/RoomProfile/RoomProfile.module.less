@@ -1,0 +1,82 @@
+@import "src/styles/common.module.less";
+
+.wrapper {
+    .cardWrapping;
+}
+
+.infoContainer {
+    padding: 40px 40px 20px;
+
+    @media @tablet-screen, @mobile-screen {
+        padding: 30px;
+    }
+
+    .mainInfo {
+        display: grid;
+        grid-template-columns: 1fr auto;
+
+        .category {
+            font-size: 1rem;
+        }
+
+        .name {
+            font-size: @font-size-x-x-lg;
+            margin: 10px 0;
+
+            @media @tablet-screen, @mobile-screen {
+                font-size: @font-size-x-lg;
+            }
+        }
+
+        .description {
+            color: @font-color-gray;
+        }
+    }
+
+    .metadata {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+
+        dt {
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 0.2rem;
+            color: @font-color-gray;
+            opacity: 0.6;
+        }
+
+        dd {
+            font-size: 1.2rem;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            column-gap: 10px;
+            align-items: center;
+
+            @media @tablet-screen, @mobile-screen {
+                font-size: 1rem;
+            }
+
+            .text {
+                position: relative;
+                top: 2px;
+            }
+        }
+    }
+}
+
+.navConatiner {
+    color: @font-color-black;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    text-align: center;
+    font-size: 1rem;
+    padding: 16px 0;
+
+    a {
+        font-weight: 600;
+        color: @font-color-black;
+    }
+}

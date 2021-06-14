@@ -1,0 +1,28 @@
+@height: 80px;
+
+.wrapper {
+    margin: 20px 0;
+    display: grid;
+    grid-template-columns: 1fr 100px;
+    column-gap: 16px;
+    height: @height;
+    max-height: @height;
+
+    &.includeAvatar {
+        grid-template-columns: auto 1fr 100px;
+    }
+}
+
+.textArea {
+    margin: 0;
+    width: 100%;
+
+    textarea {
+        height: @height !important;
+        min-height: @height;
+    }
+}
+
+.submitBtn {
+    height: 100%;
+}

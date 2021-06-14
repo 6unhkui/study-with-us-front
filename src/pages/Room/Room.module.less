@@ -1,0 +1,43 @@
+@import "src/styles/common.module.less";
+
+.container {
+    background-color: @bg-color-gray;
+    padding-bottom: 40px;
+}
+
+.coverImage {
+    height: 400px;
+    object-fit: cover;
+    width: 100%;
+    background: #fff;
+
+    @media @tablet-screen {
+        height: 200px;
+    }
+
+    @media @mobile-screen {
+        height: 150px;
+    }
+}
+
+.contentWrapper {
+    .contentWrapping;
+    display: flex;
+    flex-direction: column;
+    margin-top: -180px;
+
+    @media @tablet-screen {
+        margin-top: -150px;
+    }
+
+    @media @mobile-screen {
+        margin-top: -100px;
+    }
+}
+
+.content {
+    .cardWrapping;
+    margin-top: 30px;
+    padding: 30px;
+    min-height: 400px;
+}

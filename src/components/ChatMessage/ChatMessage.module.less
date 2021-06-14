@@ -1,0 +1,69 @@
+@import "src/styles/common.module.less";
+
+.botMessage {
+    display: flex;
+    justify-content: center;
+    background-color: @bg-color-gray;
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: @border-radius-base;
+    padding: 4px 10px;
+    color: @primary-color;
+}
+
+.selfMessage {
+    display: grid;
+    justify-content: right;
+    column-gap: 6px;
+    grid-template-areas:
+        "empty bubble"
+        "date bubble";
+
+    .date {
+        grid-area: date;
+        color: @font-color-gray;
+    }
+
+    .bubble {
+        grid-area: bubble;
+        background-color: @primary-color;
+        color: #fff;
+        border-radius: 8px 2px 8px 8px;
+        padding: 8px 10px;
+    }
+}
+
+.message {
+    display: grid;
+    justify-content: left;
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 2px;
+    grid-template-areas:
+        "avatar username empty"
+        "avatar bubble date";
+
+    .avatar {
+        grid-area: avatar;
+    }
+
+    .username {
+        grid-area: username;
+        color: @font-color-gray;
+    }
+
+    .bubble {
+        grid-area: bubble;
+        border-radius: 2px 8px 8px 8px;
+        border: 1px solid @border-color-gray;
+        padding: 8px 10px;
+    }
+
+    .date {
+        grid-area: date;
+        color: @font-color-gray;
+        height: 100%;
+        display: flex;
+        align-items: flex-end;
+    }
+}

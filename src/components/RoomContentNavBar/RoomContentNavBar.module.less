@@ -1,0 +1,55 @@
+@import "src/styles/common.module.less";
+
+.wrapper {
+    margin-bottom: 40px;
+}
+
+.navbar {
+    // margin-bottom: 10px;
+    // display: grid;
+    // grid-template-columns: 1fr 1fr;
+}
+
+.menuContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 10px;
+    column-gap: 2px;
+}
+
+.menuItem {
+    display: flex;
+    justify-content: center;
+
+    a {
+        font-size: 1rem;
+        color: @font-color-black;
+        position: relative;
+        font-weight: 500;
+        width: 14%;
+        min-width: fit-content;
+        text-align: center;
+        width: 100%;
+
+        &.active,
+        &:hover {
+            color: @primary-color;
+        }
+
+        &:after {
+            position: absolute;
+            transition: width 0.1s ease-out, left 0.1s ease-out, border-color 0.1s ease-out;
+            bottom: -12px;
+            left: 50%;
+            width: 0;
+            border-top: 2px solid @primary-color;
+            content: "";
+        }
+
+        &:hover:after,
+        &.active:after {
+            width: 100%;
+            left: 0;
+        }
+    }
+}

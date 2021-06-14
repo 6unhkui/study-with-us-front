@@ -1,0 +1,122 @@
+@import "src/styles/common.module.less";
+
+.title {
+    font-size: @font-size-x-lg;
+    .ellipsis(1, @font-size-x-lg);
+
+    @media @tablet-screen {
+        font-size: @font-size-lg;
+        .ellipsis(1, @font-size-lg);
+    }
+
+    @media @mobile-screen {
+        font-size: @font-size-md;
+        .ellipsis(1, @font-size-md);
+    }
+}
+
+.authorArea {
+    display: grid;
+    column-gap: 10px;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    margin-bottom: 20px;
+    grid-template-areas:
+        "avatar name buttons"
+        "avatar date buttons";
+
+    .avatar {
+        grid-area: avatar;
+    }
+
+    .name {
+        grid-area: name;
+        font-weight: 500;
+    }
+
+    .date {
+        grid-area: date;
+        color: @font-color-gray;
+    }
+
+    .buttons {
+        grid-area: buttons;
+    }
+}
+
+.content {
+    margin-top: 20px;
+    margin-bottom: 40px;
+
+    h2 {
+        font-size: @font-size-x-x-lg;
+        margin: 0 !important;
+    }
+
+    h3 {
+        font-size: @font-size-lg;
+        margin: 0 !important;
+    }
+
+    h4 {
+        font-size: @font-size-md;
+        margin: 0 !important;
+    }
+
+    a {
+        text-decoration: underline;
+    }
+
+    p {
+        margin: 0 !important;
+    }
+
+    i {
+        font-style: italic;
+    }
+
+    figure {
+        width: fit-content;
+        margin: 0 auto;
+
+        figcaption {
+            font-size: 0.8rem;
+            padding: 8px 14px;
+            background-color: @bg-color-gray;
+            text-align: center;
+        }
+    }
+
+    img {
+        display: block;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    blockquote {
+        border-left: 4px solid @border-color-gray;
+        padding-left: 14px;
+        font-style: italic;
+        color: @font-color-gray;
+        font-weight: bold;
+
+        p {
+            padding: 8px 0;
+        }
+    }
+
+    ul,
+    li {
+        list-style: initial;
+    }
+
+    ul {
+        padding-left: 20px;
+    }
+}
+
+.fileListContainer {
+    margin: 30px 0;
+    display: grid;
+    row-gap: 10px;
+}

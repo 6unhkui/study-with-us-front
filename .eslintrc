@@ -1,0 +1,56 @@
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "airbnb",
+        "airbnb/hooks",
+        "plugin:prettier/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["react", "@typescript-eslint", "prettier"],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true,
+            "tsx": true,
+            "modules": true
+        },
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    "rules": {
+        "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", "ts", "tsx"] }],
+        "@typescript-eslint/explicit-function-return-type": [0, { "allowTypedFunctionExpressions": true }],
+        "react/state-in-constructor": 0,
+        "import/extensions": 0,
+        "jsx-a11y/click-events-have-key-events": 0,
+        "jsx-a11y/no-static-element-interactions": 0,
+        "react/jsx-props-no-spreading": 0,
+        "no-unused-expressions": 0,
+        "jsx-a11y/anchor-is-valid": 0,
+        "no-nested-ternary": 0,
+        "react/static-property-placement": 0,
+        "object-curly-newline": 0,
+        "@typescript-eslint/no-empty-interface": 0,
+        "no-use-before-define": 0,
+        "react/prop-types": 0,
+        "import/no-unresolved": 0,
+        "import/no-extraneous-dependencies": 0,
+        "import/prefer-default-export": 0,
+        "import/no-absolute-path": 0,
+        "no-bitwise": 0,
+        "@typescript-eslint/no-var-requires": 0,
+        "no-unused-vars": "warn",
+        "allowForLoopAfterthoughts": 0,
+        "no-param-reassign": "off"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
+}

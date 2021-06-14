@@ -1,0 +1,76 @@
+{
+    "common": {
+        "goToMain": "메인으로",
+        "save": "저장하기"
+    },
+    "navbar": {
+        "item": {
+            "myrooms": "나의 스터디방",
+            "createroom": "스터디방 만들기",
+            "newsfeed": "새글 피드",
+            "search": "검색"
+        }
+    },
+    "main": {
+        "mainBanner": {
+            "1": {
+                "label": "우리 같이 공부해요! 😎",
+                "title": "함께 공부하고 싶은\n스터디 메이트를 찾습니다!",
+                "subTitle": "스터디위드어스에서는 같은 공부를 하는 스터디원들과\n지식을 공유하고 출석 체크를 통해 공부 의지를 다질 수 있습니다."
+            },
+            "2": {
+                "label": "공부하다가 막히는 부분ㅠㅠ 💦",
+                "title": "혼자 고민하지 말고\n스터디원들에게 물어봐요!",
+                "subTitle": "같이 고민하고 의견을 공유할 좋은 스터디 메이트들이 옆에 있습니다.\n의견을 나누고 함께 공유하면 지식은 더 깊어진답니다."
+            }
+        },
+        "searchInput": "무엇을 공부하고 있나요?",
+        "popularRooms": "지금, 인기 스터디방",
+        "latestStudyRooms": "신규 스터디방",
+        "startNow": "지금 스터디방을 만들어,\n성장을 함께할 메이트를 모집해보세요!",
+        "startBtn": "시작하기"
+    },
+    "auth": {
+        "login": "로그인",
+        "logout": "로그아웃",
+        "rememberAccount": "계정 기억하기",
+        "createAccount": "계정 생성",
+        "name": "이름",
+        "email": "이메일",
+        "password": "비밀번호",
+        "confirmPassword": "비밀번호 확인",
+        "oldPassword": "기존 비밀번호",
+        "newPassword": "새로운 비밀번호",
+        "confirmNewPassword": "새로운 비밀번호 확인",
+        "duplicateAccountCheck": "중복 체크",
+        "pleaseDuplicateAccountCheck": "중복 체크를 진행해주세요.",
+        "isAvailableAccount": "사용 가능한 계정입니다.",
+        "isDuplicateAccount": "중복된 계정입니다.",
+        "AgreementOnTermsAndConditions": "회원가입 약관 및 개인정보 수집 동의 (필수)",
+        "forgotPassword": "비밀번호를 잊으셨나요?",
+        "resetPassword": "비밀번호 재설정",
+        "enterEmailToResetPassword": "비밀번호 재설정을 위한 이메일 계정을 입력하세요."
+    },
+    "mypage": {
+        "title": "반가워요,\n{{name}} 메이트!",
+        "editAccountSettings": {
+            "title": "계정 설정 관리",
+            "isSocialAccount": "소셜 로그인 계정입니다.",
+            "changeProfileInfo": "프로필 정보 변경",
+            "changePassword": "비밀번호 변경",
+            "deleteAccount": "계정 삭제",
+            "deleteAccountWarning": "스터디룸에 작성한 게시글은 식제되지 않습니다.\n삭제를 원한다면, 탈퇴전에 삭제를 진행해주세요.\n\n계정을 삭제하면 되돌릴 수 없습니다.\n정말 삭제하시겠습니까?",
+            "deleteAccountConfirm": "네, 삭제하겠습니다."
+        }
+    },
+    "validate": {
+        "email": "올바른 이메일 형식이 아닙니다.",
+        "password": "비밀번호는 영소대문자와 숫자, 특수문자(#?!@$%^&*-)를 각 1개 이상 포함한 6자리 이상이어야 합니다.",
+        "confirmPassword": "비밀번호가 일치하지 않습니다.",
+        "required": "{{name}}은(는) 반드시 입력해야 합니다."
+    },
+    "404": {
+        "title": "해당 페이지를 찾지 못했습니다.",
+        "subTitle": "주소가 잘못되었거나 더 이상 제공되지 않는 페이지입니다."
+    }
+}

@@ -1,0 +1,99 @@
+@import "src/styles/common.module.less";
+
+.wrapper {
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    padding: 18px 40px;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06);
+    background-color: #fff;
+
+    @media @tablet-screen, @mobile-screen {
+        .defaultSidePadding;
+    }
+}
+
+.logo {
+    @media @tablet-screen, @mobile-screen {
+        display: flex;
+        width: 100vw;
+        justify-content: center;
+    }
+}
+
+.navbar {
+    margin-left: 50px;
+
+    ul {
+        display: flex;
+        margin: 0;
+    }
+
+    @media @tablet-screen, @mobile-screen {
+        display: none;
+    }
+}
+
+.menuItem {
+    &:not(:last-child) {
+        margin-right: 34px;
+    }
+
+    a {
+        color: @font-color-black;
+        position: relative;
+        font-weight: 500;
+
+        &:hover,
+        &.active {
+            color: @primary-color;
+        }
+
+        &:after {
+            position: absolute;
+            transition: width 0.1s ease-out, left 0.1s ease-out, border-color 0.1s ease-out;
+            bottom: -12px;
+            left: 50%;
+            width: 0;
+            border-top: 2px solid @primary-color;
+            content: "";
+        }
+
+        &:hover:after,
+        &.active:after {
+            width: 100%;
+            left: 0;
+        }
+    }
+}
+
+.rightSide {
+    margin-left: auto;
+
+    .userArea {
+        margin-left: 20px;
+
+        .userProfile {
+            margin-right: 10px;
+        }
+    }
+
+    @media @tablet-screen, @mobile-screen {
+        display: none;
+    }
+}
+
+.hamburger {
+    margin-left: auto;
+    font-size: 1.4rem;
+    cursor: pointer;
+
+    @media @desktop-screen {
+        display: none;
+    }
+
+    @media @tablet-screen, @mobile-screen {
+        display: block;
+    }
+}

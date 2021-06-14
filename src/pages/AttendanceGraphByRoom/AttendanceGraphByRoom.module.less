@@ -1,0 +1,28 @@
+@import "src/styles/common.module.less";
+
+.datePicker {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: fit-content;
+    column-gap: 10px;
+    align-items: center;
+    margin: 0 auto;
+    margin-bottom: 30px;
+
+    .text {
+        font-weight: 600;
+    }
+}
+
+.graphWrapper {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    column-gap: 40px;
+
+    @media @mobile-screen {
+        grid-template-columns: 1fr;
+        column-gap: 0;
+        row-gap: 40px;
+    }
+}

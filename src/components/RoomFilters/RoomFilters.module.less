@@ -1,0 +1,26 @@
+@import "src/styles/common.module.less";
+
+.container {
+    display: flex;
+
+    @media @tablet-screen, @mobile-screen {
+        display: block;
+    }
+}
+
+.searchInput {
+    max-width: 400px;
+    margin-left: auto;
+
+    @media @tablet-screen, @mobile-screen {
+        display: block;
+        max-width: 100%;
+        margin-top: 10px;
+        margin-left: initial;
+    }
+}
+
+.categorySelectBox {
+    min-width: 200px;
+    margin-left: 10px;
+}

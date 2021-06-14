@@ -1,0 +1,59 @@
+@import "src/styles/common.module.less";
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    border: 1px solid @border-color-gray;
+    border-radius: 30px;
+    width: 40%;
+    padding: 8px 10px 8px 20px;
+
+    @media @mobile-screen, @tablet-screen {
+        width: 100%;
+    }
+}
+
+.input {
+    font-size: 1.4rem;
+    border: 0 none;
+    width: calc(100% - 50px);
+    padding: 0;
+
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    &::placeholder {
+        color: @font-color-gray;
+        font-weight: 500;
+        opacity: 0.3;
+    }
+}
+
+.searchBtn {
+    margin-left: auto;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background: @primary-color;
+    border-radius: 50%;
+    box-shadow: 0 5px 10px 0 rgb(202 183 236), 0 0 1px 0 rgb(173 161 197);
+    transition: all 0.5s;
+    border: 0;
+
+    .searchIcon {
+        color: #fff;
+        font-size: 1rem;
+    }
+
+    &:hover,
+    &:active {
+        background: @primary-light-color;
+        box-shadow: none;
+    }
+}

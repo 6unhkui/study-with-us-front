@@ -1,0 +1,31 @@
+@import "src/styles/common.module.less";
+
+.wrapper {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 10px;
+    align-items: center;
+
+    .emojiBtn {
+        font-size: 2rem;
+        color: @font-color-gray;
+        cursor: pointer;
+        transition: all 0.8s;
+
+        &:hover {
+            color: @primary-color;
+        }
+    }
+
+    .input {
+        input {
+            letter-spacing: 1px;
+        }
+    }
+}
+
+.emojiPicker {
+    position: absolute;
+    margin: 10px 0;
+}

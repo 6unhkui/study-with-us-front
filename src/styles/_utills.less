@@ -1,0 +1,92 @@
+@import "./_variables.less";
+
+@desktop-screen: ~"screen and (min-width: @{breakpoint-desktop})";
+@tablet-screen: ~"screen and (min-width: @{breakpoint-mobile}) and (max-width: @{breakpoint-desktop})";
+@mobile-screen: ~"screen and (max-width: @{breakpoint-mobile})";
+
+.contentWrapping {
+    margin: 0 auto;
+    max-width: @breakpoint-desktop;
+
+    @media @tablet-screen, @mobile-screen {
+        .defaultSidePadding;
+    }
+}
+
+.defaultSidePadding(@padding : 14px) {
+    padding-left: @padding;
+    padding-right: @padding;
+}
+
+.cardWrapping {
+    border-radius: @border-radius-base;
+    background-color: #fff;
+    border: 1px solid #f0f0f0;
+}
+
+.ellipsis(@line-cnt : 1, @line-height : 1.4rem) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: @line-cnt;
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+    line-height: @line-height;
+    height: @line-height * @line-cnt;
+}
+
+.transitionOpacityOnHover(@opacity : 0.5, @time : 0.4s) {
+    transition: opacity @time ease-in-out;
+
+    &:hover {
+        opacity: @opacity;
+    }
+}
+
+.primaryOutlineButton {
+    color: @primary-color;
+    border: 1px solid @primary-color;
+    transition: all 0.5s;
+
+    &:hover {
+        color: @primary-light-color;
+        border: 1px solid @primary-light-color;
+    }
+}
+
+.table {
+    @border: 1px solid rgba(0, 0, 0, 0.06);
+
+    table {
+        width: 100%;
+
+        tr {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            column-gap: 10px;
+            align-items: center;
+            border-bottom: @border;
+            padding: 20px;
+
+            &:first-child {
+                border-top: @border;
+            }
+
+            @media @mobile-screen {
+                grid-template-columns: 1fr;
+                row-gap: 6px;
+            }
+        }
+
+        th {
+            width: 200px;
+            text-align: left;
+            font-weight: 600;
+            margin: 0;
+
+            @media @tablet-screen {
+                width: 120px;
+            }
+        }
+    }
+}

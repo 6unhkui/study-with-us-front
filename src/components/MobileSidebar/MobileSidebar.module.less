@@ -1,0 +1,31 @@
+@import "src/styles/common.module.less";
+
+.sidebar {
+    @media @desktop-screen {
+        display: none;
+    }
+}
+
+.menuContainer {
+    display: grid;
+    row-gap: 18px;
+    margin-bottom: 50px;
+
+    .menuItem {
+        font-size: 1.1rem;
+
+        a {
+            color: @font-color-black;
+            font-weight: 400;
+
+            &.active {
+                font-weight: 700;
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+.languageSelectBox {
+    margin-top: 20px;
+}

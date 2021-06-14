@@ -1,0 +1,68 @@
+@import "src/styles/common.module.less";
+
+.userInfoArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .name {
+        font-size: @font-size-lg;
+        margin: 10px 0 0 0;
+    }
+
+    .account {
+        color: @font-color-gray;
+        display: grid;
+        row-gap: 10px;
+        justify-content: center;
+
+        .email {
+            margin-left: 6px;
+        }
+
+        .provider {
+            display: grid;
+            grid-template-columns: auto auto;
+            width: fit-content;
+            column-gap: 4px;
+        }
+    }
+
+    .profileImage {
+        position: relative;
+        cursor: pointer;
+
+        .uploadBtn {
+            display: none;
+        }
+
+        .cameraIcon {
+            font-size: 1.6rem;
+            color: #fff;
+        }
+
+        &:hover {
+            .uploadBtn {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: rgba(0, 0, 0, 0.5);
+                position: absolute;
+                top: 0px;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        }
+    }
+}
+
+.content {
+    max-width: 500px;
+    margin: 40px auto;
+
+    @media @mobile-screen {
+        margin: 20px auto;
+    }
+}

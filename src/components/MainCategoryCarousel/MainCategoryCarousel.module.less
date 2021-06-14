@@ -1,0 +1,21 @@
+@import "src/styles/common.module.less";
+
+.item {
+    flex: none;
+    cursor: pointer;
+    height: 60px;
+    width: calc(100% - 16px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: @primary-color;
+    margin: 10px 4px;
+    border: 1px solid @primary-light-color;
+    border-radius: 40px;
+    box-shadow: 0 5px 8px 0 rgb(243 240 249), 0 0 1px 0 rgb(223 217 234);
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        box-shadow: rgb(235 231 243) 0px 1px 0px;
+    }
+}

@@ -1,0 +1,19 @@
+@import "src/styles/common.module.less";
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+}
+
+.item {
+    width: fit-content;
+    &:not(:last-child) {
+        margin-bottom: 16px;
+    }
+}

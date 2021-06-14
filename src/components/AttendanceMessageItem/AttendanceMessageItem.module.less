@@ -1,0 +1,38 @@
+@import "src/styles/common.module.less";
+
+.item {
+    border: 1px solid @border-color-gray;
+    border-radius: @border-radius-base;
+    padding: 22px 14px;
+    text-align: center;
+
+    .message {
+        .ellipsis(1, 1.5rem);
+        margin: 8px 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .time {
+        color: @font-color-gray;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .username {
+        color: @font-color-gray;
+        margin-left: 4px;
+    }
+
+    .by {
+        color: @font-color-gray;
+        // font-weight: 800;
+        text-transform: lowercase;
+
+        font-family: Georgia, sans-serif;
+        font-style: italic;
+        // color: #bfbfbf;
+    }
+}

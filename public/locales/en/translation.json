@@ -1,0 +1,76 @@
+{
+    "common": {
+        "goToMain": "go to main",
+        "save": "Save"
+    },
+    "navbar": {
+        "item": {
+            "myrooms": "My Study Rooms",
+            "createroom": "Create Study Room",
+            "newsfeed": "News Feed",
+            "search": "Search"
+        }
+    },
+    "main": {
+        "mainBanner": {
+            "1": {
+                "label": "Let's study together! 😎",
+                "title": "Looking for a study mate\nto study with us!",
+                "subTitle": "In Study With Us, you can share knowledge with study members\nand strengthen your driving force through attendance check."
+            },
+            "2": {
+                "label": "If you have any difficulties while studying 💦",
+                "title": "Don't worry about it alone.\nAsk your study mates!",
+                "subTitle": "You have good study mates who can share your concerns and share your opinions.\nKnowledge grows when shared."
+            }
+        },
+        "searchInput": "What do you learn?",
+        "popularRooms": "Popular Study Rooms",
+        "latestStudyRooms": "Latest Study Rooms",
+        "startNow": "Let's make a study room now.\nAnd recruit a mate to share your growth!",
+        "startBtn": "Getting Started"
+    },
+    "auth": {
+        "login": "Log In",
+        "logout": "Log Out",
+        "rememberAccount": "Remember Account",
+        "createAccount": "Create Account",
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "oldPassword": "Old Password",
+        "newPassword": "New Password",
+        "confirmNewPassword": "Confirm New Password",
+        "duplicateAccountCheck": "Duplicate Check",
+        "pleaseDuplicateAccountCheck": "Please proceed with the duplicate account check.",
+        "isAvailableAccount": "This account is available.",
+        "isDuplicateAccount": "This account is duplicated",
+        "AgreementOnTermsAndConditions": "Agreement on Terms & Conditions and Personal Information Collection (required)",
+        "forgotPassword": "Forgot Password?",
+        "resetPassword": "Reset Password",
+        "enterEmailToResetPassword": "Enter your email to reset password"
+    },
+    "mypage": {
+        "title": "Hello,\n{{name}} mate!",
+        "editAccountSettings": {
+            "title": "Edit Account Settings",
+            "isSocialAccount": "This is a social login account.",
+            "changeProfileInfo": "Change Profile Infomation",
+            "changePassword": "Change Password",
+            "deleteAccount": "Delete Account",
+            "deleteAccountWarning": "The post you wrote in the study room will not be deleted.\nSo if you want to delete it, make sure you delete it before you leave.\n\nIf you delete an account, you can't activate it.\nAre you sure you're leaving?",
+            "deleteAccountConfirm": "Yes, I agree"
+        }
+    },
+    "validate": {
+        "email": "Must be a valid email",
+        "password": "Password must have at least 6 characters with at least one Capital letter or lower case letter and at least one number and special character(#?!@$%^&*-).",
+        "confirmPassword": "The two passwords that you entered do not match",
+        "required": "{{name}} is required"
+    },
+    "404": {
+        "title": "Page not found.",
+        "subTitle": "This URL is an invalid or unavailable page."
+    }
+}

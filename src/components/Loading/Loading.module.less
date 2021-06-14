@@ -1,0 +1,21 @@
+@import "src/styles/common.module.less";
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.page {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #ffffff70;
+        z-index: 999;
+    }
+
+    &.component {
+        min-height: 200px;
+    }
+}

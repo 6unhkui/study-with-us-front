@@ -1,0 +1,25 @@
+@import "src/styles/common.module.less";
+
+.pageHeaderArea {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    @media @mobile-screen {
+        flex-direction: column;
+    }
+
+    .header {
+        font-size: @font-size-x-x-lg;
+        margin: 0;
+    }
+
+    .createBtn {
+        .primaryOutlineButton;
+    }
+}
+
+.filterArea {
+    margin: 30px 0 50px 0;
+}
