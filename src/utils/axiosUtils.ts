@@ -1,5 +1,5 @@
 import { ResponseDTO } from "@/api/dto/common.dto";
-import { getCurrntLanguage } from "@/i18nConfig";
+import { getCurrentLanguage } from "@/i18nConfig";
 import axios, { AxiosRequestConfig } from "axios";
 import { tokenStore } from "./tokenUtils";
 import toQueryString from "./toQueryString";
@@ -13,7 +13,7 @@ axiosInstance.interceptors.request.use(
     req => ({
         ...req,
         headers: { ...req.headers, ...baseHeader() },
-        params: { ...req.params, lang: getCurrntLanguage() }
+        params: { ...req.params, lang: getCurrentLanguage() }
     }),
     error => Promise.reject(error)
 );

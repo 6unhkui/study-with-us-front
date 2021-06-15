@@ -5,12 +5,12 @@ import { RoomSortBy } from "@/api/dto/room.dto";
 import useRadio from "@/hooks/useRadio";
 import styles from "./RoomSortModal.module.less";
 
-export interface ISortItem {
+export interface SortItem {
     key: RoomSortBy;
     name: string;
 }
 
-export const sortItems: ISortItem[] = [
+export const sortItems: SortItem[] = [
     { key: "NAME", name: "이름 순" },
     { key: "CREATED_DATE", name: "생성일 순" },
     { key: "JOIN_COUNT", name: "멤버 순" }

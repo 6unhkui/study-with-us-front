@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import useModal from "@/hooks/useModal";

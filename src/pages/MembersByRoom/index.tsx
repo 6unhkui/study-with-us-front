@@ -16,9 +16,9 @@ const MembersByRoom: React.FC<MembersByRoomProps> = () => {
     const intId = useGetIntIdFromUrl();
     initialParam.roomId = intId;
 
-    const [payload, setPayload] = useState<SearchMembersByPageDTO>({ ...initialParam, roomId: intId });
+    const [param, setParam] = useState<SearchMembersByPageDTO>({ ...initialParam, roomId: intId });
     const { data, loading, hasMore, fetch } = useMemberListAsync();
-    const page = useRef(payload.page);
+    const page = useRef(param.page);
 
     useEffect(() => {
         fetch(initialParam);
@@ -27,10 +27,10 @@ const MembersByRoom: React.FC<MembersByRoomProps> = () => {
     const onSubmitSearchInput = useCallback(
         (input: string) => {
             page.current = 1;
-            fetch({ ...payload, keyword: input });
-            setPayload({ ...payload, keyword: input });
+            fetch({ ...param, keyword: input });
+            setParam({ ...param, keyword: input });
         },
-        [fetch, payload]
+        [fetch, param]
     );
 
     const loadMore = useCallback(

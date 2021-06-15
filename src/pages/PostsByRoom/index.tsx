@@ -17,22 +17,22 @@ interface PostsByRoomProps {}
 
 const PostsByRoom: React.FC<PostsByRoomProps> = () => {
     const intId = useGetIntIdFromUrl();
-    const [payload, setPayload] = useState<SearchPostsByPageDTO>({ ...initialParam, roomId: intId });
+    const [param, setParam] = useState<SearchPostsByPageDTO>({ ...initialParam, roomId: intId });
     const { data, loading, hasMore } = useTypedSelector(({ post: { postList } }) => postList);
     const dispatch = useDispatch();
-    const page = useRef(payload.page);
+    const page = useRef(param.page);
 
     useEffect(() => {
-        dispatch(getPostListAsync.request(payload));
-    }, [dispatch, payload]);
+        dispatch(getPostListAsync.request(param));
+    }, [dispatch, param]);
 
     const onSubmitSearchInput = useCallback(
         (input: string) => {
             page.current = 1;
-            dispatch(getPostListAsync.request({ ...payload, keyword: input }));
-            setPayload({ ...payload, keyword: input });
+            dispatch(getPostListAsync.request({ ...param, keyword: input }));
+            setParam({ ...param, keyword: input });
         },
-        [dispatch, payload]
+        [dispatch, param]
     );
 
     const loadMore = useCallback(
@@ -40,10 +40,10 @@ const PostsByRoom: React.FC<PostsByRoomProps> = () => {
             if (loading) return;
             if (entries[0].isIntersecting && hasMore) {
                 page.current += 1;
-                dispatch(getPostListAsync.request({ ...payload, page: page.current }));
+                dispatch(getPostListAsync.request({ ...param, page: page.current }));
             }
         },
-        [loading, dispatch, payload, hasMore]
+        [loading, dispatch, param, hasMore]
     );
 
     const { domRef: lastItemRef } = useIntersectionObserver(loadMore);

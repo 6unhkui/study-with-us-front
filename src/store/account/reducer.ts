@@ -41,7 +41,7 @@ const accountReducer = createReducer<AccountState, AccountAction>(initalState, {
         state.data = null;
         state.error = action.payload;
     }),
-    [LOGIN.RESET]: produce(({ login: state }, action) => {
+    [LOGIN.RESET]: produce(({ login: state }) => {
         state.loading = false;
         state.data = null;
         state.error = null;
@@ -86,7 +86,7 @@ const accountReducer = createReducer<AccountState, AccountAction>(initalState, {
         state.data = null;
         state.error = action.payload;
     }),
-    [REGISTER.RESET]: produce(({ register: state }, action) => {
+    [REGISTER.RESET]: produce(({ register: state }) => {
         state.loading = false;
         state.data = null;
         state.error = null;
@@ -139,7 +139,7 @@ const accountReducer = createReducer<AccountState, AccountAction>(initalState, {
         state.data = null;
         state.error = null;
     }),
-    [CHANGE_PASSWORD.SUCCESS]: produce(({ changePassword: state }, action) => {
+    [CHANGE_PASSWORD.SUCCESS]: produce(({ changePassword: state }) => {
         state.loading = false;
         state.data = true;
         state.error = null;
@@ -149,12 +149,12 @@ const accountReducer = createReducer<AccountState, AccountAction>(initalState, {
         state.data = false;
         state.error = action.payload;
     }),
-    [CHANGE_PASSWORD.RESET]: produce(({ changePassword: state }, action) => {
+    [CHANGE_PASSWORD.RESET]: produce(({ changePassword: state }) => {
         state.loading = false;
         state.data = null;
         state.error = null;
     }),
-    [WITHDRAW.SUCCESS]: produce(({ withdraw: state, me }, action) => {
+    [WITHDRAW.SUCCESS]: produce(({ withdraw: state, me }) => {
         state.loading = false;
         state.data = true;
         state.error = null;
@@ -166,7 +166,7 @@ const accountReducer = createReducer<AccountState, AccountAction>(initalState, {
         state.data = false;
         state.error = action.payload;
     }),
-    [WITHDRAW.RESET]: produce(({ withdraw: state }, action) => {
+    [WITHDRAW.RESET]: produce(({ withdraw: state }) => {
         state.loading = false;
         state.data = null;
         state.error = null;

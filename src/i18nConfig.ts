@@ -13,13 +13,13 @@ export const availableLanguages: Record<LanguageKeys, string> = {
 
 export const availableLanguageKeys: string[] = Object.keys(availableLanguages);
 
-export const getCurrntLanguage = (): LanguageKeys => i18n.language || window.localStorage.i18nextLng || availableLanguageKeys[0];
+export const getCurrentLanguage = (): LanguageKeys => i18n.language || window.localStorage.i18nextLng || availableLanguageKeys[0];
 
 i18n.use(initReactI18next)
     .use(LanguageDetector)
     .use(Backend)
     .init({
-        lng: getCurrntLanguage(),
+        lng: getCurrentLanguage(),
         fallbackLng: availableLanguageKeys[0],
         whitelist: availableLanguageKeys,
         debug: !isProd,

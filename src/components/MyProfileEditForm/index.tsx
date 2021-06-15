@@ -32,7 +32,7 @@ const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
     }, [loading, data]);
 
     const onSubmit = useCallback(
-        (values: Record<Fields, any>) => {
+        (values: Record<Fields, string>) => {
             dispatch(updateAccountAsync.request(values));
         },
         [dispatch]

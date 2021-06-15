@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { Dropdown, Menu } from "antd";
 import { DownOutlined, GlobalOutlined } from "@ant-design/icons";
-import { availableLanguages, getCurrntLanguage, LanguageKeys } from "@/i18nConfig";
+import { availableLanguages, getCurrentLanguage, LanguageKeys } from "@/i18nConfig";
 import i18n from "i18next";
 import styles from "./LanguageSelectBox.module.less";
 
@@ -18,7 +18,7 @@ const DropdownMenu = React.memo(({ onChange }: { onChange: (key: LanguageKeys) =
 interface LanguageSelectBoxProps {}
 
 const LanguageSelectBox: React.FC<LanguageSelectBoxProps> = () => {
-    const [currentLanguage, setCurrentLanguage] = useState<string>(availableLanguages[getCurrntLanguage()]);
+    const [currentLanguage, setCurrentLanguage] = useState<string>(availableLanguages[getCurrentLanguage()]);
 
     const onChangeLanguage = useCallback((key: LanguageKeys) => {
         i18n.changeLanguage(key);
