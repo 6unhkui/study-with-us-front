@@ -1,7 +1,7 @@
 import React from "react";
 import Avatar from "@/components/Avatar";
 import { Link } from "react-router-dom";
-import { useMeAsync } from "@/hooks/useRedux";
+import { useMeFetch } from "@/hooks/useRedux";
 import styles from "./HeaderUserProfile.module.less";
 
 interface HeaderUserProfileProps {
@@ -9,7 +9,7 @@ interface HeaderUserProfileProps {
 }
 
 const HeaderUserProfile: React.FC<HeaderUserProfileProps> = ({ onClick }) => {
-    const { data: me } = useMeAsync();
+    const { data: me } = useMeFetch();
 
     return (
         <Link to="/mypage" className={styles.link} onClick={onClick}>

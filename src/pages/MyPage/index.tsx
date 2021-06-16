@@ -6,7 +6,7 @@ import { Tabs } from "antd";
 import { CameraOutlined } from "@ant-design/icons";
 import AuthProviderBadge from "@/components/AuthProviderBadge";
 import SEO from "@/components/SEO";
-import { useMeAsync } from "@/hooks/useRedux";
+import { useMeFetch } from "@/hooks/useRedux";
 import Emoji from "@/components/Emoji";
 import { useDispatch } from "react-redux";
 import { changeProfileImageAsync, meAsync } from "@/store/account";
@@ -33,7 +33,7 @@ const tabItems: TabItem[] = [
 interface MyPagePageProps {}
 
 const MyPagePage: React.FC<MyPagePageProps> = () => {
-    const { data: me, loading, error } = useMeAsync();
+    const { data: me, loading, error } = useMeFetch();
     const dispatch = useDispatch();
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [selectedKey, setSelectedKey] = useState("1");

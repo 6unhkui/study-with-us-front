@@ -20,36 +20,36 @@ const SearchPage: React.FC<SearchPageProps> = () => {
     const query = useQuery();
     const categoryId = query.get("id");
     const keyword = query.get("keyword");
-    initialParam.keyword = keyword || "";
-    initialParam.categoryIds = categoryId ? [+categoryId] : [];
 
-    const [param, setParam] = useState<SearchRoomsByPageDTO>(initialParam);
+    const param = useRef<SearchRoomsByPageDTO>({
+        ...initialParam,
+        keyword: keyword || "",
+        categoryIds: categoryId ? [+categoryId] : []
+    });
     const { data, loading, hasMore } = useTypedSelector(({ room: { roomList } }) => roomList);
     const dispatch = useDispatch();
-    const page = useRef(param.page);
 
     useEffect(() => {
-        dispatch(getRoomListAsync.request(initialParam));
+        dispatch(getRoomListAsync.request(param.current));
     }, [dispatch]);
 
     const onFilterSubmit = useCallback(
         (search: SearchRoomDTO) => {
-            page.current = 1;
-            dispatch(getRoomListAsync.request({ ...param, ...search }));
-            setParam({ ...param, ...search });
+            param.current = { ...param.current, ...search, page: 1 };
+            dispatch(getRoomListAsync.request(param.current));
         },
-        [dispatch, param]
+        [dispatch]
     );
 
     const loadMore = useCallback(
         (entries: IntersectionObserverEntry[]) => {
             if (loading) return;
             if (entries[0].isIntersecting && hasMore) {
-                page.current += 1;
-                dispatch(getRoomListAsync.request({ ...param, page: page.current }));
+                param.current = { ...param.current, page: param.current.page + 1 };
+                dispatch(getRoomListAsync.request(param.current));
             }
         },
-        [loading, dispatch, param, hasMore]
+        [loading, dispatch, hasMore]
     );
 
     const { domRef: lastItemRef } = useIntersectionObserver(loadMore);

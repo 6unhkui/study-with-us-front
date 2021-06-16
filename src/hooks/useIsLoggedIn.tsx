@@ -1,7 +1,7 @@
-import { useMeAsync } from "./useRedux";
+import { useMeFetch } from "./useRedux";
 
 const useIsLoggedIn = (): boolean => {
-    const { data: me, loading } = useMeAsync();
+    const { data: me, loading } = useMeFetch();
     return !!me && !loading;
 };
 

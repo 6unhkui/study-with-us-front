@@ -1,4 +1,4 @@
-import { useMeAsync } from "@/hooks/useRedux";
+import { useMeFetch } from "@/hooks/useRedux";
 import { Button, Form } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import TextArea from "antd/lib/input/TextArea";
@@ -19,7 +19,7 @@ const CommentEditor: React.FC<CommentEditorProps> = ({
     onSubmit: submitAction,
     submitBtnName = "등록"
 }) => {
-    const { data } = useMeAsync();
+    const { data } = useMeFetch();
     const [form] = useForm();
 
     const onSubmit = useCallback(

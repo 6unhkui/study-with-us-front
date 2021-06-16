@@ -6,7 +6,7 @@ import { getMemberListAsync } from "@/store/member";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
-export function useMeAsync() {
+export function useMeFetch() {
     const dispatch = useDispatch();
     const me = useTypedSelector(state => state.account.me);
 
@@ -20,7 +20,7 @@ export function useMeAsync() {
     };
 }
 
-export function useCategoryListAsync() {
+export function useCategoryListFetch() {
     const dispatch = useDispatch();
     const categoryList = useTypedSelector(state => state.category.categoryList);
 
@@ -34,7 +34,7 @@ export function useCategoryListAsync() {
     };
 }
 
-export function useMemberListAsync() {
+export function useMemberListFetch() {
     const dispatch = useDispatch();
     const memberList = useTypedSelector(state => state.member.memberList);
 

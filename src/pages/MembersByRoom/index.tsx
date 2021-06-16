@@ -3,42 +3,38 @@ import MemberListContainer from "@/components/MemberListContainer";
 import SEO from "@/components/SEO";
 import { useGetIntIdFromUrl } from "@/hooks/useGetIntFromUrl";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
-import { useMemberListAsync } from "@/hooks/useRedux";
+import { useMemberListFetch } from "@/hooks/useRedux";
 import { Input } from "antd";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import styles from "./MeberByRoom.module.less";
 
-const initialParam: SearchMembersByPageDTO = { page: 1, size: 6, direction: "ASC" };
+const initialParam: SearchMembersByPageDTO = { page: 1, size: 2, direction: "ASC" };
 
 interface MembersByRoomProps {}
 
 const MembersByRoom: React.FC<MembersByRoomProps> = () => {
     const intId = useGetIntIdFromUrl();
-    initialParam.roomId = intId;
-
-    const [param, setParam] = useState<SearchMembersByPageDTO>({ ...initialParam, roomId: intId });
-    const { data, loading, hasMore, fetch } = useMemberListAsync();
-    const page = useRef(param.page);
+    const param = useRef<SearchMembersByPageDTO>({ ...initialParam, roomId: intId });
+    const { data, loading, hasMore, fetch } = useMemberListFetch();
 
     useEffect(() => {
-        fetch(initialParam);
+        fetch(param.current);
     }, [fetch]);
 
-    const onSubmitSearchInput = useCallback(
+    const onSearchInputSubmit = useCallback(
         (input: string) => {
-            page.current = 1;
-            fetch({ ...param, keyword: input });
-            setParam({ ...param, keyword: input });
+            param.current = { ...param.current, page: 1, keyword: input };
+            fetch(param.current);
         },
-        [fetch, param]
+        [fetch]
     );
 
     const loadMore = useCallback(
         (entries: IntersectionObserverEntry[]) => {
             if (loading) return;
             if (entries[0].isIntersecting && hasMore) {
-                page.current += 1;
-                fetch({ ...initialParam, page: page.current });
+                param.current = { ...param.current, page: param.current.page + 1 };
+                fetch(param.current);
             }
         },
         [loading, fetch, hasMore]
@@ -53,7 +49,7 @@ const MembersByRoom: React.FC<MembersByRoomProps> = () => {
                 enterButton="검색"
                 placeholder="검색어를 입력하세요."
                 size="large"
-                onSearch={onSubmitSearchInput}
+                onSearch={onSearchInputSubmit}
                 className={styles.searchInput}
             />
             <MemberListContainer data={data} loading={loading} lastItemRef={lastItemRef} />

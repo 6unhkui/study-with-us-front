@@ -8,11 +8,11 @@ export class ChatAPI {
 
     public static handshakeUrl = `${process.env.REACT_APP_API_SERVER_URI}/chatting`;
 
-    public static async getHistory(roomId: number): Promise<RecevieMessageDTO[]> {
+    public static getHistory(roomId: number): Promise<RecevieMessageDTO[]> {
         return fetcher<RecevieMessageDTO[]>({ url: `/api/v1/chat/${roomId}/history` });
     }
 
-    public static async getCurrentChatMembers(roomId: number): Promise<ChatMemberDTO[]> {
+    public static getCurrentChatMembers(roomId: number): Promise<ChatMemberDTO[]> {
         return fetcher<ChatMemberDTO[]>({ url: `/api/v1/chat/${roomId}/members` });
     }
 }

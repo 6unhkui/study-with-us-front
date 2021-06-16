@@ -2,13 +2,11 @@ import { useTypedSelector } from "@/store";
 import { getCurrentChatMemeberListAsync } from "@/store/chat";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import Modal from "@/components/Modal";
+import Modal, { ModalProps } from "@/components/Modal";
 import MemberListContainer from "@/components/MemberListContainer";
 
-interface ChatMemeberListModalProps {
+interface ChatMemeberListModalProps extends ModalProps {
     roomId: number;
-    visible: boolean;
-    onClose: () => void;
 }
 
 const ChatMemeberListModal: React.FC<ChatMemeberListModalProps> = ({ roomId, visible, onClose }) => {

@@ -5,7 +5,7 @@ import PageHeader from "@/components/PageHeader";
 import Wrapper from "@/components/Wrapper";
 import { useGetIntIdFromUrl } from "@/hooks/useGetIntFromUrl";
 import useModal from "@/hooks/useModal";
-import { useMeAsync } from "@/hooks/useRedux";
+import { useMeFetch } from "@/hooks/useRedux";
 import { useTypedSelector } from "@/store";
 import { baseHeader } from "@/utils/axiosUtils";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -25,7 +25,7 @@ interface ChattingPageProps {}
 const ChattingPage: React.FC<ChattingPageProps> = () => {
     const intId = useGetIntIdFromUrl();
     const { data: room } = useTypedSelector(state => state.room.room);
-    const { data: me } = useMeAsync();
+    const { data: me } = useMeFetch();
     const { data: chatMessages, loading } = useTypedSelector(state => state.chat.history);
     const { onClose: onDisconnect, onOpen: onConnect, visible: isConnected } = useModal();
     const { onClose, onOpen, visible } = useModal();

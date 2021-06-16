@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Switch } from "react-router";
 import PrivateRoute from "@/app/PrivateRoute";
 import PublicRoute from "@/app/PublicRoute";
-import { useMeAsync } from "@/hooks/useRedux";
+import { useMeFetch } from "@/hooks/useRedux";
 import { tokenStore } from "@/utils/tokenUtils";
 import { useDispatch } from "react-redux";
 import { meAsync } from "@/store/account";
@@ -12,7 +12,7 @@ import routes from "@/routes/app";
 interface AppRouterProps {}
 
 const AppRouter: React.FC<AppRouterProps> = () => {
-    const { fetch: fetchMe, data: me } = useMeAsync();
+    const { fetch: fetchMe, data: me } = useMeFetch();
     const dispatch = useDispatch();
 
     useEffect(() => {

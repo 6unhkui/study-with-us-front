@@ -2,7 +2,7 @@ import { fetcher } from "@/utils/axiosUtils";
 import { FileDTO, FileGroupDTO, UploadFileByGroupIdDTO, UploadFileDTO, UploadFileListByGroupIdDTO } from "@/api/dto/file.dto";
 
 export class FileAPI {
-    public static async uploadCoverImage(request: UploadFileByGroupIdDTO): Promise<FileGroupDTO> {
+    public static uploadCoverImage(request: UploadFileByGroupIdDTO): Promise<FileGroupDTO> {
         return fetcher<FileGroupDTO>({
             method: "POST",
             url: "/api/v1/files/cover",
@@ -12,7 +12,7 @@ export class FileAPI {
         });
     }
 
-    public static async uploadEditorImage(request: UploadFileDTO): Promise<FileDTO> {
+    public static uploadEditorImage(request: UploadFileDTO): Promise<FileDTO> {
         return fetcher<FileDTO>({
             method: "POST",
             url: "/api/v1/files/editor",
@@ -21,7 +21,7 @@ export class FileAPI {
         });
     }
 
-    public static async uploadAttachment(request: UploadFileListByGroupIdDTO): Promise<FileGroupDTO> {
+    public static uploadAttachment(request: UploadFileListByGroupIdDTO): Promise<FileGroupDTO> {
         return fetcher<FileGroupDTO>({
             method: "POST",
             url: "/api/v1/files/attachment",

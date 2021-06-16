@@ -1,7 +1,7 @@
 import { Button, Form, Input, message } from "antd";
 import React, { useCallback, useEffect } from "react";
 import { Rule } from "rc-field-form/lib/interface";
-import { useMeAsync } from "@/hooks/useRedux";
+import { useMeFetch } from "@/hooks/useRedux";
 import { useDispatch } from "react-redux";
 import { updateAccountAsync } from "@/store/account";
 import { useTypedSelector } from "@/store";
@@ -15,7 +15,7 @@ const validateRules: Record<Fields, Rule[]> = {
 interface MyProfileEditFormProps {}
 
 const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
-    const { data: me } = useMeAsync();
+    const { data: me } = useMeFetch();
     const { data, loading } = useTypedSelector(({ account: { updateAccount } }) => updateAccount);
     const dispatch = useDispatch();
 

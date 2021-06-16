@@ -12,31 +12,31 @@ import { CategoryDTO } from "@/api/dto/category.dto";
 import { PageResponseDTO } from "@/api/dto/common.dto";
 
 export class RoomAPI {
-    public static async getOne(roomId: number): Promise<RoomDetailDTO> {
+    public static getOne(roomId: number): Promise<RoomDetailDTO> {
         return fetcher<RoomDetailDTO>({ url: `api/v1/room/${roomId}` });
     }
 
-    public static async getAllByPage(request: SearchRoomsByPageDTO): Promise<PageResponseDTO<RoomDTO[]>> {
+    public static getAllByPage(request: SearchRoomsByPageDTO): Promise<PageResponseDTO<RoomDTO[]>> {
         return fetcher<PageResponseDTO<RoomDTO[]>>({ url: "api/v1/rooms", params: request });
     }
 
-    public static async getMyRoomsByPage(request: SearchRoomsByPageDTO): Promise<PageResponseDTO<RoomDTO[]>> {
+    public static getMyRoomsByPage(request: SearchRoomsByPageDTO): Promise<PageResponseDTO<RoomDTO[]>> {
         return fetcher<PageResponseDTO<RoomDTO[]>>({ url: "api/v1/user/rooms", params: request });
     }
 
-    public static async create(request: CreateRoomDTO): Promise<number> {
+    public static create(request: CreateRoomDTO): Promise<number> {
         return fetcher<number>({ method: "POST", url: "api/v1/room", data: request });
     }
 
-    public static async updateOne(request: UpdateRoomDTO): Promise<boolean> {
+    public static updateOne(request: UpdateRoomDTO): Promise<boolean> {
         return fetcher<boolean>({ method: "PUT", url: `api/v1/room/${request.roomId}`, data: request });
     }
 
-    public static async deleteOne(roomId: number): Promise<boolean> {
+    public static deleteOne(roomId: number): Promise<boolean> {
         return fetcher<boolean>({ method: "DELETE", url: `api/v1/room/${roomId}` });
     }
 
-    public static async changeCoverId(request: ChangeCoverIdDTO): Promise<boolean> {
+    public static changeCoverId(request: ChangeCoverIdDTO): Promise<boolean> {
         return fetcher<boolean>({
             method: "PUT",
             url: `api/v1/room/${request.roomId}/cover`,
@@ -44,7 +44,7 @@ export class RoomAPI {
         });
     }
 
-    public static async changeCategoryId(request: ChangeCategoryIdDTO): Promise<CategoryDTO> {
+    public static changeCategoryId(request: ChangeCategoryIdDTO): Promise<CategoryDTO> {
         return fetcher<CategoryDTO>({
             method: "PUT",
             url: `api/v1/room/${request.roomId}/category`,
@@ -52,11 +52,11 @@ export class RoomAPI {
         });
     }
 
-    public static async joinRoom(roomId: number): Promise<boolean> {
+    public static joinRoom(roomId: number): Promise<boolean> {
         return fetcher<boolean>({ method: "POST", url: `/api/v1/room/${roomId}/join` });
     }
 
-    public static async leaveRoom(roomId: number): Promise<boolean> {
+    public static leaveRoom(roomId: number): Promise<boolean> {
         return fetcher<boolean>({ method: "DELETE", url: `/api/v1/room/${roomId}/member` });
     }
 }

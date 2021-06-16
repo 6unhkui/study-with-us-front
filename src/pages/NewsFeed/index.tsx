@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import Wrapper from "@/components/Wrapper";
 import { useDispatch } from "react-redux";
 import { getNewsFeedAsync } from "@/store/post";
@@ -15,24 +15,23 @@ const initialParam: PageRequestDTO = { page: 1, size: 6, direction: "ASC" };
 interface NewsFeedPageProps {}
 
 const NewsFeedPage: React.FC<NewsFeedPageProps> = () => {
-    const [payload] = useState<PageRequestDTO>(initialParam);
+    const param = useRef<PageRequestDTO>({ ...initialParam });
     const { data, loading, hasMore } = useTypedSelector(state => state.post.newsFeed);
     const dispatch = useDispatch();
-    const page = useRef(payload.page);
 
     useEffect(() => {
-        dispatch(getNewsFeedAsync.request(initialParam));
+        dispatch(getNewsFeedAsync.request(param.current));
     }, [dispatch]);
 
     const loadMore = useCallback(
         (entries: IntersectionObserverEntry[]) => {
             if (loading) return;
             if (entries[0].isIntersecting && hasMore) {
-                page.current += 1;
-                dispatch(getNewsFeedAsync.request({ ...payload, page: page.current }));
+                param.current = { ...param.current, page: param.current.page + 1 };
+                dispatch(getNewsFeedAsync.request(param.current));
             }
         },
-        [loading, dispatch, payload, hasMore]
+        [loading, dispatch, hasMore]
     );
 
     const { domRef: lastItemRef } = useIntersectionObserver(loadMore);

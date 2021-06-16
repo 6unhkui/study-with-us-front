@@ -7,7 +7,7 @@ import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import { useTypedSelector } from "@/store";
 import { getPostListAsync } from "@/store/post";
 import { Input } from "antd";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./PostsByRoom.module.less";
 
@@ -17,33 +17,31 @@ interface PostsByRoomProps {}
 
 const PostsByRoom: React.FC<PostsByRoomProps> = () => {
     const intId = useGetIntIdFromUrl();
-    const [param, setParam] = useState<SearchPostsByPageDTO>({ ...initialParam, roomId: intId });
+    const param = useRef<SearchPostsByPageDTO>({ ...initialParam, roomId: intId });
     const { data, loading, hasMore } = useTypedSelector(({ post: { postList } }) => postList);
     const dispatch = useDispatch();
-    const page = useRef(param.page);
 
     useEffect(() => {
-        dispatch(getPostListAsync.request(param));
-    }, [dispatch, param]);
+        dispatch(getPostListAsync.request(param.current));
+    }, [dispatch]);
 
-    const onSubmitSearchInput = useCallback(
+    const onSearchInputSubmit = useCallback(
         (input: string) => {
-            page.current = 1;
-            dispatch(getPostListAsync.request({ ...param, keyword: input }));
-            setParam({ ...param, keyword: input });
+            param.current = { ...param.current, page: 1, keyword: input };
+            dispatch(getPostListAsync.request(param.current));
         },
-        [dispatch, param]
+        [dispatch]
     );
 
     const loadMore = useCallback(
         (entries: IntersectionObserverEntry[]) => {
             if (loading) return;
             if (entries[0].isIntersecting && hasMore) {
-                page.current += 1;
-                dispatch(getPostListAsync.request({ ...param, page: page.current }));
+                param.current = { ...param.current, page: param.current.page + 1 };
+                dispatch(getPostListAsync.request(param.current));
             }
         },
-        [loading, dispatch, param, hasMore]
+        [loading, dispatch, hasMore]
     );
 
     const { domRef: lastItemRef } = useIntersectionObserver(loadMore);
@@ -55,7 +53,7 @@ const PostsByRoom: React.FC<PostsByRoomProps> = () => {
                 enterButton="검색"
                 placeholder="검색어를 입력하세요."
                 size="large"
-                onSearch={onSubmitSearchInput}
+                onSearch={onSearchInputSubmit}
                 className={styles.searchInput}
             />
             <PostListContainer data={data} loading={loading} lastItemRef={lastItemRef} />

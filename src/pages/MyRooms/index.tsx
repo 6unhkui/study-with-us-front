@@ -19,10 +19,9 @@ const initialParam: SearchRoomsByPageDTO = { page: 1, size: 6, direction: "ASC",
 interface MyRoomsPageProps {}
 
 const MyRoomsPage: React.FC<MyRoomsPageProps> = () => {
-    const [param, setParam] = useState<SearchRoomsByPageDTO>(initialParam);
     const { data, loading, hasMore } = useTypedSelector(state => state.room.myRoomList);
     const dispatch = useDispatch();
-    const page = useRef(param.page);
+    const param = useRef<SearchRoomsByPageDTO>(initialParam);
 
     useEffect(() => {
         dispatch(getMyRoomListAsync.request(initialParam));
@@ -30,22 +29,21 @@ const MyRoomsPage: React.FC<MyRoomsPageProps> = () => {
 
     const onFilterSubmit = useCallback(
         (search: SearchRoomDTO) => {
-            page.current = 1;
-            dispatch(getMyRoomListAsync.request({ ...param, ...search }));
-            setParam({ ...param, ...search });
+            param.current = { ...param.current, ...search, page: 1 };
+            dispatch(getMyRoomListAsync.request(param.current));
         },
-        [dispatch, param]
+        [dispatch]
     );
 
     const loadMore = useCallback(
         (entries: IntersectionObserverEntry[]) => {
             if (loading) return;
             if (entries[0].isIntersecting && hasMore) {
-                page.current += 1;
-                dispatch(getMyRoomListAsync.request({ ...param, page: page.current }));
+                param.current = { ...param.current, page: param.current.page + 1 };
+                dispatch(getMyRoomListAsync.request(param.current));
             }
         },
-        [loading, dispatch, param, hasMore]
+        [loading, dispatch, hasMore]
     );
 
     const { domRef: lastItemRef } = useIntersectionObserver(loadMore);

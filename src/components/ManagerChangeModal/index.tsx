@@ -8,7 +8,7 @@ import Avatar from "@/components/Avatar";
 import EmptyList from "@/components/EmptyList";
 import useInput from "@/hooks/useInput";
 import useRadio from "@/hooks/useRadio";
-import { useMemberListAsync } from "@/hooks/useRedux";
+import { useMemberListFetch } from "@/hooks/useRedux";
 import styles from "./ManagerChangeModal.module.less";
 
 const initialParam: SearchMembersByPageDTO = { page: 1, size: 6, direction: "ASC" };
@@ -18,16 +18,15 @@ interface ManagerChangeModalProps extends ModalProps {
 }
 
 const ManagerChangeModal: React.FC<ManagerChangeModalProps> = ({ roomId, onClose, ...props }) => {
-    const { data: memberList, loading: loadingMemberList, hasMore, fetch: fetchMemberList } = useMemberListAsync();
-    const [payload, setPayload] = useState<SearchMembersByPageDTO>({ ...initialParam, roomId });
+    const param = useRef<SearchMembersByPageDTO>({ ...initialParam, roomId });
+    const { data: memberList, loading: loadingMemberList, hasMore, fetch: fetchMemberList } = useMemberListFetch();
     const { selected: selectedMember, onChange: changeSelectedMember } = useRadio("0");
     const { input, onChange } = useInput();
     const dispatch = useDispatch();
-    const page = useRef(payload.page);
 
     useEffect(() => {
-        fetchMemberList(payload);
-    }, [payload, fetchMemberList]);
+        fetchMemberList(param.current);
+    }, [fetchMemberList]);
 
     const memberListWithoutMananger = useMemo(() => {
         return memberList?.filter(({ role }) => role !== "MANAGER");
@@ -45,17 +44,16 @@ const ManagerChangeModal: React.FC<ManagerChangeModalProps> = ({ roomId, onClose
     }, [selectedMember, memberListWithoutMananger, dispatch, roomId, onClose]);
 
     const onSearch = useCallback(() => {
-        page.current = 1;
-        fetchMemberList({ ...payload, keyword: input });
-        setPayload({ ...payload, keyword: input });
-    }, [fetchMemberList, input, payload]);
+        param.current = { ...param.current, page: 1, keyword: input };
+        fetchMemberList(param.current);
+    }, [fetchMemberList, input]);
 
     const loadMore = useCallback(() => {
         if (hasMore) {
-            page.current += 1;
-            fetchMemberList({ ...payload, page: page.current });
+            param.current = { ...param.current, page: param.current.page + 1 };
+            fetchMemberList(param.current);
         }
-    }, [hasMore, fetchMemberList, payload]);
+    }, [hasMore, fetchMemberList]);
 
     return (
         <Modal type="confirm" header="매니저 위임" size="regular" onClose={onClose} onOk={onSubmit} {...props}>

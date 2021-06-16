@@ -1,12 +1,9 @@
 const path = require("path");
-
 const WebpackBar = require("webpackbar");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-
 const CracoAntDesignPlugin = require("craco-antd");
 const CracoLessPlugin = require("craco-less");
 const CracoAlias = require("craco-alias");
-
 const getCSSModuleLocalIdent = require("react-dev-utils/getCSSModuleLocalIdent");
 
 const isDevelopment = process.env.NODE_ENV === "development";

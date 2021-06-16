@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import Modal, { ModalProps } from "@/components/Modal";
 import useRadio from "@/hooks/useRadio";
-import { useCategoryListAsync } from "@/hooks/useRedux";
+import { useCategoryListFetch } from "@/hooks/useRedux";
 import { List, Radio } from "antd";
 import EmptyList from "@/components/EmptyList";
 import { CategoryDTO } from "@/api/dto/category.dto";
@@ -15,8 +15,8 @@ interface CategoryChangeModalProps extends ModalProps {
 }
 
 const CategoryChangeModal: React.FC<CategoryChangeModalProps> = ({ roomId, defaultCategoryId, onClose, ...props }) => {
-    const { data: categoryList, loading: loadingCategoryList, fetch: fetchCategoryList } = useCategoryListAsync();
-    const { selected: selectedCategory, onChange: changeSelectedCategory } = useRadio(defaultCategoryId.toString());
+    const { data: categoryList, loading: loadingCategoryList, fetch: fetchCategoryList } = useCategoryListFetch();
+    const { selected: selectedCategoryId, onChange: changeSelectedCategoryId } = useRadio(defaultCategoryId.toString());
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -24,16 +24,16 @@ const CategoryChangeModal: React.FC<CategoryChangeModalProps> = ({ roomId, defau
     }, [fetchCategoryList]);
 
     const onSubmit = useCallback(() => {
-        const category = categoryList?.find(c => c.categoryId === +selectedCategory) as CategoryDTO;
-        if (category) {
-            dispatch(changeCategoryAsync.request({ roomId, categoryId: category.categoryId }));
+        const selectedCategory = categoryList?.find(cate => cate.categoryId === +selectedCategoryId) as CategoryDTO;
+        if (selectedCategory) {
+            dispatch(changeCategoryAsync.request({ roomId, categoryId: selectedCategory.categoryId }));
             onClose();
         }
-    }, [dispatch, categoryList, selectedCategory, roomId, onClose]);
+    }, [dispatch, categoryList, selectedCategoryId, roomId, onClose]);
 
     return (
         <Modal type="confirm" header="카테고리 변경" onClose={onClose} onOk={onSubmit} {...props}>
-            <Radio.Group onChange={changeSelectedCategory} className={styles.container} defaultValue={+selectedCategory}>
+            <Radio.Group onChange={changeSelectedCategoryId} className={styles.container} defaultValue={+selectedCategoryId}>
                 <List
                     dataSource={categoryList || []}
                     locale={{ emptyText: <EmptyList /> }}

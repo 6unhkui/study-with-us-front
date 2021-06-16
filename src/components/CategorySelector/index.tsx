@@ -1,4 +1,4 @@
-import { useCategoryListAsync } from "@/hooks/useRedux";
+import { useCategoryListFetch } from "@/hooks/useRedux";
 import { Radio, RadioChangeEvent } from "antd";
 import React, { useCallback, useEffect } from "react";
 import Loading from "@/components/Loading";
@@ -9,7 +9,7 @@ interface CategorySelectorProps {
 }
 
 const CategorySelector: React.FC<CategorySelectorProps> = ({ value, onChange }) => {
-    const { data: categoryList, fetch: fetchCategory } = useCategoryListAsync();
+    const { data: categoryList, fetch: fetchCategory } = useCategoryListFetch();
 
     useEffect(() => {
         if (!categoryList) {
