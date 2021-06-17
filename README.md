@@ -1,12 +1,11 @@
-# 📚 Study With Us - Frontend
+# Study With Us - Web
 
-## 🔍 Overview
-
-![메인](https://user-images.githubusercontent.com/41765537/110615240-905e0f80-81d6-11eb-843f-60de4cbf6937.gif)
+![Study With Us](https://user-images.githubusercontent.com/41765537/122437155-68035f80-cfd4-11eb-944c-60203c0d90aa.gif)
 <br/>
 
 Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 정보를 공유하고, 함께 의지를 다지기 위해 만든 커뮤니티 사이트입니다.<br/><br/>
-주요 기능은 아래와 같습니다.
+
+## ✨ Features
 
 -   회원가입, 로그인 & 소셜 로그인
 -   스터디룸 생성 및 관리
@@ -16,25 +15,18 @@ Study With Us는 자기 개발을 위해 공부하는 사람들이 모여 정보
 -   새글 피드
 -   스터디룸 찾기
 -   마이페이지
--   다국어 지원 (영어, 한국어)
-    <br/>
-
-## 💻 Dev Environment
-
--   OS : Mac OS, CentOS 7
--   Tool : Visual Studio Code, Git
+-   다국어(영어, 한국어), 반응형
     <br/><br/>
 
 ## 🔧 Tech Stack
-
--   Typescript
 -   React
+-   Typescript
+-   React Router, React i18n
 -   Redux, Redux Saga
 -   Less, css-in-js (styled-components)
--   React i18n
--   UI Library : Ant Design UI
--   Web Server : Nginx
-    <br/><br/>
+-   Ant Design UI
+-   Ckeditor5, Chart.js
+     <br/><br/>
 
 ## 🗂 Folder Structure
 
